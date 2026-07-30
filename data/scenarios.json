@@ -1,0 +1,257 @@
+[
+  {
+    "key": "DRAGON",
+    "name": "The Emerging Dragon",
+    "goal": "Dominate the chemical and electronic products market; $300M annual profit; 10,000 jobs; within 30 years.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Cigarettes",
+      "Food",
+      "Furniture",
+      "Livestock",
+      "Plant Products"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "ASIAN",
+    "name": "The Asian Gold Rush",
+    "goal": "Dominate manufacturing and retail sectors while producing 20+ product types within 30 years.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Food",
+      "Livestock",
+      "Plant Products"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "BERLIN",
+    "name": "Fall of the Berlin Wall",
+    "goal": "Dominate manufacturing; 15,000 jobs; $400M annual profit; within 20 years.",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": false,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "BRINK",
+    "name": "Back from the Brink",
+    "goal": "40% return-on-equity, $500M annual profit within 25 years.",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": true,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "DILEMMA",
+    "name": "Diversification Dilemma",
+    "goal": "Diversify into 50+ product types, $2B annual revenue, 30% operating margin within 30 years.",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": false,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "ENTREPRE",
+    "name": "Entrepreneurial Spirit",
+    "goal": "$100M annual revenue within 10 years (weak competitors).",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": true,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "FORTIFY",
+    "name": "Market Fortification",
+    "goal": "Control 3+ other companies within 30 years while leading the beverage market, $500M combined profit.",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": true,
+    "gameset": "Food & Beverage",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "GLOBAL",
+    "name": "Global Domination",
+    "goal": "Achieve market dominance in every market and 100% ownership within 40 years.",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": true,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "ITALY",
+    "name": "Italy - Looking South",
+    "goal": "Dominate manufacturing and retail; $500M annual profit within 25 years.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Automobile",
+      "Cigarettes",
+      "Jewelry"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "JAPAN",
+    "name": "Japan - Rising from the Ashes",
+    "goal": "$500M annual profit, 40% operating margin within 30 years.",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": false,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "LATECOME",
+    "name": "Latecomer's Ambition",
+    "goal": "$10B annual revenue, control 4+ other companies within 40 years.",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": true,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "RACETIME",
+    "name": "Race Against Time",
+    "goal": "$500M annual revenue, $100M annual profit within 6 years.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Jewelry",
+      "Toys",
+      "Household Products",
+      "Home Products"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "ROUGH",
+    "name": "The Rough Road Ahead",
+    "goal": "$50M annual profit, 25+ different products within 15 years (only two cities, far apart).",
+    "goal_focus_type": "none",
+    "goal_focus_categories": [],
+    "stock_market_enabled": false,
+    "gameset": "Food & Beverage",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "SILICON",
+    "name": "Silicon Dream",
+    "goal": "Major computer-industry player, $5B market value within 35 years, retain 50%+ ownership.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Beverage",
+      "Cigarettes",
+      "Food",
+      "Livestock",
+      "Plant Products",
+      "Apparel, Footwear & Bags"
+    ],
+    "stock_market_enabled": true,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "SPAIN",
+    "name": "The Reign in Spain",
+    "goal": "$400M annual profit; dominate manufacturing while retaining farming leadership; within 30 years.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Pharmaceuticals",
+      "Office Equipment",
+      "Household Products",
+      "Home Products"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "TECHNO",
+    "name": "Techno-Sweep",
+    "goal": "Dominate listed markets with $500M annual profit within 35 years (no pre-existing high-tech products; R&D required).",
+    "goal_focus_type": "include_only",
+    "goal_focus_categories": [
+      "Automobile",
+      "Computers",
+      "Chemical Products",
+      "Electronic Products",
+      "Toys",
+      "Watches"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Standard",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "UK",
+    "name": "Rule Britannia",
+    "goal": "Dominate mining and manufacturing sectors, $500M annual operating profit within 30 years.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Apparel",
+      "Food",
+      "Livestock"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "UNDER",
+    "name": "Domination Down Under",
+    "goal": "Dominate food, canned food, and snack markets; $400M annual profit; $200M personal wealth within 20 years.",
+    "goal_focus_type": "include_only",
+    "goal_focus_categories": [
+      "Food",
+      "Canned Food",
+      "Snacks"
+    ],
+    "stock_market_enabled": true,
+    "gameset": "Food & Beverage",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "VERTICAL",
+    "name": "Vertical Integration",
+    "goal": "Dominate farming, manufacturing, and retail; $800M annual revenue within 30 years.",
+    "goal_focus_type": "exclude",
+    "goal_focus_categories": [
+      "Beverage",
+      "Pasta",
+      "Spice"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Food & Beverage",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  },
+  {
+    "key": "VOGUE",
+    "name": "Staying in Vogue",
+    "goal": "Replace competitors as market leader in all relevant markets within 30 years.",
+    "goal_focus_type": "include_only",
+    "goal_focus_categories": [
+      "Apparel",
+      "Cosmetics",
+      "Jewelry",
+      "Optical Products"
+    ],
+    "stock_market_enabled": false,
+    "gameset": "Alternative",
+    "gameset_inference_basis": "confirmed via embedded product-name strings in the scenario's .SCN save file"
+  }
+]

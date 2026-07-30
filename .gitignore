@@ -1,0 +1,10 @@
+# --- product icons: extracted from the commercial game's own asset files. ---
+# Not committed pending a fair-use/attribution determination (see ATTRIBUTION.md).
+# The folder itself is tracked (via .gitkeep) so the site's relative image
+# paths resolve locally once icons are populated from your own legitimately
+# owned copy of the game.
+/site/images/*.png
+!/site/images/.gitkeep
+
+# macOS cruft
+.DS_Store

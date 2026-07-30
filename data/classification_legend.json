@@ -1,0 +1,61 @@
+{
+  "Retail Product": {
+    "type": "solid",
+    "colors": [
+      "#0533FF"
+    ],
+    "meaning": "Sold directly at a Department Store"
+  },
+  "Semi-Product": {
+    "type": "solid",
+    "colors": [
+      "#FF2600"
+    ],
+    "meaning": "Used to build other products; not normally sold at a Department Store"
+  },
+  "Livestock": {
+    "type": "solid",
+    "colors": [
+      "#FF9300"
+    ],
+    "meaning": "Live animal that populates a Livestock unit on a farm"
+  },
+  "Raw Material": {
+    "type": "solid",
+    "colors": [
+      "#FF30E5"
+    ],
+    "meaning": "Natural resource extracted (mining/drilling), not farmed"
+  },
+  "Plant Product": {
+    "type": "solid",
+    "colors": [
+      "#941100"
+    ],
+    "meaning": "Crop that populates a Farm"
+  },
+  "Livestock Product": {
+    "type": "gradient",
+    "colors": [
+      "#FF9300",
+      "#0533FF"
+    ],
+    "meaning": "Directly sellable good that comes from an animal (Livestock + Retail Product)"
+  },
+  "Livestock Semi-Product": {
+    "type": "gradient",
+    "colors": [
+      "#FF9300",
+      "#FF2600"
+    ],
+    "meaning": "Comes from an animal but used to build other goods (Livestock + Semi-Product)"
+  },
+  "Plant Product + Retail": {
+    "type": "gradient",
+    "colors": [
+      "#941100",
+      "#0533FF"
+    ],
+    "meaning": "Farm crop that is also directly sellable (Plant Product + Retail Product)"
+  }
+}

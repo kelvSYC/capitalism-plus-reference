@@ -1,0 +1,246 @@
+id,gameset,name,raw_class,category,classification,industry,sellable,sale_index,output_quantity,output_unit,production_technology_pct
+S - Car,Standard,Car,AUTO,Automobile,Retail Product,Manufacturing,True,100.0,1.0,unit,30.0
+S - Motorcycle,Standard,Motorcycle,AUTO,Automobile,Retail Product,Manufacturing,True,20.0,1.0,unit,50.0
+S - Beer,Standard,Beer,BEVERAGE,Beverage,Retail Product,Manufacturing,True,20.0,17.0,can,55.0
+S - Bottled Milk,Standard,Bottled Milk,BEVERAGE,Beverage,Retail Product,Manufacturing,True,20.0,8.0,bottle,30.0
+S - Cola,Standard,Cola,BEVERAGE,Beverage,Retail Product,Manufacturing,True,30.0,17.0,can,80.0
+S - Wine,Standard,Wine,BEVERAGE,Beverage,Retail Product,Manufacturing,True,20.0,6.0,bottle,45.0
+S - Detergent,Standard,Detergent,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,12.0,10.0,unit,70.0
+S - Diaper,Standard,Diaper,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,12.0,6.0,unit,70.0
+S - Shampoo,Standard,Shampoo,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,24.0,15.0,unit,70.0
+S - Toothpaste,Standard,Toothpaste,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,18.0,20.0,unit,70.0
+S - Cigarettes,Standard,Cigarettes,CIGAR,Cigarettes,Retail Product,Manufacturing,True,21.0,50.0,pack,50.0
+S - Desktop Computer,Standard,Desktop Computer,COMPUTER,Computers,Retail Product,Manufacturing,True,75.0,1.0,unit,40.0
+S - Internet-TV,Standard,Internet-TV,COMPUTER,Computers,Retail Product,Manufacturing,True,36.0,1.0,unit,55.0
+S - PDA,Standard,PDA,COMPUTER,Computers,Retail Product,Manufacturing,True,16.0,5.0,unit,60.0
+S - VR Computer,Standard,VR Computer,COMPUTER,Computers,Retail Product,Manufacturing,True,45.0,2.0,unit,60.0
+S - Wrist Computer,Standard,Wrist Computer,COMPUTER,Computers,Retail Product,Manufacturing,True,27.0,2.0,unit,40.0
+S - Eye Shadow,Standard,Eye Shadow,COSMETIC,Cosmetics,Retail Product,Manufacturing,True,15.0,10.0,unit,70.0
+S - Perfume,Standard,Perfume,COSMETIC,Cosmetics,Retail Product,Manufacturing,True,15.0,10.0,bottle,70.0
+S - Air Conditioner,Standard,Air Conditioner,ELEAPP,Electronic Products,Retail Product,Manufacturing,True,20.0,1.0,unit,70.0
+S - Camera,Standard,Camera,ELEAPP,Electronic Products,Retail Product,Manufacturing,True,15.0,6.0,unit,70.0
+S - DVD Player,Standard,DVD Player,ELEAPP,Electronic Products,Retail Product,Manufacturing,True,25.0,2.0,unit,50.0
+S - Hi-fi,Standard,Hi-fi,ELEAPP,Electronic Products,Retail Product,Manufacturing,True,20.0,1.0,unit,70.0
+S - Television,Standard,Television,ELEAPP,Electronic Products,Retail Product,Manufacturing,True,20.0,1.0,unit,70.0
+S - Video Camera,Standard,Video Camera,ELEAPP,Electronic Products,Retail Product,Manufacturing,True,20.0,6.0,unit,70.0
+S - Video Recorder,Standard,Video Recorder,ELEAPP,Electronic Products,Retail Product,Manufacturing,True,20.0,1.0,unit,70.0
+S - Bread,Standard,Bread,FOOD,Food,Retail Product,Manufacturing,True,15.0,10.0,loaf,60.0
+S - Chocolate Bar,Standard,Chocolate Bar,FOOD,Food,Retail Product,Manufacturing,True,12.0,10.0,piece,50.0
+S - Cookies,Standard,Cookies,FOOD,Food,Retail Product,Manufacturing,True,12.0,10.0,bag,60.0
+S - Ice Cream,Standard,Ice Cream,FOOD,Food,Retail Product,Manufacturing,True,15.0,30.0,quart,60.0
+S - Bed,Standard,Bed,FURN,Furniture,Retail Product,Manufacturing,True,17.5,1.0,unit,50.0
+S - Sofa,Standard,Sofa,FURN,Furniture,Retail Product,Manufacturing,True,5.0,1.0,unit,40.0
+S - Jewelry,Standard,Jewelry,JEWELRY,Jewelry,Retail Product,Manufacturing,True,30.0,1.0,unit,30.0
+S - Eggs,Standard,Eggs,LPRODUCT,,Livestock Product,Farming,True,7.0,,,
+S - Frozen Beef,Standard,Frozen Beef,LPRODUCT,,Livestock Product,Farming,True,15.0,,,
+S - Frozen Chicken,Standard,Frozen Chicken,LPRODUCT,,Livestock Product,Farming,True,15.0,,,
+S - Frozen Pork,Standard,Frozen Pork,LPRODUCT,,Livestock Product,Farming,True,10.5,,,
+S - Frozen Lamb,Standard,Frozen Lamb,LPRODUCT,,Livestock Product,Farming,True,3.0,,,
+S - Leather,Standard,Leather,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+S - Milk,Standard,Milk,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+S - Wool,Standard,Wool,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+S - Cattle,Standard,Cattle,LSTOCK,,Livestock,Farming,False,0.0,,,
+S - Chicken,Standard,Chicken,LSTOCK,,Livestock,Farming,False,0.0,,,
+S - Pig,Standard,Pig,LSTOCK,,Livestock,Farming,False,0.0,,,
+S - Sheep,Standard,Sheep,LSTOCK,,Livestock,Farming,False,0.0,,,
+S - Barley,Standard,Barley,PSEMI,,Plant Product,Farming,False,0.0,,,
+S - Cocoa,Standard,Cocoa,PSEMI,,Plant Product,Farming,False,0.0,,,
+S - Cotton,Standard,Cotton,PSEMI,,Plant Product,Farming,False,0.0,,,
+S - Grapes,Standard,Grapes,PSEMI,,Plant Product,Farming,True,14.0,,,
+S - Rubber,Standard,Rubber,PSEMI,,Plant Product,Farming,False,0.0,,,
+S - Sugar,Standard,Sugar,PSEMI,,Plant Product,Farming,False,0.0,,,
+S - Tobacco,Standard,Tobacco,PSEMI,,Plant Product,Farming,False,0.0,,,
+S - Wheat,Standard,Wheat,PSEMI,,Plant Product,Farming,False,0.0,,,
+S - Aluminum,Standard,Aluminum,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Chemical Minerals,Standard,Chemical Minerals,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Coal,Standard,Coal,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Gold,Standard,Gold,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Iron Ore,Standard,Iron Ore,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Oil,Standard,Oil,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Silica,Standard,Silica,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Timber,Standard,Timber,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+S - Car Body,Standard,Car Body,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,unit,50.0
+S - CPU,Standard,CPU,SEMI,,Semi-Product,Manufacturing,False,0.0,100.0,unit,95.0
+S - Electronic Components,Standard,Electronic Components,SEMI,,Semi-Product,Manufacturing,False,0.0,3.0,lb,70.0
+S - Engine,Standard,Engine,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,unit,80.0
+S - Flour,Standard,Flour,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,30.0
+S - Glass,Standard,Glass,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,60.0
+S - Paper,Standard,Paper,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,50.0
+S - Plastic,Standard,Plastic,SEMI,,Semi-Product,Manufacturing,False,0.0,30.0,lb,65.0
+S - Silicon,Standard,Silicon,SEMI,,Semi-Product,Manufacturing,False,0.0,2.0,lb,60.0
+S - Steel,Standard,Steel,SEMI,,Semi-Product,Manufacturing,False,0.0,2.0,lb,50.0
+S - Textiles,Standard,Textiles,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,50.0
+S - Wheel & Tire,Standard,Wheel & Tire,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,unit,50.0
+S - Toy Train,Standard,Toy Train,TOY,Toys,Retail Product,Manufacturing,True,10.0,4.0,unit,80.0
+S - Toy Bear,Standard,Toy Bear,TOY,Toys,Retail Product,Manufacturing,True,10.0,15.0,unit,60.0
+S - Watch,Standard,Watch,WATCH,Watches,Retail Product,Manufacturing,True,18.0,50.0,unit,80.0
+S - Leather Briefcase,Standard,Leather Briefcase,WEAR,"Apparel, Footwear & Bags",Retail Product,Manufacturing,True,8.0,6.0,unit,50.0
+S - Leather Jacket,Standard,Leather Jacket,WEAR,"Apparel, Footwear & Bags",Retail Product,Manufacturing,True,7.5,6.0,unit,50.0
+S - Jeans,Standard,Jeans,WEAR,"Apparel, Footwear & Bags",Retail Product,Manufacturing,True,15.0,2.0,pair,50.0
+S - Leather Shoes,Standard,Leather Shoes,WEAR,"Apparel, Footwear & Bags",Retail Product,Manufacturing,True,12.5,6.0,pair,50.0
+S - Socks,Standard,Socks,WEAR,"Apparel, Footwear & Bags",Retail Product,Manufacturing,True,10.0,20.0,pair,40.0
+S - Sweater,Standard,Sweater,WEAR,"Apparel, Footwear & Bags",Retail Product,Manufacturing,True,12.0,2.0,unit,50.0
+S - Sport Shoes,Standard,Sport Shoes,WEAR,"Apparel, Footwear & Bags",Retail Product,Manufacturing,True,15.0,6.0,pair,60.0
+A - Leather Boots,Alternative,Leather Boots,APPAREL,Apparel,Retail Product,Manufacturing,True,17.325,2.0,pair,50.0
+A - Cashmere Scarf,Alternative,Cashmere Scarf,APPAREL,Apparel,Retail Product,Manufacturing,True,8.3,3.0,unit,40.0
+A - Trousers,Alternative,Trousers,APPAREL,Apparel,Retail Product,Manufacturing,True,27.0,2.0,pair,50.0
+A - Apple Juice,Alternative,Apple Juice,BEVERAGE,Beverage,Retail Product,Manufacturing,True,24.75,15.0,pack,45.0
+A - Lemon Soda,Alternative,Lemon Soda,BEVERAGE,Beverage,Retail Product,Manufacturing,True,16.2,15.0,can,70.0
+A - Body Lotion,Alternative,Body Lotion,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,23.1,30.0,unit,60.0
+A - Clothes Softener,Alternative,Clothes Softener,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,9.6,10.0,unit,70.0
+A - Hair Gel,Alternative,Hair Gel,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,12.0,30.0,unit,70.0
+A - Soap,Alternative,Soap,CHEMGOOD,Chemical Products,Retail Product,Manufacturing,True,15.0,50.0,unit,65.0
+A - Day Cream,Alternative,Day Cream,COSMETIC,Cosmetics,Retail Product,Manufacturing,True,27.6,30.0,unit,50.0
+A - Lipstick,Alternative,Lipstick,COSMETIC,Cosmetics,Retail Product,Manufacturing,True,15.4,100.0,unit,55.0
+A - Mascara,Alternative,Mascara,COSMETIC,Cosmetics,Retail Product,Manufacturing,True,14.4,130.0,unit,50.0
+A - Cheese,Alternative,Cheese,FOOD,Food,Retail Product,Manufacturing,True,17.0,2.0,lb,50.0
+A - Corn Flakes,Alternative,Corn Flakes,FOOD,Food,Retail Product,Manufacturing,True,24.0,20.0,box,55.0
+A - Food Oil,Alternative,Food Oil,FOOD,Food,Retail Product,Manufacturing,True,18.0,5.0,bottle,55.0
+A - Rice Cereals,Alternative,Rice Cereals,FOOD,Food,Retail Product,Manufacturing,True,16.0,20.0,box,55.0
+A - Yogurt,Alternative,Yogurt,FOOD,Food,Retail Product,Manufacturing,True,16.0,4.0,cup,50.0
+A - Chair,Alternative,Chair,HHOLD,Household Products,Retail Product,Manufacturing,True,16.5,1.0,unit,50.0
+A - Drinking Glass,Alternative,Drinking Glass,HHOLD,Household Products,Retail Product,Manufacturing,True,8.0,6.0,unit,50.0
+A - Pillow,Alternative,Pillow,HHOLD,Household Products,Retail Product,Manufacturing,True,12.0,5.0,unit,50.0
+A - Table,Alternative,Table,HHOLD,Household Products,Retail Product,Manufacturing,True,14.0,1.0,unit,50.0
+A - Clocks,Alternative,Clocks,HPRODUCT,Home Products,Retail Product,Manufacturing,True,12.765,4.0,unit,70.0
+A - Microwave Oven,Alternative,Microwave Oven,HPRODUCT,Home Products,Retail Product,Manufacturing,True,17.5,1.0,unit,70.0
+A - Refrigerator,Alternative,Refrigerator,HPRODUCT,Home Products,Retail Product,Manufacturing,True,20.0,1.0,unit,70.0
+A - Costume Jewelry,Alternative,Costume Jewelry,JEWELRY,Jewelry,Retail Product,Manufacturing,True,13.5,4.0,unit,70.0
+A - Jewelry,Alternative,Jewelry,JEWELRY,Jewelry,Retail Product,Manufacturing,True,18.0,1.0,unit,40.0
+A - Frozen Beef,Alternative,Frozen Beef,LPRODUCT,,Livestock Product,Farming,True,25.0,,,
+A - Frozen Goat Meat,Alternative,Frozen Goat Meat,LPRODUCT,,Livestock Product,Farming,True,16.0,,,
+A - Frozen Goose,Alternative,Frozen Goose,LPRODUCT,,Livestock Product,Farming,True,14.85,,,
+A - Frozen Ostrich Meat,Alternative,Frozen Ostrich Meat,LPRODUCT,,Livestock Product,Farming,True,15.0,,,
+A - Cashmere,Alternative,Cashmere,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+A - Feather,Alternative,Feather,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+A - Leather,Alternative,Leather,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+A - Milk,Alternative,Milk,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+A - Ostrich Oil,Alternative,Ostrich Oil,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+A - Tallow,Alternative,Tallow,LSEMI,,Livestock Semi-Product,Farming,False,0.0,,,
+A - Cattle,Alternative,Cattle,LSTOCK,,Livestock,Farming,False,0.0,,,
+A - Goat,Alternative,Goat,LSTOCK,,Livestock,Farming,False,0.0,,,
+A - Goose,Alternative,Goose,LSTOCK,,Livestock,Farming,False,0.0,,,
+A - Ostrich,Alternative,Ostrich,LSTOCK,,Livestock,Farming,False,0.0,,,
+A - Camera Film,Alternative,Camera Film,MEDIA,Media Products,Retail Product,Manufacturing,True,35.0,100.0,unit,65.0
+A - Video Tape,Alternative,Video Tape,MEDIA,Media Products,Retail Product,Manufacturing,True,15.0,10.0,unit,75.0
+A - Copier,Alternative,Copier,OFFEQUIP,Office Equipment,Retail Product,Manufacturing,True,39.0,1.0,unit,70.0
+A - Fax Machine,Alternative,Fax Machine,OFFEQUIP,Office Equipment,Retail Product,Manufacturing,True,11.52,2.0,unit,75.0
+A - Office Paper,Alternative,Office Paper,OFFEQUIP,Office Equipment,Retail Product,Manufacturing,True,11.0,1.0,ream,30.0
+A - Telephone,Alternative,Telephone,OFFEQUIP,Office Equipment,Retail Product,Manufacturing,True,13.5,6.0,unit,75.0
+A - Dis. Contact Lenses,Alternative,Dis. Contact Lenses,OPTICAL,Optical Products,Retail Product,Manufacturing,True,13.5,200.0,pair,75.0
+A - Sunglasses,Alternative,Sunglasses,OPTICAL,Optical Products,Retail Product,Manufacturing,True,15.0,50.0,pair,65.0
+A - Cold Tablets,Alternative,Cold Tablets,PHARMACE,Pharmaceuticals,Retail Product,Manufacturing,True,17.0,10.0,bottle,70.0
+A - Cough Syrup,Alternative,Cough Syrup,PHARMACE,Pharmaceuticals,Retail Product,Manufacturing,True,16.8,8.0,bottle,70.0
+A - Headache Pills,Alternative,Headache Pills,PHARMACE,Pharmaceuticals,Retail Product,Manufacturing,True,16.2,9.0,bottle,70.0
+A - Apple,Alternative,Apple,PSEMI,,Plant Product,Farming,True,7.5,,,
+A - Coconut,Alternative,Coconut,PSEMI,,Plant Product,Farming,True,4.0,,,
+A - Corn,Alternative,Corn,PSEMI,,Plant Product,Farming,True,3.6,,,
+A - Flax Fiber,Alternative,Flax Fiber,PSEMI,,Plant Product,Farming,False,0.0,,,
+A - Lemon,Alternative,Lemon,PSEMI,,Plant Product,Farming,True,2.0,,,
+A - Rice,Alternative,Rice,PSEMI,,Plant Product,Farming,False,0.0,,,
+A - Aluminum,Alternative,Aluminum,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Chemical Materials,Alternative,Chemical Materials,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Copper,Alternative,Copper,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Iron,Alternative,Iron,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Oil,Alternative,Oil,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Silica,Alternative,Silica,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Silver,Alternative,Silver,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Timber,Alternative,Timber,RAW,,Raw Material,Raw Material Production,False,0.0,,,
+A - Citric Acid,Alternative,Citric Acid,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,60.0
+A - Coconut Oil,Alternative,Coconut Oil,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,50.0
+A - Dyestuffs,Alternative,Dyestuffs,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,70.0
+A - Electronic Components,Alternative,Electronic Components,SEMI,,Semi-Product,Manufacturing,False,0.0,2.0,lb,80.0
+A - Fiberglass,Alternative,Fiberglass,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,65.0
+A - Glass,Alternative,Glass,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,60.0
+A - Linen,Alternative,Linen,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,yard,50.0
+A - Paper,Alternative,Paper,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,50.0
+A - Pectin,Alternative,Pectin,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,60.0
+A - Plastic,Alternative,Plastic,SEMI,,Semi-Product,Manufacturing,False,0.0,30.0,lb,65.0
+A - Polyester,Alternative,Polyester,SEMI,,Semi-Product,Manufacturing,False,0.0,6.0,lb,50.0
+A - Steel,Alternative,Steel,SEMI,,Semi-Product,Manufacturing,False,0.0,1.0,lb,70.0
+A - Back Pack,Alternative,Back Pack,SPORTS,Sports Equipment,Retail Product,Manufacturing,True,18.75,2.0,unit,60.0
+A - In-line Skates,Alternative,In-line Skates,SPORTS,Sports Equipment,Retail Product,Manufacturing,True,16.0,1.0,pair,65.0
+A - Swimming Suit,Alternative,Swimming Suit,SPORTS,Sports Equipment,Retail Product,Manufacturing,True,17.5,2.0,unit,55.0
+A - Toy Pistol,Alternative,Toy Pistol,TOY,Toys,Retail Product,Manufacturing,True,13.5,5.0,unit,80.0
+A - Toy Puzzle,Alternative,Toy Puzzle,TOY,Toys,Retail Product,Manufacturing,True,14.0,9.0,unit,75.0
+F - Apple Juice,Food & Beverage,Apple Juice,BEVERAGE,Beverage,Retail Product,Manufacturing,True,25.0,1.0,bottle,70.0
+F - Chocolate Milk,Food & Beverage,Chocolate Milk,BEVERAGE,Beverage,Retail Product,Manufacturing,True,20.8,3.0,bottle,40.0
+F - Iced Tea,Food & Beverage,Iced Tea,BEVERAGE,Beverage,Retail Product,Manufacturing,True,30.0,15.0,bottle,70.0
+F - Instant Coffee,Food & Beverage,Instant Coffee,BEVERAGE,Beverage,Retail Product,Manufacturing,True,28.0,3.0,can,70.0
+F - Lemon Soda,Food & Beverage,Lemon Soda,BEVERAGE,Beverage,Retail Product,Manufacturing,True,18.0,3.0,can,80.0
+F - Orange Juice,Food & Beverage,Orange Juice,BEVERAGE,Beverage,Retail Product,Manufacturing,True,24.0,1.0,pack,70.0
+F - Pineapple Juice,Food & Beverage,Pineapple Juice,BEVERAGE,Beverage,Retail Product,Manufacturing,True,18.0,3.0,can,70.0
+F - Canned Mushrooms,Food & Beverage,Canned Mushrooms,CANFOOD,Canned Food,Retail Product,Manufacturing,True,26.0,3.0,can,65.0
+F - Canned Pineapple,Food & Beverage,Canned Pineapple,CANFOOD,Canned Food,Retail Product,Manufacturing,True,22.5,3.0,can,70.0
+F - Instant Soup,Food & Beverage,Instant Soup,CANFOOD,Canned Food,Retail Product,Manufacturing,True,26.0,20.0,can,60.0
+F - Sauerkraut,Food & Beverage,Sauerkraut,CANFOOD,Canned Food,Retail Product,Manufacturing,True,14.0,2.0,can,70.0
+F - Apple Crisp,Food & Beverage,Apple Crisp,DESSERT,Dessert,Retail Product,Manufacturing,True,24.0,15.0,unit,60.0
+F - Apple Pie,Food & Beverage,Apple Pie,DESSERT,Dessert,Retail Product,Manufacturing,True,20.0,20.0,unit,65.0
+F - Chocolate Cake,Food & Beverage,Chocolate Cake,DESSERT,Dessert,Retail Product,Manufacturing,True,26.0,35.0,unit,55.0
+F - Fruit Tart,Food & Beverage,Fruit Tart,DESSERT,Dessert,Retail Product,Manufacturing,True,22.8,2.0,unit,50.0
+F - Lemon Pie,Food & Beverage,Lemon Pie,DESSERT,Dessert,Retail Product,Manufacturing,True,17.5,20.0,unit,50.0
+F - Chocolate Mousse,Food & Beverage,Chocolate Mousse,DESSERT,Dessert,Retail Product,Manufacturing,True,24.0,3.0,unit,60.0
+F - Strawberry Milk Shake,Food & Beverage,Strawberry Milk Shake,DESSERT,Dessert,Retail Product,Manufacturing,True,18.0,6.0,unit,70.0
+F - Bacon,Food & Beverage,Bacon,FOOD,Food,Retail Product,Manufacturing,True,14.0,1.0,pack,65.0
+F - Baby Formula,Food & Beverage,Baby Formula,FOOD,Food,Retail Product,Manufacturing,True,13.5,1.0,can,75.0
+F - Breaded Veal Cutlets,Food & Beverage,Breaded Veal Cutlets,FOOD,Food,Retail Product,Manufacturing,True,20.0,3.0,unit,70.0
+F - Hamburger,Food & Beverage,Hamburger,FOOD,Food,Retail Product,Manufacturing,True,24.0,25.0,unit,55.0
+F - Kebab,Food & Beverage,Kebab,FOOD,Food,Retail Product,Manufacturing,True,20.0,10.0,pack,50.0
+F - Chicken Kiev,Food & Beverage,Chicken Kiev,FOOD,Food,Retail Product,Manufacturing,True,25.0,2.0,unit,60.0
+F - Oat Cereal,Food & Beverage,Oat Cereal,FOOD,Food,Retail Product,Manufacturing,True,14.0,2.0,can,75.0
+F - Frozen Pizza,Food & Beverage,Frozen Pizza,FOOD,Food,Retail Product,Manufacturing,True,15.0,5.0,pack,55.0
+F - Sliced Turkey Breast,Food & Beverage,Sliced Turkey Breast,FOOD,Food,Retail Product,Manufacturing,True,16.0,3.0,pack,50.0
+F - Salad,Food & Beverage,Salad,FOOD,Food,Retail Product,Manufacturing,True,18.0,12.0,pack,65.0
+F - Sandwich,Food & Beverage,Sandwich,FOOD,Food,Retail Product,Manufacturing,True,22.5,40.0,unit,50.0
+F - Cheese Sausage,Food & Beverage,Cheese Sausage,FOOD,Food,Retail Product,Manufacturing,True,21.0,20.0,pack,50.0
+F - TV Dinner,Food & Beverage,TV Dinner,FOOD,Food,Retail Product,Manufacturing,True,21.0,10.0,pack,60.0
+F - Turkey Pot Pie,Food & Beverage,Turkey Pot Pie,FOOD,Food,Retail Product,Manufacturing,True,22.5,10.0,unit,50.0
+F - Frozen Beef,Food & Beverage,Frozen Beef,LPRODUCT,,Livestock Product,Farming,True,15.0,,,
+F - Frozen Chicken,Food & Beverage,Frozen Chicken,LPRODUCT,,Livestock Product,Farming,True,15.0,,,
+F - Frozen Pork,Food & Beverage,Frozen Pork,LPRODUCT,,Livestock Product,Farming,True,15.0,,,
+F - Frozen Turkey,Food & Beverage,Frozen Turkey,LPRODUCT,,Livestock Product,Farming,True,16.0,,,
+F - Veal,Food & Beverage,Veal,LPRODUCT,,Livestock Product,Farming,True,18.0,,,
+F - Egg,Food & Beverage,Egg,LSEMI,,Livestock Semi-Product,Farming,True,8.0,,,
+F - Milk,Food & Beverage,Milk,LSEMI,,Livestock Semi-Product,Farming,True,6.0,,,
+F - Cattle,Food & Beverage,Cattle,LSTOCK,,Livestock,Farming,False,0.0,,,
+F - Chicken,Food & Beverage,Chicken,LSTOCK,,Livestock,Farming,False,0.0,,,
+F - Pig,Food & Beverage,Pig,LSTOCK,,Livestock,Farming,False,0.0,,,
+F - Turkey,Food & Beverage,Turkey,LSTOCK,,Livestock,Farming,False,0.0,,,
+F - Macaroni,Food & Beverage,Macaroni,PASTA,Pasta,Retail Product,Manufacturing,True,12.0,3.0,pack,70.0
+F - Instant Noodles,Food & Beverage,Instant Noodles,PASTA,Pasta,Retail Product,Manufacturing,True,15.0,20.0,pack,70.0
+F - Almond,Food & Beverage,Almond,PSEMI,,Plant Product,Farming,True,9.0,,,
+F - Apple,Food & Beverage,Apple,PSEMI,,Plant Product,Farming,True,9.0,,,
+F - Asparagus,Food & Beverage,Asparagus,PSEMI,,Plant Product,Farming,True,16.0,,,
+F - Strawberry,Food & Beverage,Strawberry,PSEMI,,Plant Product,Farming,True,10.0,,,
+F - Cabbage,Food & Beverage,Cabbage,PSEMI,,Plant Product,Farming,True,13.0,,,
+F - Cocoa,Food & Beverage,Cocoa,PSEMI,,Plant Product,Farming,False,0.0,,,
+F - Coffee,Food & Beverage,Coffee,PSEMI,,Plant Product,Farming,True,14.0,,,
+F - Lemon,Food & Beverage,Lemon,PSEMI,,Plant Product,Farming,True,4.0,,,
+F - Lettuce,Food & Beverage,Lettuce,PSEMI,,Plant Product,Farming,True,12.0,,,
+F - Mushroom,Food & Beverage,Mushroom,PSEMI,,Plant Product,Farming,True,12.0,,,
+F - Oats,Food & Beverage,Oats,PSEMI,,Plant Product,Farming,False,0.0,,,
+F - Orange,Food & Beverage,Orange,PSEMI,,Plant Product,Farming,True,9.0,,,
+F - Peanut,Food & Beverage,Peanut,PSEMI,,Plant Product,Farming,True,5.0,,,
+F - Pepper,Food & Beverage,Pepper,PSEMI,,Plant Product,Farming,False,0.0,,,
+F - Pineapple,Food & Beverage,Pineapple,PSEMI,,Plant Product,Farming,True,7.5,,,
+F - Potato,Food & Beverage,Potato,PSEMI,,Plant Product,Farming,True,10.0,,,
+F - Tea,Food & Beverage,Tea,PSEMI,,Plant Product,Farming,True,20.0,,,
+F - Tomato,Food & Beverage,Tomato,PSEMI,,Plant Product,Farming,True,10.5,,,
+F - Bread,Food & Beverage,Bread,SEMI,,Semi-Product,Manufacturing,True,10.5,1.0,lb,40.0
+F - Hamburger Bun,Food & Beverage,Hamburger Bun,SEMI,,Semi-Product,Manufacturing,True,8.0,1.0,lb,40.0
+F - Cheese,Food & Beverage,Cheese,SEMI,,Semi-Product,Manufacturing,True,24.0,1.0,lb,70.0
+F - Chocolate,Food & Beverage,Chocolate,SEMI,,Semi-Product,Manufacturing,True,24.0,1.0,lb,50.0
+F - Flour,Food & Beverage,Flour,SEMI,,Semi-Product,Manufacturing,True,2.5,1.0,lb,80.0
+F - Peanut Butter,Food & Beverage,Peanut Butter,SEMI,,Semi-Product,Manufacturing,True,20.0,1.0,lb,70.0
+F - Pectin,Food & Beverage,Pectin,SEMI,,Semi-Product,Manufacturing,False,0.0,3.0,lb,85.0
+F - Peanut Oil,Food & Beverage,Peanut Oil,SEMI,,Semi-Product,Manufacturing,True,13.5,1.0,bottle,75.0
+F - Almond Candy,Food & Beverage,Almond Candy,SNACK,Snacks,Retail Product,Manufacturing,True,14.0,20.0,pack,65.0
+F - Peanut Butter Cookies,Food & Beverage,Peanut Butter Cookies,SNACK,Snacks,Retail Product,Manufacturing,True,21.0,4.0,bag,65.0
+F - Jelly Beans,Food & Beverage,Jelly Beans,SNACK,Snacks,Retail Product,Manufacturing,True,24.0,3.0,pack,75.0
+F - Apple Pancakes,Food & Beverage,Apple Pancakes,SNACK,Snacks,Retail Product,Manufacturing,True,20.0,17.0,unit,55.0
+F - Potato Chips,Food & Beverage,Potato Chips,SNACK,Snacks,Retail Product,Manufacturing,True,20.0,6.0,pack,70.0
+F - Toasted Almonds,Food & Beverage,Toasted Almonds,SNACK,Snacks,Retail Product,Manufacturing,True,15.0,3.0,pack,50.0
+F - Toasted Peanuts,Food & Beverage,Toasted Peanuts,SNACK,Snacks,Retail Product,Manufacturing,True,16.0,4.0,jar,50.0
+F - Black Pepper,Food & Beverage,Black Pepper,SPICE,Spice,Retail Product,Manufacturing,True,18.0,4.0,bottle,75.0
+F - Tomato Sauce,Food & Beverage,Tomato Sauce,SPICE,Spice,Retail Product,Manufacturing,True,12.5,2.0,can,70.0
+F - Strawberry Jam,Food & Beverage,Strawberry Jam,SPICE,Spice,Retail Product,Manufacturing,True,15.0,1.0,bottle,75.0
