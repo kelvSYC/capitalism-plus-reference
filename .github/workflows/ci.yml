@@ -1,0 +1,65 @@
+# Verify the site on every push and PR.
+#
+# The single most valuable check here is `build_site.py --check`. site/index.html
+# is a generated file that is nevertheless committed (so the site can be used by
+# cloning and opening it), and .gitattributes suppresses its diff because its
+# product payload is one ~178 KB line. That combination means a stale or
+# corrupted artifact is effectively invisible in review -- and since the site is
+# served as a static file, the stale artifact IS production. --check is the only
+# thing that catches it.
+name: ci
+
+on:
+  push:
+    # No remote is configured yet and the local default is `master`; GitHub's
+    # default for new repos is `main`. Watch both so this works either way.
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Both scripts are stdlib-only, so there is nothing to install and no
+      # lockfile to cache. If that ever changes, this comment is the tell.
+      - name: Build is reproducible and the committed artifact is current
+        run: python3 tools/build_site.py --check
+
+      - name: Data invariants
+        run: python3 -m unittest discover -s tests -v
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Splices the real inline script out of the built site/index.html and
+      # exercises it against a DOM stub -- so this tests the shipped artifact,
+      # including whether the build substituted the payload correctly.
+      - name: Site behaviour
+        run: python3 tests/run_site_tests.py
+
+      # Belt-and-braces alongside the equivalent assertion in tests/test_data.py:
+      # a named step makes the licensing hold legible in the Actions UI rather
+      # than buried in unittest output.
+      - name: No game-extracted assets are committed
+        run: |
+          tracked="$(git ls-files site/images)"
+          if [ "$tracked" != "site/images/.gitkeep" ]; then
+            echo "::error::Unexpected tracked files under site/images/:"
+            echo "$tracked"
+            echo "The 245 product icons are extracted from the commercial game and are"
+            echo "withheld from version control pending the licensing determination in"
+            echo "ATTRIBUTION.md. Do not commit them."
+            exit 1
+          fi
+          echo "ok: only .gitkeep is tracked under site/images/"

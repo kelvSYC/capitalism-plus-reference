@@ -1,0 +1,63 @@
+Copyright (c) 2026 Kelvin Chung
+
+This repository contains material under two different licenses, and deliberately
+excludes a third category. See ATTRIBUTION.md for the full picture.
+
+
+SOURCE CODE — MIT License
+-------------------------
+Applies to: tools/, tests/, .github/, and all HTML, CSS and JavaScript authored
+in data/site_template.html (and therefore in the site/index.html generated from
+it).
+
+Full text at the end of this file.
+
+
+DECODED GAME DATA — Creative Commons Attribution 4.0 International (CC BY 4.0)
+-----------------------------------------------------------------------------
+Applies to: data/index_cards.json, data/index_cards.csv, and the SCENARIOS data
+embedded in data/site_template.html.
+
+    https://creativecommons.org/licenses/by/4.0/
+
+These are factual observations about how Capitalism Plus behaves, independently
+derived from the game's own data files using our own parsers (see
+docs/DECODING.md). No game code, artwork, or narrative text is reproduced.
+
+
+THIRD-PARTY MATERIAL — not licensed here
+----------------------------------------
+"Capitalism," "Capitalism Plus," "Capitalism II" and "Capitalism Lab" are
+trademarks of Enlight Software Limited, and the games are copyright Enlight
+Software Limited. Nothing in this license grants any right in Enlight's
+software, artwork, or trademarks.
+
+This repository does not contain or distribute any Enlight-owned asset. The
+directory site/images/ is empty by design. The README describes how to populate
+it locally from your own copy of the game; what you do with your own copy is
+between you and that copy, and is outside the scope of this license.
+
+This project is an unofficial, non-commercial fan reference, and is not
+affiliated with, endorsed by, or sponsored by Enlight Software Limited.
+
+
+MIT License
+-----------
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

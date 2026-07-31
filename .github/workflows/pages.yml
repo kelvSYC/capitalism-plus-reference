@@ -1,0 +1,133 @@
+# Publish site/ to GitHub Pages.
+#
+# DELIBERATELY manual (workflow_dispatch only), not on push. ATTRIBUTION.md
+# records an unresolved question about whether displaying 245 icons extracted
+# from the commercial game qualifies as fair use, and states that resolving it is
+# "a precondition for making this site public, not an afterthought." An
+# auto-deploy-on-push trigger would quietly overrule that decision the first time
+# somebody merged a typo fix.
+#
+# The preflight job below turns that written intention into an enforced one: the
+# deploy cannot run until the legal picture is actually in place and visible.
+# Every check is a hard failure with an explanation, not a warning.
+name: pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Launch checklist as code. Cheap, fast, and it fails closed.
+  # ---------------------------------------------------------------------------
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Committed artifact is current
+        run: python3 tools/build_site.py --check
+
+      - name: Data invariants
+        run: python3 -m unittest discover -s tests
+
+      # (1) The icon hold. Checks the working tree that would actually be
+      # uploaded, not just git -- if a future step fetches icons from somewhere
+      # else, this still catches them.
+      - name: No game-extracted assets in the deploy tree
+        run: |
+          stray="$(find site/images -type f ! -name .gitkeep -print 2>/dev/null || true)"
+          if [ -n "$stray" ]; then
+            echo "::error::Game-extracted icons present in the deploy tree:"
+            echo "$stray"
+            echo
+            echo "These are icons from the commercial game. Publishing them is gated on"
+            echo "the fair-use question in ATTRIBUTION.md. If that question has been"
+            echo "resolved, update ATTRIBUTION.md and remove this check deliberately --"
+            echo "do not bypass it."
+            exit 1
+          fi
+          echo "ok: no extracted assets in site/images/"
+
+      # (2) The project's own terms. Without a LICENSE the code and the decoded
+      # dataset are all-rights-reserved by default, which contradicts the
+      # README's clone-and-run framing.
+      - name: Project LICENSE exists
+        run: |
+          if [ ! -f LICENSE ]; then
+            echo "::error::No LICENSE file. Publishing without one leaves this project's"
+            echo "own code and decoded dataset all-rights-reserved by default."
+            exit 1
+          fi
+          echo "ok: LICENSE present"
+
+      # (3) The site currently vendors no third-party code at all, which is why
+      # there is no redistribution obligation to discharge. If a bundle is ever
+      # added back, its license text has to ship beside it -- so this fails
+      # closed on any new vendored file rather than trusting a reviewer to
+      # notice.
+      - name: No third-party code is redistributed without its license
+        run: |
+          vendored="$(find site -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.css' \) -print 2>/dev/null || true)"
+          if [ -n "$vendored" ]; then
+            echo "::error::Third-party asset(s) found under site/:"
+            echo "$vendored"
+            echo "The site is self-contained (all CSS/JS is inlined in index.html)."
+            echo "If you have deliberately vendored a library, ship its full license"
+            echo "text alongside it and update this check and ATTRIBUTION.md."
+            exit 1
+          fi
+          echo "ok: nothing vendored under site/"
+
+      # (4) The point the repo currently misses entirely: none of this is visible
+      # to somebody who merely LOADS the site. Attribution that lives only in a
+      # markdown file in a git repo is not attribution to a visitor.
+      - name: Attribution is reachable from the rendered page
+        run: |
+          missing=0
+          grep -q 'Enlight' site/index.html || { echo "::error::site/index.html never names Enlight Software."; missing=1; }
+          grep -qi 'unofficial\|not affiliated' site/index.html || { echo "::error::site/index.html does not state it is unofficial/unaffiliated."; missing=1; }
+          if [ "$missing" -ne 0 ]; then
+            echo
+            echo "A visitor to the deployed site must be able to see who owns the"
+            echo "underlying IP and that this reference is unofficial."
+            echo "ATTRIBUTION.md is invisible to them."
+            exit 1
+          fi
+          echo "ok: attribution visible in the rendered page"
+
+  deploy:
+    needs: preflight
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # site/ is self-contained and needs no build: index.html is committed
+      # pre-built, with all CSS and JS inlined and no external dependency. If the
+      # icon question is ever resolved in favour of publishing, the step that
+      # populates site/images/ belongs here -- and the preflight guard above must
+      # be updated deliberately, in the same commit, with the reasoning recorded.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

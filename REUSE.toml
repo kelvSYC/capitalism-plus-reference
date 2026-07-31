@@ -1,0 +1,41 @@
+# Machine-readable per-path licensing (https://reuse.software/).
+#
+# The point of this file is the last entry. Everything else is a restatement of
+# LICENSE, but site/images/** needs to be legible to tooling BEFORE any asset
+# exists there, so that adding one can never be mistaken for placing it under
+# this project's own license.
+
+version = 1
+SPDX-PackageName = "capitalism-plus-reference"
+SPDX-PackageSupplier = "Kelvin Chung"
+
+[[annotations]]
+path = ["tools/**", "tests/**", ".github/**", "data/site_template.html", "site/index.html"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Kelvin Chung"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["data/index_cards.json", "data/index_cards.csv"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Kelvin Chung"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = ["*.md", "docs/**", ".gitignore", ".gitattributes", "REUSE.toml", "site/images/.gitkeep"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Kelvin Chung"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# Product artwork extracted from the commercial game. NOT distributed by this
+# repository and NOT covered by its license -- see ATTRIBUTION.md. Populated
+# locally, if at all, by each user from their own copy of the game.
+#
+# If permission is ever obtained from Enlight, this entry is the hook to edit:
+# replace LicenseRef-NotDistributed with the granted terms, and record the grant
+# itself in ATTRIBUTION.md.
+[[annotations]]
+path = ["site/images/**"]
+precedence = "override"
+SPDX-FileCopyrightText = "Enlight Software Limited"
+SPDX-License-Identifier = "LicenseRef-NotDistributed"

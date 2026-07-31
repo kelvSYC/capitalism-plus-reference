@@ -3,8 +3,30 @@
 # The folder itself is tracked (via .gitkeep) so the site's relative image
 # paths resolve locally once icons are populated from your own legitimately
 # owned copy of the game.
-/site/images/*.png
+#
+# Ignores every file in the folder, not just *.png: icons extracted as .webp,
+# .gif or .bmp are the same unresolved question as the PNGs, and an ignore rule
+# that names one format silently permits the others. Note that this rule is the
+# ONLY thing keeping the icons out of git -- it does not protect a non-git
+# deploy path (rsync/drag-and-drop of a populated local site/ directory).
+/site/images/*
 !/site/images/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors / tooling
+.idea/
+.vscode/
+
+# Agent scratch space (Conductor workspaces). Ignored here rather than only in
+# .git/info/exclude, which is per-clone and does not travel with the repo --
+# without this line a fresh clone treats .context/ as untracked and one
+# `git add -A` publishes it.
+.context/
 
 # macOS cruft
 .DS_Store
