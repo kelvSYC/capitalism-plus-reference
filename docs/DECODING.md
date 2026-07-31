@@ -244,9 +244,32 @@ Two corrections to earlier assumptions:
   Car is 10, and Car is entry 6 in `.II2`, so `icon_image_id` corresponds to
   neither — it is extraction-tool numbering.
 
-`.II2` entry names are `<CODE>-<n>` (`MILK-4`, `CAR-9`, `VCAM-1`). The suffix is
-**not** `graphic_count`: it matches for only 5 of 41 products checked. What it
-denotes is unknown.
+`.II2` entry names are **DOS 8.3 filenames**, matching `ITEM.FILENAME` — which is
+why the numeric suffixes (`MILK-6`, `CAR-9`, `ALUMIN-1`) correlate with nothing:
+they are part of the filename, not a frame count. Matching on `ITEM.FILENAME`
+resolves every product in every gameset, with one exception: Alternative's Apple
+carries `FILENAME` `APPLERAW` while its entry is `APPLE`, so `ITEM.CODE` serves as
+a fallback.
+
+`tools/extract_icons.py` uses exactly this to rebuild `site/images/` from a local
+copy of the game, and reproduces **241 of the 245 PNGs the original site shipped
+with, pixel for pixel**. The other four are explained rather than mysterious: six
+crops have a separate `PLANT` row with its own artwork, linked by
+`FARMCROP.PLANT_CODE` —
+
+| Crop | Plant |
+|---|---|
+| Rubber | Rubber Plant |
+| Sugar | Sugar Cane |
+| Coconut | Palm |
+| Coffee | Coffee Plant |
+| Flax Fiber | Flax |
+| Tea | Tea Plant |
+
+— and the original extraction used the plant's artwork for the first four but the
+commodity's own for the last two. All six pairs are genuinely different images, so
+that was an inconsistency in the old tool rather than a rule. The extractor always
+uses `ITEM.FILENAME`, the association the game itself makes.
 
 None of this is needed to build the site, which is designed to work without
 artwork entirely — see `ATTRIBUTION.md`. It is recorded for completeness, and

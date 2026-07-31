@@ -14,6 +14,7 @@ The directory is the one containing GAMESET/ and CapPlus.gog.
 import os
 import re
 import subprocess
+import tempfile
 import sys
 import unittest
 from pathlib import Path
@@ -52,6 +53,51 @@ class TestAgainstGameFiles(unittest.TestCase):
         self.assertTrue(totals, f"no summary line found:\n{result.stdout}")
         self.assertGreater(int(totals[-1]), 1000,
                            f"suspiciously few checks ran:\n{result.stdout}")
+
+
+class TestPngRoundTrip(unittest.TestCase):
+    """The PNG writer is hand-rolled -- the standard library has no encoder and
+    the extractor deliberately has no dependencies -- so it is the riskiest code
+    in the tool. This needs no game files."""
+
+    def test_written_png_reads_back_identically(self):
+        sys.path.insert(0, str(ROOT / "tools"))
+        from extract_icons import decode_png_rgb, write_png
+
+        width, height = 7, 5      # deliberately not square, and not a round number
+        rgb = bytes((x * 37 + y * 11 + c * 83) % 256
+                    for y in range(height) for x in range(width) for c in range(3))
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "probe.png"
+            write_png(target, width, height, rgb)
+            got_w, got_h, got_rgb = decode_png_rgb(target)
+        self.assertEqual((width, height), (got_w, got_h))
+        self.assertEqual(rgb, got_rgb)
+
+    def test_reader_rejects_a_format_it_cannot_handle(self):
+        sys.path.insert(0, str(ROOT / "tools"))
+        from extract_icons import decode_png_rgb
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = Path(tmp) / "bad.png"
+            bad.write_bytes(b"not a png at all")
+            with self.assertRaises(ValueError):
+                decode_png_rgb(bad)
+
+
+class TestIconExtraction(unittest.TestCase):
+    def test_extractor_finds_an_icon_for_every_product(self):
+        """Every one of the 245 products must resolve to an archive entry. A
+        missing match would silently leave a monogram tile in place of artwork."""
+        directory = game_dir()
+        if directory is None:
+            self.skipTest("set CAPITALISM_GAME_DIR to a game directory to run this")
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "tools" / "extract_icons.py"),
+             "--game-dir", directory, "--dry-run"],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertIn("245 icons would be written", result.stdout)
 
 
 class TestVerifierWithoutGame(unittest.TestCase):

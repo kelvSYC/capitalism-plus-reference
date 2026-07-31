@@ -36,6 +36,7 @@ tools/
   build_site.py            regenerates site/index.html from the template + dataset
   verify_against_game.py   checks the data against a real copy of the game
   augment_from_game.py     one-shot: adds production-rate fields from the game
+  extract_icons.py         builds site/images/ from your own copy of the game
 docs/
   DECODING.md     the .SET / .SCN file formats and how each fact was verified
   formats/        Synalyze It! / Hexinator binary grammars for those formats
@@ -75,10 +76,20 @@ will run and remain fully functional without them, just without artwork.
 
 The 245 product icons are extracted from the game's own compiled raster
 assets and are **not committed here**, pending resolution of the fair-use /
-attribution question described in `ATTRIBUTION.md`. If you have a legitimate
-copy of Capitalism Plus, drop the corresponding PNGs into `site/images/`
-(named `<Gameset>_<ProductName>.png`, matching `icon_file` in
-`index_cards.json`) to populate them locally.
+attribution question described in `ATTRIBUTION.md`. The site is designed to work
+without them: a missing icon renders as a monogram tile tinted by classification.
+
+If you own Capitalism Plus and want your local copy to show the game's artwork:
+
+```sh
+python3 tools/extract_icons.py --game-dir "/path/to/Capitalism Plus"
+```
+
+That writes 245 PNGs into `site/images/`, which stays git-ignored. The tool reads
+only the path you give it and bundles nothing. Three separate guards stop those
+files reaching anywhere public: `.gitignore`, a test asserting nothing but
+`.gitkeep` is tracked there, and the `pages` workflow refusing to deploy a tree
+containing them.
 
 ## Licensing
 
