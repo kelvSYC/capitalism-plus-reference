@@ -11,6 +11,7 @@ that checks the data against its actual source rather than against itself.
 
 The directory is the one containing GAMESET/ and CapPlus.gog.
 """
+import json
 import os
 import re
 import subprocess
@@ -86,18 +87,26 @@ class TestPngRoundTrip(unittest.TestCase):
 
 class TestIconExtraction(unittest.TestCase):
     def test_extractor_finds_an_icon_for_every_product(self):
-        """Every one of the 245 products must resolve to an archive entry. A
-        missing match would silently leave a monogram tile in place of artwork."""
+        """Every product must resolve to an archive entry, plus the growing plant
+        for the crops that have one. A missing match would silently leave a
+        monogram tile in place of artwork.
+
+        The expected count is derived from the dataset rather than written in, so
+        adding a product or a plant cannot make this fail spuriously -- nor pass
+        while quietly skipping something.
+        """
         directory = game_dir()
         if directory is None:
             self.skipTest("set CAPITALISM_GAME_DIR to a game directory to run this")
+        cards = json.loads((ROOT / "data" / "index_cards.json").read_text(encoding="utf-8"))
+        expected = len(cards) + sum(1 for c in cards if c.get("plant"))
         result = subprocess.run(
             [sys.executable, str(ROOT / "tools" / "extract_icons.py"),
              "--game-dir", directory, "--dry-run"],
             capture_output=True, text=True,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        self.assertIn("245 icons would be written", result.stdout)
+        self.assertIn(f"{expected} icons would be written", result.stdout)
 
 
 class TestVerifierWithoutGame(unittest.TestCase):
