@@ -21,14 +21,19 @@ game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
 
 > **There is no extractor, and there never was one.** `data/index_cards.json` was
 > not produced by a script. The formats were reverse-engineered by inspecting
-> `.SET` and `.SCN` files directly, and the dataset was assembled by hand from
-> what that revealed. So a third party cannot currently regenerate it — not
-> because a tool was lost, but because no tool has ever existed.
+> `.SET` and `.SCN` files directly, and the dataset was assembled by hand.
 >
-> That is a smaller gap than it sounds. The formats themselves are specified, in
-> a set of Synalyze It! / Hexinator binary grammars written during that work (see
-> [Method](#method) below). An extractor is a thing somebody could now write from
-> a specification, rather than something that must be rediscovered.
+> What exists instead is a **verifier**: `tools/verify_against_game.py` reads a
+> real copy of the game and checks the committed data against it, field by field.
+> It never writes to `data/`. Capitalism Plus is a 1996 DOS title whose content
+> will not change, so a disagreement means our data is wrong rather than that the
+> game moved — which is what makes verification the useful direction.
+>
+> Current result against a retail copy: **1,598 checks pass, 0 fail**, with one
+> declared divergence (see below). Run it with
+> `python3 tools/verify_against_game.py --game-dir /path/to/game`, or set
+> `CAPITALISM_GAME_DIR` and the test suite will pick it up and skip cleanly
+> without it.
 
 ## Method
 
@@ -58,10 +63,102 @@ definitions rather than hard-coding offsets. `ITEM`, `ITEMCLAS`, `METHOD` and
 The `.SCN` offsets in the next section were found separately and by hand; they
 are not covered by a grammar.
 
+## The product dataset
+
+Every field in `data/index_cards.json`, and where it comes from. All of this is
+checked by `tools/verify_against_game.py`.
+
+The three gamesets are three `.SET` files in `GAMESET/`: `1STD.SET` (Standard),
+`2ALTER.SET` (Alternative), `3FOOD.SET` (Food & Beverage). Each holds 16 tables;
+six matter here.
+
+| Field | Source | Notes |
+|---|---|---|
+| `name` | `ITEM.NAME` | |
+| `raw_class` | `ITEM.CLASS` | the game's own class code |
+| `category` | `ITEMCLAS.NAME` | five renames, below |
+| `sale_index` | `ITEM.SALEINDEX` | |
+| `sellable` | `ITEM.SALEINDEX > 0` | not a stored flag |
+| `output_quantity` | `METHOD.OQTY` | absent where there is no recipe |
+| `output_unit` | `ITEM.UNIT` | see the divergence below |
+| `inputs` | `METHOD.INPUT1–5`, `IQTY`, `IQUA` | `IQUA` is `quality_pct` |
+| `livestock_yields` | `FARMLIVE.PRODUCT1–3` | three slots, hence never more than three |
+| `derived_from_livestock` | inverse of the above | |
+| `growing_conditions` | `FARMCROP.TEMP`, `RAIN`, `SOW`, `HARVEST` | enums below |
+| `used_in` | inverse of `inputs` | |
+| `production_technology_pct` | `100 − Σ inputs[].quality_pct` | see [Derived fields](#derived-fields) |
+| `classification`, `industry` | our own grouping of `raw_class` | see below |
+| `icon_image_id`, `graphic_count` | **unknown** | see below |
+
+**`METHOD` has exactly five input slots.** That is why no recipe in the game has
+more than five ingredients — a structural limit, not a coincidence of the data.
+
+### Enumerations
+
+`FARMCROP.RAIN`: `1` = Little, `2` = Moderate, `3` = Plentiful.
+
+`FARMCROP.TEMP`: `2` = Cool, `3` = Warm, `4` = Hot, `9` = "Warm, Cool, or Cold".
+Only those four values occur across all three gamesets. **`9` is not a bitmask**
+under any assignment we have tried — it behaves as a "tolerant" special case. The
+verifier reports an unrecognised value rather than guessing.
+
+`FARMCROP.SOW` / `HARVEST`: month number, 1–12.
+
+### Editorial decisions, not game data
+
+Three places where the dataset deliberately departs from the file. All three were
+invisible until the verifier forced them to be named.
+
+1. **Blank `ITEM.UNIT` becomes `"unit"`** — most manufactured goods have no unit
+   string in the file.
+2. **Five class names are pluralised for display:** `Apparel, Footwear & Bag` →
+   `… Bags`, `Cigarette` → `Cigarettes`, `Computer` → `Computers`, `Toy` →
+   `Toys`, `Watch` → `Watches`. Every other class name is used verbatim.
+3. **`CLASS=PLANT` rows are excluded.** `ITEM` holds 84 rows for Standard where
+   the dataset has 82 products: the extras are *Rubber Plant* and *Sugar Cane*,
+   the growing plant as distinct from the harvested crop.
+
+`classification` (7 values) and `industry` (3 values) are **our groupings** of the
+32 `raw_class` codes, not fields in the file. Both are unambiguous functions of
+`raw_class` with no conflicts, so they are reproducible — but they are our
+taxonomy, and `classification_source` in the dataset should be read that way.
+
+### Known divergence
+
+`output_unit` is null in the dataset for the 73 products with no `METHOD`
+recipe — raw materials, crops and livestock — because the dataset treats it as
+the unit of a *production run*. The game's `ITEM.UNIT` is the unit the commodity
+is *measured in* and exists regardless: Coal is `lb`, Gold is `oz`. Our data is
+incomplete here rather than wrong, since the unit is still recoverable from
+`inputs[].unit` on any consumer, but a raw material's page cannot say what it is
+measured in. The verifier declares and counts this rather than tolerating it, so
+a new disagreement cannot hide inside it.
+
+### Still unresolved
+
+`ITEM.ICONPTR` is a byte offset into the gameset's `.II` file with a constant
+3608-byte stride — `1STD.II` is 303,072 bytes, exactly 84 × 3608, one record per
+`ITEM` row. But the dataset's `icon_image_id` does not correspond to it (Car's
+`ICONPTR` is record 5; the dataset records 10), so that field came out of the
+icon-extraction process rather than the `.SET`. `graphic_count` likewise.
+
+Roughly 36 of the 64 header bytes per table remain unexplained (`<type?>`,
+`<unused>`), which does not matter for reading the tables.
+
 ## Scenario byte offsets (`.SCN`)
 
 All verified against fresh byte reads of all 20 `.SCN` files, not just the
 scenarios used during discovery.
+
+The scenarios are specially-built save games, and they ship **on the CD image**
+(`CapPlus.gog`) rather than in the installed directory — `SCENARIO/*.SCN` with a
+`.SCT` prose file beside each. The verifier reads them straight out of the ISO9660
+image without mounting it.
+
+`tools/verify_against_game.py` checks all five fields below for all 20 scenarios:
+**100 checks, 0 failures.** Note that the class-code comparisons implicitly verify
+each scenario's gameset too: the flag arrays are one byte per row of *that
+gameset's* `ITEMCLAS` table, so a wrong gameset would decode to the wrong codes.
 
 | Offset | Field | Layout |
 |---|---|---|

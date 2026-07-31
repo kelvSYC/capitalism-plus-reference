@@ -106,9 +106,10 @@ across all three gamesets — but several things stand between here and go-live:
   deployment. The site is designed to work without artwork, but that is the
   permanent state until the question is answered.
 - **Reproducibility.** `index_cards.json` was assembled by hand from
-  reverse-engineered file formats; no extractor has ever existed, so nobody else
-  can regenerate it from their own copy of the game. The formats themselves are
-  specified — see `docs/DECODING.md`.
+  reverse-engineered file formats; no extractor has ever existed. There is now a
+  verifier instead — `tools/verify_against_game.py` checks the committed data
+  against a real copy of the game (1,598 checks, 0 failures) — but nobody can yet
+  regenerate the dataset from scratch. See `docs/DECODING.md`.
 
 The `pages` workflow is manual-only and refuses to deploy until its preflight
 checks pass, so none of the above can be published by accident.

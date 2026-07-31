@@ -48,6 +48,11 @@ jobs:
       - name: Site behaviour
         run: python3 tests/run_site_tests.py
 
+      # The game-file verifier skips in CI: nobody can assume a commercial 1996
+      # title is present on a runner, and it must never become a build
+      # dependency. tests/test_against_game.py reports the skip explicitly, and
+      # asserts that the verifier refuses to exit 0 when it has nothing to check.
+
       # Belt-and-braces alongside the equivalent assertion in tests/test_data.py:
       # a named step makes the licensing hold legible in the Actions UI rather
       # than buried in unittest output.
