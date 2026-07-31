@@ -34,8 +34,6 @@
     "sale_index": 100.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Car.png",
-    "icon_image_id": 10,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -73,8 +71,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Motorcycle.png",
-    "icon_image_id": 44,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -106,8 +102,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Beer.png",
-    "icon_image_id": 6,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -139,8 +133,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Bottled_Milk.png",
-    "icon_image_id": 45,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -172,8 +164,6 @@
     "sale_index": 30.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Cola.png",
-    "icon_image_id": 20,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -205,8 +195,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Wine.png",
-    "icon_image_id": 82,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -238,8 +226,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Detergent.png",
-    "icon_image_id": 27,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -271,8 +257,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Diaper.png",
-    "icon_image_id": 28,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -304,8 +288,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Shampoo.png",
-    "icon_image_id": 56,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -337,8 +319,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Toothpaste.png",
-    "icon_image_id": 71,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -370,8 +350,6 @@
     "sale_index": 21.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Cigarettes.png",
-    "icon_image_id": 17,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -409,8 +387,6 @@
     "sale_index": 75.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Desktop_Computer.png",
-    "icon_image_id": 21,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -448,8 +424,6 @@
     "sale_index": 36.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Internet_TV.png",
-    "icon_image_id": 79,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -487,8 +461,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_PDA.png",
-    "icon_image_id": 50,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -520,8 +492,6 @@
     "sale_index": 45.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_VR_Computer.png",
-    "icon_image_id": 77,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -559,8 +529,6 @@
     "sale_index": 27.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Wrist_Computer.png",
-    "icon_image_id": 84,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -592,8 +560,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Eye_Shadow.png",
-    "icon_image_id": 24,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -625,8 +591,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Perfume.png",
-    "icon_image_id": 23,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -664,8 +628,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Air_Conditioner.png",
-    "icon_image_id": 1,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -703,8 +665,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Camera.png",
-    "icon_image_id": 9,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -742,8 +702,6 @@
     "sale_index": 25.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_DVD_Player.png",
-    "icon_image_id": 29,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -781,8 +739,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Hi_fi.png",
-    "icon_image_id": 37,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -820,8 +776,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Television.png",
-    "icon_image_id": 74,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -859,8 +813,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Video_Camera.png",
-    "icon_image_id": 75,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -898,8 +850,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Video_Recorder.png",
-    "icon_image_id": 76,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -925,8 +875,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Bread.png",
-    "icon_image_id": 7,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -958,8 +906,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Chocolate_Bar.png",
-    "icon_image_id": 16,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -991,8 +937,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Cookies.png",
-    "icon_image_id": 22,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -1024,8 +968,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Ice_Cream.png",
-    "icon_image_id": 38,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -1051,8 +993,6 @@
     "sale_index": 17.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Bed.png",
-    "icon_image_id": 4,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -1090,8 +1030,6 @@
     "sale_index": 5.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Sofa.png",
-    "icon_image_id": 62,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -1117,8 +1055,6 @@
     "sale_index": 30.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Jewelry.png",
-    "icon_image_id": 42,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -1128,7 +1064,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "dozen",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -1137,8 +1073,6 @@
     "sale_index": 7.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Egg.png",
-    "icon_image_id": 30,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Chicken"
     ],
@@ -1160,7 +1094,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -1169,8 +1103,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Frozen_Beef.png",
-    "icon_image_id": 5,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -1188,7 +1120,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -1197,8 +1129,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Frozen_Chicken.png",
-    "icon_image_id": 14,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Chicken"
     ],
@@ -1216,7 +1146,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -1225,8 +1155,6 @@
     "sale_index": 10.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Frozen_Pig.png",
-    "icon_image_id": 53,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Pig"
     ],
@@ -1244,7 +1172,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -1253,8 +1181,6 @@
     "sale_index": 3.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Frozen_Sheep.png",
-    "icon_image_id": 47,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Sheep"
     ],
@@ -1272,7 +1198,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -1281,8 +1207,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Leather.png",
-    "icon_image_id": 43,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle",
       "Pig",
@@ -1338,7 +1262,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "quart",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -1347,8 +1271,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Milk.png",
-    "icon_image_id": 46,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -1392,7 +1314,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -1401,8 +1323,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Wool.png",
-    "icon_image_id": 83,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Sheep"
     ],
@@ -1439,7 +1359,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -1448,8 +1368,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Cattle.png",
-    "icon_image_id": 12,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Beef",
       "Milk",
@@ -1470,7 +1388,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -1479,8 +1397,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Chicken.png",
-    "icon_image_id": 15,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Chicken",
       "Eggs"
@@ -1500,7 +1416,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -1509,8 +1425,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Pig.png",
-    "icon_image_id": 51,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Pork",
       "Leather"
@@ -1530,7 +1444,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -1539,8 +1453,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Sheep.png",
-    "icon_image_id": 57,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Lamb",
       "Wool",
@@ -1561,7 +1473,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1570,8 +1482,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Barley.png",
-    "icon_image_id": 3,
-    "graphic_count": 7,
     "growing_conditions": {
       "climate": "Warm, Cool, or Cold",
       "rainfall": "Moderate",
@@ -1595,7 +1505,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1604,8 +1514,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Cocoa.png",
-    "icon_image_id": 19,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Moderate",
@@ -1629,7 +1537,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1638,8 +1546,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Cotton.png",
-    "icon_image_id": 25,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Plentiful",
@@ -1691,7 +1597,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1700,8 +1606,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Grapes.png",
-    "icon_image_id": 36,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Moderate",
@@ -1725,7 +1629,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1734,8 +1638,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Rubber.png",
-    "icon_image_id": 55,
-    "graphic_count": 7,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Plentiful",
@@ -1777,7 +1679,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1786,8 +1688,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Sugar.png",
-    "icon_image_id": 66,
-    "graphic_count": 6,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Moderate",
@@ -1829,7 +1729,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1838,8 +1738,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Tobacco.png",
-    "icon_image_id": 70,
-    "graphic_count": 6,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Little",
@@ -1863,7 +1761,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -1872,8 +1770,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Wheat.png",
-    "icon_image_id": 80,
-    "graphic_count": 8,
     "growing_conditions": {
       "climate": "Warm, Cool, or Cold",
       "rainfall": "Moderate",
@@ -1897,7 +1793,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -1906,8 +1802,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Aluminum.png",
-    "icon_image_id": 2,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Beer",
@@ -1927,7 +1821,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 2
@@ -1940,7 +1833,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -1949,8 +1842,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Chemical_Minerals.png",
-    "icon_image_id": 13,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Detergent",
@@ -1998,7 +1889,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 2
@@ -2011,7 +1901,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -2020,8 +1910,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Coal.png",
-    "icon_image_id": 18,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Steel",
@@ -2034,7 +1922,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 3
@@ -2047,7 +1934,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "oz",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -2056,8 +1943,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Gold.png",
-    "icon_image_id": 35,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Jewelry",
@@ -2070,7 +1955,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "oz",
       "speed": 2,
       "resource_value": 5,
       "max_sites": 2
@@ -2083,7 +1967,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -2092,8 +1976,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Iron_Ore.png",
-    "icon_image_id": 39,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Steel",
@@ -2106,7 +1988,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 3
@@ -2119,7 +2000,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "barrel",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -2128,8 +2009,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Oil.png",
-    "icon_image_id": 48,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Plastic",
@@ -2142,7 +2021,6 @@
     "extraction": {
       "site": "Oil Well",
       "unit": "Oil-Extracting Unit",
-      "measured_in": "barrel",
       "speed": 4,
       "resource_value": 2,
       "max_sites": 2
@@ -2155,7 +2033,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -2164,8 +2042,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Silica.png",
-    "icon_image_id": 59,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Glass",
@@ -2185,7 +2061,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 2
@@ -2198,7 +2073,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -2207,8 +2082,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Timber.png",
-    "icon_image_id": 69,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Bed",
@@ -2235,7 +2108,6 @@
     "extraction": {
       "site": "Lumber Mill",
       "unit": "Logging Unit",
-      "measured_in": "lb",
       "speed": 1,
       "resource_value": 1,
       "max_sites": 3
@@ -2276,8 +2148,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Car_Body.png",
-    "icon_image_id": 11,
-    "graphic_count": 11,
     "used_in": [
       {
         "product": "Car",
@@ -2311,8 +2181,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_CPU.png",
-    "icon_image_id": 26,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Desktop Computer",
@@ -2393,8 +2261,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Electronic_Components.png",
-    "icon_image_id": 31,
-    "graphic_count": 11,
     "used_in": [
       {
         "product": "Desktop Computer",
@@ -2491,8 +2357,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Engine.png",
-    "icon_image_id": 32,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Car",
@@ -2533,8 +2397,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Flour.png",
-    "icon_image_id": 33,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Bread",
@@ -2575,8 +2437,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Glass.png",
-    "icon_image_id": 34,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Bottled Milk",
@@ -2673,8 +2533,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Paper.png",
-    "icon_image_id": 49,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Diaper",
@@ -2715,8 +2573,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Plastic.png",
-    "icon_image_id": 52,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Detergent",
@@ -2855,8 +2711,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Silicon.png",
-    "icon_image_id": 60,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "CPU",
@@ -2903,8 +2757,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Steel.png",
-    "icon_image_id": 64,
-    "graphic_count": 9,
     "used_in": [
       {
         "product": "Motorcycle",
@@ -3008,8 +2860,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Textiles.png",
-    "icon_image_id": 68,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Toy Bear",
@@ -3070,8 +2920,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Wheel_Tire.png",
-    "icon_image_id": 81,
-    "graphic_count": 9,
     "used_in": [
       {
         "product": "Car",
@@ -3118,8 +2966,6 @@
     "sale_index": 10.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Toy_Train.png",
-    "icon_image_id": 72,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3151,8 +2997,6 @@
     "sale_index": 10.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Toy_Bear.png",
-    "icon_image_id": 73,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3184,8 +3028,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Watch.png",
-    "icon_image_id": 78,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3217,8 +3059,6 @@
     "sale_index": 8.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Leather_Briefcase.png",
-    "icon_image_id": 8,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3250,8 +3090,6 @@
     "sale_index": 7.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Leather_Jacket.png",
-    "icon_image_id": 40,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3277,8 +3115,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Jeans.png",
-    "icon_image_id": 41,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -3310,8 +3146,6 @@
     "sale_index": 12.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Leather_Shoes.png",
-    "icon_image_id": 58,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3337,8 +3171,6 @@
     "sale_index": 10.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Socks.png",
-    "icon_image_id": 61,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -3364,8 +3196,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Sweater.png",
-    "icon_image_id": 67,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -3403,8 +3233,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Standard_Sport_Shoes.png",
-    "icon_image_id": 63,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -3430,8 +3258,6 @@
     "sale_index": 17.325,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Leather_Boots.png",
-    "icon_image_id": 127,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -3457,8 +3283,6 @@
     "sale_index": 8.3,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Cashmere_Scarf.png",
-    "icon_image_id": 91,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -3484,8 +3308,6 @@
     "sale_index": 27.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Trousers.png",
-    "icon_image_id": 156,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -3517,8 +3339,6 @@
     "sale_index": 24.75,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Apple_Juice.png",
-    "icon_image_id": 87,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3550,8 +3370,6 @@
     "sale_index": 16.2,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Lemon_Soda.png",
-    "icon_image_id": 128,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3589,8 +3407,6 @@
     "sale_index": 23.1,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Body_Lotion.png",
-    "icon_image_id": 89,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -3622,8 +3438,6 @@
     "sale_index": 9.6,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Clothes_Softener.png",
-    "icon_image_id": 149,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3655,8 +3469,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Hair_Gel.png",
-    "icon_image_id": 122,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3694,8 +3506,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Soap.png",
-    "icon_image_id": 148,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -3733,8 +3543,6 @@
     "sale_index": 27.6,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Day_Cream.png",
-    "icon_image_id": 108,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -3766,8 +3574,6 @@
     "sale_index": 15.4,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Lipstick.png",
-    "icon_image_id": 131,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3805,8 +3611,6 @@
     "sale_index": 14.4,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Mascara.png",
-    "icon_image_id": 132,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -3832,8 +3636,6 @@
     "sale_index": 17.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Cheese.png",
-    "icon_image_id": 93,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -3865,8 +3667,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Corn_Flakes.png",
-    "icon_image_id": 104,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3898,8 +3698,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Food_Oil.png",
-    "icon_image_id": 105,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3931,8 +3729,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Rice_Cereal.png",
-    "icon_image_id": 144,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -3970,8 +3766,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Yogurt.png",
-    "icon_image_id": 158,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -4003,8 +3797,6 @@
     "sale_index": 16.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Chair.png",
-    "icon_image_id": 92,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -4030,8 +3822,6 @@
     "sale_index": 8.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Drinking_Glass.png",
-    "icon_image_id": 116,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -4063,8 +3853,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Pillow.png",
-    "icon_image_id": 139,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -4090,8 +3878,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Table.png",
-    "icon_image_id": 153,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -4129,8 +3915,6 @@
     "sale_index": 12.765,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Clock.png",
-    "icon_image_id": 96,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -4168,8 +3952,6 @@
     "sale_index": 17.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Microwave_Oven.png",
-    "icon_image_id": 133,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -4207,8 +3989,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Refrigerator.png",
-    "icon_image_id": 143,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -4240,8 +4020,6 @@
     "sale_index": 13.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Costume_Jewelry.png",
-    "icon_image_id": 106,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -4267,8 +4045,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Jewelry.png",
-    "icon_image_id": 126,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -4278,7 +4054,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -4287,8 +4063,6 @@
     "sale_index": 25.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Frozen_Beef.png",
-    "icon_image_id": 5,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -4306,7 +4080,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -4315,8 +4089,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Frozen_Goat_Meat.png",
-    "icon_image_id": 119,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Goat"
     ],
@@ -4334,7 +4106,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -4343,8 +4115,6 @@
     "sale_index": 14.85,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Frozen_Goose.png",
-    "icon_image_id": 120,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Goose"
     ],
@@ -4362,7 +4132,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -4371,8 +4141,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Frozen_Ostrich_Meat.png",
-    "icon_image_id": 137,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Ostrich"
     ],
@@ -4390,7 +4158,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -4399,8 +4167,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Cashmere.png",
-    "icon_image_id": 90,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Goat"
     ],
@@ -4430,7 +4196,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -4439,8 +4205,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Feather.png",
-    "icon_image_id": 112,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Goose"
     ],
@@ -4466,7 +4230,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -4475,8 +4239,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Leather.png",
-    "icon_image_id": 43,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Ostrich"
     ],
@@ -4502,7 +4264,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "quart",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -4511,8 +4273,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Milk.png",
-    "icon_image_id": 46,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -4549,7 +4309,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "quart",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -4558,8 +4318,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Ostrich_Oil.png",
-    "icon_image_id": 135,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Ostrich"
     ],
@@ -4585,7 +4343,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -4594,8 +4352,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Tallow.png",
-    "icon_image_id": 154,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -4621,7 +4377,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -4630,8 +4386,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Cattle.png",
-    "icon_image_id": 12,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Beef",
       "Milk",
@@ -4652,7 +4406,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -4661,8 +4415,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Goat.png",
-    "icon_image_id": 118,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Goat Meat",
       "Cashmere"
@@ -4682,7 +4434,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -4691,8 +4443,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Goose.png",
-    "icon_image_id": 121,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Goose",
       "Feather"
@@ -4712,7 +4462,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -4721,8 +4471,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Ostrich.png",
-    "icon_image_id": 136,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Ostrich Meat",
       "Leather",
@@ -4771,8 +4519,6 @@
     "sale_index": 35.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Camera_Film.png",
-    "icon_image_id": 113,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -4804,8 +4550,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Video_Tape.png",
-    "icon_image_id": 157,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -4843,8 +4587,6 @@
     "sale_index": 39.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Copier.png",
-    "icon_image_id": 101,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -4876,8 +4618,6 @@
     "sale_index": 11.52,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Fax_Machine.png",
-    "icon_image_id": 111,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -4903,8 +4643,6 @@
     "sale_index": 11.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Office_Paper.png",
-    "icon_image_id": 134,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -4936,8 +4674,6 @@
     "sale_index": 13.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Telephone.png",
-    "icon_image_id": 155,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -4975,8 +4711,6 @@
     "sale_index": 13.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Dis_Contact_Lenses.png",
-    "icon_image_id": 100,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -5008,8 +4742,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Sunglasses.png",
-    "icon_image_id": 151,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -5041,8 +4773,6 @@
     "sale_index": 17.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Cold_Tablets.png",
-    "icon_image_id": 99,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -5074,8 +4804,6 @@
     "sale_index": 16.8,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Cough_Syrup.png",
-    "icon_image_id": 107,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -5107,8 +4835,6 @@
     "sale_index": 16.2,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Headache_Pills.png",
-    "icon_image_id": 123,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -5118,7 +4844,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -5127,8 +4853,6 @@
     "sale_index": 7.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Apple.png",
-    "icon_image_id": 86,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Little",
@@ -5159,7 +4883,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -5168,8 +4892,6 @@
     "sale_index": 4.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Coconut.png",
-    "icon_image_id": 159,
-    "graphic_count": 6,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Moderate",
@@ -5197,7 +4919,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -5206,8 +4928,6 @@
     "sale_index": 3.6,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Corn.png",
-    "icon_image_id": 103,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Moderate",
@@ -5238,7 +4958,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -5247,8 +4967,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Flax_Fiber.png",
-    "icon_image_id": 115,
-    "graphic_count": 7,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Moderate",
@@ -5276,7 +4994,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -5285,8 +5003,6 @@
     "sale_index": 2.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Lemon.png",
-    "icon_image_id": 129,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Plentiful",
@@ -5324,7 +5040,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -5333,8 +5049,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Rice.png",
-    "icon_image_id": 145,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Plentiful",
@@ -5358,7 +5072,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5367,8 +5081,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Aluminum.png",
-    "icon_image_id": 85,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Lemon Soda",
@@ -5388,7 +5100,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 2
@@ -5401,7 +5112,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5410,8 +5121,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Chemical_Materials.png",
-    "icon_image_id": 94,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Body Lotion",
@@ -5501,7 +5210,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 3
@@ -5514,7 +5222,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5523,8 +5231,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Copper.png",
-    "icon_image_id": 102,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Clocks",
@@ -5551,7 +5257,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 2
@@ -5564,7 +5269,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5573,8 +5278,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Iron.png",
-    "icon_image_id": 125,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Steel",
@@ -5587,7 +5290,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 3
@@ -5600,7 +5302,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "barrel",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5609,8 +5311,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Oil.png",
-    "icon_image_id": 48,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Plastic",
@@ -5630,7 +5330,6 @@
     "extraction": {
       "site": "Oil Well",
       "unit": "Oil-Extracting Unit",
-      "measured_in": "barrel",
       "speed": 4,
       "resource_value": 2,
       "max_sites": 3
@@ -5643,7 +5342,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5652,8 +5351,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Silica.png",
-    "icon_image_id": 146,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Glass",
@@ -5666,7 +5363,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "lb",
       "speed": 2,
       "resource_value": 1,
       "max_sites": 2
@@ -5679,7 +5375,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "oz",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5688,8 +5384,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Silver.png",
-    "icon_image_id": 147,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Jewelry",
@@ -5709,7 +5403,6 @@
     "extraction": {
       "site": "Mine",
       "unit": "Mining Unit",
-      "measured_in": "oz",
       "speed": 2,
       "resource_value": 3,
       "max_sites": 2
@@ -5722,7 +5415,7 @@
     "raw_class": "RAW",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Raw Material",
@@ -5731,8 +5424,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Timber.png",
-    "icon_image_id": 69,
-    "graphic_count": 2,
     "used_in": [
       {
         "product": "Table",
@@ -5759,7 +5450,6 @@
     "extraction": {
       "site": "Lumber Mill",
       "unit": "Logging Unit",
-      "measured_in": "lb",
       "speed": 1,
       "resource_value": 1,
       "max_sites": 3
@@ -5788,8 +5478,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Citric_Acid.png",
-    "icon_image_id": 95,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Yogurt",
@@ -5823,8 +5511,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Coconut_Oil.png",
-    "icon_image_id": 98,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Body Lotion",
@@ -5865,8 +5551,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Dyestuffs.png",
-    "icon_image_id": 109,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Lipstick",
@@ -5913,8 +5597,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Electronic_Components.png",
-    "icon_image_id": 110,
-    "graphic_count": 9,
     "used_in": [
       {
         "product": "Clocks",
@@ -5976,8 +5658,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Fiberglass.png",
-    "icon_image_id": 160,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "In-line Skates",
@@ -6011,8 +5691,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Glass.png",
-    "icon_image_id": 117,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Drinking Glass",
@@ -6088,8 +5766,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Linen.png",
-    "icon_image_id": 130,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Trousers",
@@ -6137,8 +5813,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Paper.png",
-    "icon_image_id": 49,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Apple Juice",
@@ -6214,8 +5888,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Pectin.png",
-    "icon_image_id": 138,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Hair Gel",
@@ -6256,8 +5928,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Plastic.png",
-    "icon_image_id": 52,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Body Lotion",
@@ -6430,8 +6100,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Polyester.png",
-    "icon_image_id": 141,
-    "graphic_count": 9,
     "used_in": [
       {
         "product": "Back Pack",
@@ -6472,8 +6140,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Steel.png",
-    "icon_image_id": 150,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Copier",
@@ -6541,8 +6207,6 @@
     "sale_index": 18.75,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Back_Pack.png",
-    "icon_image_id": 88,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -6574,8 +6238,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_In_line_Skates.png",
-    "icon_image_id": 124,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -6601,8 +6263,6 @@
     "sale_index": 17.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Swimming_Suit.png",
-    "icon_image_id": 152,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6634,8 +6294,6 @@
     "sale_index": 13.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Toy_Pistol.png",
-    "icon_image_id": 140,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -6667,8 +6325,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Alternative_Toy_Puzzle.png",
-    "icon_image_id": 142,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -6694,8 +6350,6 @@
     "sale_index": 25.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Apple_Juice.png",
-    "icon_image_id": 166,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6727,8 +6381,6 @@
     "sale_index": 20.8,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Chocolate_Milk.png",
-    "icon_image_id": 174,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -6760,8 +6412,6 @@
     "sale_index": 30.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Iced_Tea.png",
-    "icon_image_id": 225,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -6787,8 +6437,6 @@
     "sale_index": 28.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Instant_Coffee.png",
-    "icon_image_id": 181,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6814,8 +6462,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Lemon_Soda.png",
-    "icon_image_id": 128,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6841,8 +6487,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Orange_Juice.png",
-    "icon_image_id": 205,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6868,8 +6512,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Pineapple_Juice.png",
-    "icon_image_id": 212,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6895,8 +6537,6 @@
     "sale_index": 26.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Canned_Mushrooms.png",
-    "icon_image_id": 199,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6922,8 +6562,6 @@
     "sale_index": 22.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Canned_Pineapple.png",
-    "icon_image_id": 236,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -6955,8 +6593,6 @@
     "sale_index": 26.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Instant_Soup.png",
-    "icon_image_id": 190,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -6982,8 +6618,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Sauerkraut.png",
-    "icon_image_id": 221,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -7015,8 +6649,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Apple_Crisp.png",
-    "icon_image_id": 164,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -7048,8 +6680,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Apple_Pie.png",
-    "icon_image_id": 165,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -7087,8 +6717,6 @@
     "sale_index": 26.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Chocolate_Cake.png",
-    "icon_image_id": 173,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7126,8 +6754,6 @@
     "sale_index": 22.8,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Fruit_Tart.png",
-    "icon_image_id": 186,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7165,8 +6791,6 @@
     "sale_index": 17.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Lemon_Pie.png",
-    "icon_image_id": 194,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7204,8 +6828,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Chocolate_Mousse.png",
-    "icon_image_id": 175,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7237,8 +6859,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Strawberry_Milk_Shake.png",
-    "icon_image_id": 224,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -7264,8 +6884,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Bacon.png",
-    "icon_image_id": 169,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -7291,8 +6909,6 @@
     "sale_index": 13.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Baby_Formula.png",
-    "icon_image_id": 185,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -7324,8 +6940,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Breaded_Veal_Cutlets.png",
-    "icon_image_id": 235,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -7363,8 +6977,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Hamburger.png",
-    "icon_image_id": 189,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7402,8 +7014,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Kebab.png",
-    "icon_image_id": 193,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7441,8 +7051,6 @@
     "sale_index": 25.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Chicken_Kiev.png",
-    "icon_image_id": 172,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7468,8 +7076,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Oat_Cereal.png",
-    "icon_image_id": 202,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -7507,8 +7113,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Frozen_Pizza.png",
-    "icon_image_id": 214,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7534,8 +7138,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Sliced_Turkey_Breast.png",
-    "icon_image_id": 231,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -7573,8 +7175,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Salad.png",
-    "icon_image_id": 219,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7612,8 +7212,6 @@
     "sale_index": 22.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Sandwich.png",
-    "icon_image_id": 220,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7651,8 +7249,6 @@
     "sale_index": 21.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Cheese_Sausage.png",
-    "icon_image_id": 222,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7690,8 +7286,6 @@
     "sale_index": 21.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_TV_Dinner.png",
-    "icon_image_id": 233,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7729,8 +7323,6 @@
     "sale_index": 22.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Turkey_Pot_Pie.png",
-    "icon_image_id": 230,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -7740,7 +7332,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -7749,8 +7341,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Frozen_Beef.png",
-    "icon_image_id": 5,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -7797,7 +7387,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -7806,8 +7396,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Frozen_Chicken.png",
-    "icon_image_id": 171,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Chicken"
     ],
@@ -7840,7 +7428,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -7849,8 +7437,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Frozen_Pork.png",
-    "icon_image_id": 216,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Pig"
     ],
@@ -7890,7 +7476,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -7899,8 +7485,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Frozen_Turkey.png",
-    "icon_image_id": 187,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Turkey"
     ],
@@ -7933,7 +7517,7 @@
     "raw_class": "LPRODUCT",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Product",
@@ -7942,8 +7526,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Veal.png",
-    "icon_image_id": 234,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -7969,7 +7551,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "dozen",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -7978,8 +7560,6 @@
     "sale_index": 8.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Egg.png",
-    "icon_image_id": 183,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Chicken"
     ],
@@ -8051,7 +7631,7 @@
     "raw_class": "LSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "quart",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock Semi-Product",
@@ -8060,8 +7640,6 @@
     "sale_index": 6.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Milk.png",
-    "icon_image_id": 198,
-    "graphic_count": 2,
     "derived_from_livestock": [
       "Cattle"
     ],
@@ -8133,7 +7711,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -8142,8 +7720,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Cattle.png",
-    "icon_image_id": 12,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Beef",
       "Milk",
@@ -8164,7 +7740,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -8173,8 +7749,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Chicken.png",
-    "icon_image_id": 15,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Chicken",
       "Egg"
@@ -8194,7 +7768,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -8203,8 +7777,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Pig.png",
-    "icon_image_id": 51,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Pork"
     ],
@@ -8223,7 +7795,7 @@
     "raw_class": "LSTOCK",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "unit",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Livestock",
@@ -8232,8 +7804,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Turkey.png",
-    "icon_image_id": 232,
-    "graphic_count": 2,
     "livestock_yields": [
       "Frozen Turkey"
     ],
@@ -8268,8 +7838,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Macaroni.png",
-    "icon_image_id": 197,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -8301,8 +7869,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Instant_Noodles.png",
-    "icon_image_id": 201,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -8312,7 +7878,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8321,8 +7887,6 @@
     "sale_index": 9.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Almond.png",
-    "icon_image_id": 163,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Moderate",
@@ -8353,7 +7917,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8362,8 +7926,6 @@
     "sale_index": 9.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Apple.png",
-    "icon_image_id": 86,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Little",
@@ -8408,7 +7970,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8417,8 +7979,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Asparagus.png",
-    "icon_image_id": 168,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Moderate",
@@ -8442,7 +8002,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8451,8 +8011,6 @@
     "sale_index": 10.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Strawberry.png",
-    "icon_image_id": 223,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Little",
@@ -8490,7 +8048,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8499,8 +8057,6 @@
     "sale_index": 13.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Cabbage.png",
-    "icon_image_id": 170,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Moderate",
@@ -8524,7 +8080,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8533,8 +8089,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Cocoa.png",
-    "icon_image_id": 179,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Moderate",
@@ -8558,7 +8112,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8567,8 +8121,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Coffee.png",
-    "icon_image_id": 182,
-    "graphic_count": 6,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Moderate",
@@ -8596,7 +8148,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8605,8 +8157,6 @@
     "sale_index": 4.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Lemon.png",
-    "icon_image_id": 195,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Plentiful",
@@ -8651,7 +8201,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8660,8 +8210,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Lettuce.png",
-    "icon_image_id": 196,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Little",
@@ -8692,7 +8240,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8701,8 +8249,6 @@
     "sale_index": 12.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Mushroom.png",
-    "icon_image_id": 200,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Plentiful",
@@ -8726,7 +8272,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8735,8 +8281,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Oats.png",
-    "icon_image_id": 204,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Moderate",
@@ -8767,7 +8311,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8776,8 +8320,6 @@
     "sale_index": 9.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Orange.png",
-    "icon_image_id": 203,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Plentiful",
@@ -8808,7 +8350,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8817,8 +8359,6 @@
     "sale_index": 5.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Peanut.png",
-    "icon_image_id": 237,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Moderate",
@@ -8856,7 +8396,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8865,8 +8405,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Pepper.png",
-    "icon_image_id": 210,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Plentiful",
@@ -8890,7 +8428,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8899,8 +8437,6 @@
     "sale_index": 7.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Pineapple.png",
-    "icon_image_id": 213,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Plentiful",
@@ -8931,7 +8467,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8940,8 +8476,6 @@
     "sale_index": 10.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Potato.png",
-    "icon_image_id": 218,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Warm",
       "rainfall": "Moderate",
@@ -8965,7 +8499,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -8974,8 +8508,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Tea.png",
-    "icon_image_id": 227,
-    "graphic_count": 6,
     "growing_conditions": {
       "climate": "Hot",
       "rainfall": "Plentiful",
@@ -9003,7 +8535,7 @@
     "raw_class": "PSEMI",
     "category": null,
     "output_quantity": null,
-    "output_unit": null,
+    "output_unit": "lb",
     "production_technology_pct": null,
     "inputs": [],
     "classification": "Plant Product",
@@ -9012,8 +8544,6 @@
     "sale_index": 10.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Tomato.png",
-    "icon_image_id": 228,
-    "graphic_count": 5,
     "growing_conditions": {
       "climate": "Cool",
       "rainfall": "Little",
@@ -9060,8 +8590,6 @@
     "sale_index": 10.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Bread.png",
-    "icon_image_id": 7,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Breaded Veal Cutlets",
@@ -9109,8 +8637,6 @@
     "sale_index": 8.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Hamburger_Bun.png",
-    "icon_image_id": 188,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Hamburger",
@@ -9144,8 +8670,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Cheese.png",
-    "icon_image_id": 93,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Instant Soup",
@@ -9199,8 +8723,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Chocolate.png",
-    "icon_image_id": 178,
-    "graphic_count": 9,
     "used_in": [
       {
         "product": "Chocolate Milk",
@@ -9248,8 +8770,6 @@
     "sale_index": 2.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Flour.png",
-    "icon_image_id": 184,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Chocolate Cake",
@@ -9367,8 +8887,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Peanut_Butter.png",
-    "icon_image_id": 208,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Almond Candy",
@@ -9409,8 +8927,6 @@
     "sale_index": 0.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Pectin.png",
-    "icon_image_id": 138,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Apple Pie",
@@ -9458,8 +8974,6 @@
     "sale_index": 13.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Peanut_Oil.png",
-    "icon_image_id": 206,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -9491,8 +9005,6 @@
     "sale_index": 14.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Almond_Candy.png",
-    "icon_image_id": 162,
-    "graphic_count": 10,
     "used_in": []
   },
   {
@@ -9530,8 +9042,6 @@
     "sale_index": 21.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Peanut_Butter_Cookies.png",
-    "icon_image_id": 207,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -9557,8 +9067,6 @@
     "sale_index": 24.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Jelly_Beans.png",
-    "icon_image_id": 192,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -9596,8 +9104,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Apple_Pancakes.png",
-    "icon_image_id": 167,
-    "graphic_count": 12,
     "used_in": []
   },
   {
@@ -9623,8 +9129,6 @@
     "sale_index": 20.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Potato_Chips.png",
-    "icon_image_id": 217,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -9650,8 +9154,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Toasted_Almonds.png",
-    "icon_image_id": 161,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -9677,8 +9179,6 @@
     "sale_index": 16.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Toasted_Peanuts.png",
-    "icon_image_id": 215,
-    "graphic_count": 8,
     "used_in": []
   },
   {
@@ -9704,8 +9204,6 @@
     "sale_index": 18.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Black_Pepper.png",
-    "icon_image_id": 209,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Kebab",
@@ -9753,8 +9251,6 @@
     "sale_index": 12.5,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Tomato_Sauce.png",
-    "icon_image_id": 229,
-    "graphic_count": 7,
     "used_in": [
       {
         "product": "Frozen Pizza",
@@ -9788,8 +9284,6 @@
     "sale_index": 15.0,
     "classification_source": "derived (authoritative: game .SET data files)",
     "icon_file": "Food_Beverage_Strawberry_Jam.png",
-    "icon_image_id": 191,
-    "graphic_count": 8,
     "used_in": []
   }
 ]

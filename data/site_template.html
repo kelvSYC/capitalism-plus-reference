@@ -1135,6 +1135,10 @@ function renderTabs() {
     d.textContent = gs;
     registerFocusable(d, 'gamesetTabs|' + gs);
     d.onclick = () => {
+      // Clicking the tab you are already on is a no-op. It used to clear the
+      // scenario and every filter, so a stray second click threw away the whole
+      // selection while nothing about the gameset had changed.
+      if (state.gameset === gs) return;
       state.gameset = gs; state.scenario = null;
       _scenarioMarketMemo = null; _scenarioMarketMemoKey = null;
       resetFilters();
@@ -1543,7 +1547,7 @@ function extractionSection(p) {
     <div class="k">Sites per map</div><div>${sites}</div>
   </div>
   <p style="font-size:12px;color:var(--muted);margin:10px 0 0">A site produces
-  ${esc(e.measured_in || p.output_unit || 'units')} continuously. The game records
+  ${esc(p.output_unit || 'units')} continuously. The game records
   no quantity per month for mining, only the relative speed above, so this
   reference cannot state an absolute rate.</p>
   </div>`;
@@ -2638,7 +2642,7 @@ function growingMonths(sowMonth, harvestMonth) {
 // ones read alongside the crops above; slaughter yields have no season and go
 // after, alphabetically.
 function almanacLivestock() {
-  let list = byGameset(state.gameset).filter(p => p.livestock_production);
+  let list = byGameset(state.gameset).filter(p => p.livestock_production).filter(matchesFilters);
   if (state.scenario && !state.showRestricted) list = list.filter(p => !scenarioRestricted(p));
   return list.sort((a, b) => {
     const am = a.livestock_production.mode === 'continuous';
@@ -2671,9 +2675,19 @@ function livestockSourceCell(p) {
     : parts.join(', ') || '<span style="color:var(--muted)">—</span>';
 }
 
+// matchesFilters is applied here for the same reason the Grid and the Graph apply
+// it: the sidebar is the sidebar, and a chip that visibly reads as selected has to
+// mean something in whatever view is on screen. It also makes the search box work
+// here, which it previously did not -- typing in it re-rendered this view to no
+// visible effect.
+//
+// A filter can legitimately empty this view (Category "Automobile" contains no
+// crops), so the empty state names the filters rather than claiming the gameset
+// has none.
 function almanacCrops() {
   let list = byGameset(state.gameset)
-    .filter(p => p.classification === 'Plant Product' && p.growing_conditions);
+    .filter(p => p.classification === 'Plant Product' && p.growing_conditions)
+    .filter(matchesFilters);
   // scenarioRestricted(crop) is already a fully transitive check (see
   // scenarioHasMarket) -- for a raw Plant Product it means "not sellable
   // directly, AND every possible thing you could ever process it into,
@@ -2694,16 +2708,23 @@ function renderAlmanac() {
   const el = document.getElementById('almanac-view');
   const crops = almanacCrops();
   const stockCount = almanacLivestock().length;
-  announce(`${crops.length} crop${crops.length === 1 ? '' : 's'} and ${stockCount} livestock product${stockCount === 1 ? '' : 's'} in the Farmer's Almanac.`);
+  const filtered = anyFilterActive();
+  announce(`${crops.length} crop${crops.length === 1 ? '' : 's'} and ${stockCount} livestock product${stockCount === 1 ? '' : 's'} in the Farmer's Almanac${filtered ? ' matching the current filters' : ''}.`);
   if (crops.length === 0 && stockCount === 0) {
-    el.innerHTML = '<div class="empty">No crops or livestock in this gameset.</div>';
+    // Distinguish "this gameset has none" from "your filters excluded them all";
+    // the first is a fact about the game, the second is undoable.
+    el.innerHTML = filtered
+      ? `<div class="empty">No crops or livestock match the current filters.
+         The Almanac covers farmed and raised goods only, so a filter aimed at
+         manufactured products will empty it.</div>`
+      : '<div class="empty">No crops or livestock in this gameset.</div>';
     return;
   }
   if (crops.length === 0) {
     el.innerHTML = livestockAlmanacHtml();
     return;
   }
-  let html = `<div class="count">${crops.length} crop${crops.length === 1 ? '' : 's'} — ${state.gameset} gameset</div>`;
+  let html = `<div class="count">${crops.length} crop${crops.length === 1 ? '' : 's'}${filtered ? ' matching' : ''} — ${state.gameset} gameset</div>`;
   html += `<div class="almanac-legend">
     <span class="item"><span class="climate-dot" style="background:${CLIMATE_COLOR['Cold']}"></span>Cold</span>
     <span class="item"><span class="climate-dot" style="background:${CLIMATE_COLOR['Cool']}"></span>Cool</span>
@@ -2715,7 +2736,11 @@ function renderAlmanac() {
     <span class="item"><span style="border-left:2px solid #57D9A3;padding-left:4px">Sow</span></span>
     <span class="item"><span style="border-right:2px solid #FFAB00;padding-right:4px">Harvest</span></span>
   </div>`;
-  if (state.scenario) {
+  // Gated on showRestricted as well as on there being a scenario: with it off,
+  // almanacCrops has already removed every restricted crop, so this explained
+  // crossed-out rows that were not on screen and told the reader to uncheck a box
+  // that was already unchecked.
+  if (state.scenario && state.showRestricted) {
     html += `<div class="almanac-disclaimer">Crossed-out crops can still be sown and harvested -- the game won't stop you -- but the Sales Unit will never connect: neither the crop itself nor anything made from it, however many stages downstream, can be sold -- it's restricted in this scenario. Uncheck "Show Restricted" above if you'd rather filter them out of the list entirely.</div>`;
   }
   html += `<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 10px">Crops</h2>

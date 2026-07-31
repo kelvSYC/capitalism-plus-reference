@@ -187,7 +187,9 @@ class TestProductionRates(unittest.TestCase):
                 self.assertEqual("Raw Material", c["classification"], c["id"])
 
     def test_extraction_is_complete(self):
-        want = {"site", "unit", "measured_in", "speed", "resource_value", "max_sites"}
+        # measured_in is gone: output_unit now carries the commodity's unit for
+        # every product, so extraction no longer needs its own copy.
+        want = {"site", "unit", "speed", "resource_value", "max_sites"}
         for c in CARDS_DATA:
             if "extraction" in c:
                 self.assertEqual(want, set(c["extraction"]), c["id"])
@@ -234,6 +236,38 @@ class TestProductionRates(unittest.TestCase):
             self.assertTrue(sources, c["id"])
             weights = [by_key[(c["gameset"], a)].get("livestock_stats") for a in sources]
             self.assertTrue(all(weights), f"{c['id']}: a source animal has no weight")
+
+
+class TestUnitsAndQuantities(unittest.TestCase):
+    """output_unit was the project's one declared divergence, null for the 73
+    products with no METHOD recipe. Conflating the unit with the quantity was the
+    error: only the quantity was ever undefined."""
+
+    def test_every_product_carries_a_unit(self):
+        missing = [c["id"] for c in CARDS_DATA if not c.get("output_unit")]
+        self.assertEqual([], missing)
+
+    def test_output_quantity_is_absent_without_a_recipe(self):
+        """A mine or farm produces at a rate, not in batches, so a per-run yield
+        must not appear for anything with no inputs and no recipe."""
+        for c in CARDS_DATA:
+            if c["output_quantity"] is None:
+                continue
+            # Anything claiming a per-run quantity must have a recipe behind it.
+            self.assertTrue(c["inputs"] or c.get("livestock_production"),
+                            f"{c['id']} claims a yield with no recipe")
+
+    def test_the_removed_fields_stay_removed(self):
+        for c in CARDS_DATA:
+            self.assertNotIn("icon_image_id", c, c["id"])
+            self.assertNotIn("graphic_count", c, c["id"])
+
+    def test_build_forbids_the_removed_fields(self):
+        """The build is what stops them coming back, so the list has to be there."""
+        build = (ROOT / "tools" / "build_site.py").read_text(encoding="utf-8")
+        self.assertIn("FORBIDDEN_KEYS", build)
+        self.assertIn("icon_image_id", build)
+        self.assertIn("graphic_count", build)
 
 
 class TestCropPlants(unittest.TestCase):

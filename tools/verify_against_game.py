@@ -232,8 +232,16 @@ def is_product_row(item_row):
 # Places where the dataset knowingly differs from the file. Declared, counted and
 # reported -- never quietly tolerated -- so a new disagreement cannot hide inside
 # an accepted one, and so the count itself is a tripwire if the shape changes.
-KNOWN_DIVERGENCES = {
-    "output_unit": (
+KNOWN_DIVERGENCES = {}
+EXPECTED_DIVERGENCES = 0
+
+_RESOLVED_DIVERGENCES = {
+    # Kept as a record of what was here and how it was settled. output_unit was
+    # null for the 73 products with no METHOD recipe; since the unit itself was
+    # never ambiguous -- ITEM.UNIT agrees with every recipe consuming the
+    # commodity -- the dataset now carries it, and output_quantity alone stays
+    # absent. Nothing is currently tolerated.
+    "output_unit (resolved)": (
         "The dataset leaves output_unit null for the products with no METHOD recipe\n"
         "    (raw materials, crops, livestock), because it treats the field as the unit\n"
         "    of a production RUN. There is no production run for these: a mine or a farm\n"
@@ -251,7 +259,6 @@ KNOWN_DIVERGENCES = {
         "    for crops. None of it is a per-batch yield. Expected count: 73."
     ),
 }
-EXPECTED_DIVERGENCES = 73
 
 
 class Report:
@@ -305,21 +312,14 @@ def verify_products(gameset_dir, cards, report):
             report.check(who, "raw_class", row["CLASS"], card["raw_class"])
             report.check(who, "sale_index", float(row["SALEINDEX"]), float(card["sale_index"]))
             report.check(who, "sellable", row["SALEINDEX"] > 0, card["sellable"])
-            # output_unit: a mismatch is only acceptable in the one shape we
-            # understand -- no recipe, so both output fields are null. Anything
-            # else is a genuine failure.
-            game_unit = normalise_unit(row["UNIT"])
-            our_unit = card["output_unit"] or "unit"
-            if game_unit != our_unit:
-                no_recipe = (code_of.get(row["NAME"]) not in methods
-                             and card["output_unit"] is None
-                             and card["output_quantity"] is None)
-                if no_recipe:
-                    report.divergence(who, "output_unit", game_unit, card["output_unit"])
-                else:
-                    report.check(who, "output_unit", game_unit, our_unit)
-            else:
-                report.check(who, "output_unit", game_unit, our_unit)
+            # Every product now carries its unit, including the ones with no
+            # production run -- the unit was never the ambiguous part.
+            report.check(who, "output_unit", normalise_unit(row["UNIT"]), card["output_unit"])
+            # output_quantity is the field that genuinely does not apply without a
+            # METHOD recipe, and must stay absent for those.
+            if code_of.get(row["NAME"]) not in methods:
+                report.check(who, "no output_quantity without a recipe",
+                             None, card["output_quantity"])
             expected_category = normalise_category(class_name.get(row["CLASS"], ""))
             if card["category"] is not None:
                 report.check(who, "category", expected_category, card["category"])
@@ -366,11 +366,8 @@ def verify_products(gameset_dir, cards, report):
             card = ours.get(name_of.get(row["ITEM_CODE"], ""))
             if card is None or "extraction" not in card:
                 continue
-            item = next((r for r in tables["ITEM"]["rows"]
-                         if r["CODE"] == row["ITEM_CODE"]), None)
             got = {"site": SITE_FOR_FIRM[row["FIRM_CODE"]]["site"],
                    "unit": SITE_FOR_FIRM[row["FIRM_CODE"]]["unit"],
-                   "measured_in": (item["UNIT"] or None) if item else None,
                    "speed": row["SPEED"], "resource_value": row["RES_VALUE"],
                    "max_sites": row["MAX_SITE"]}
             report.check(f"{gameset}/{card['name']}", "extraction", got, card["extraction"])

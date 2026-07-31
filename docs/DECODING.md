@@ -82,7 +82,7 @@ six matter here.
 | `sale_index` | `ITEM.SALEINDEX` | |
 | `sellable` | `ITEM.SALEINDEX > 0` | not a stored flag |
 | `output_quantity` | `METHOD.OQTY` | absent where there is no recipe |
-| `output_unit` | `ITEM.UNIT` | see the divergence below |
+| `output_unit` | `ITEM.UNIT` | blank in the file becomes `"unit"` |
 | `inputs` | `METHOD.INPUT1–5`, `IQTY`, `IQUA` | `IQUA` is `quality_pct` |
 | `livestock_yields` | `FARMLIVE.PRODUCT1–3` | three slots, hence never more than three |
 | `derived_from_livestock` | inverse of the above | |
@@ -90,7 +90,6 @@ six matter here.
 | `used_in` | inverse of `inputs` | |
 | `production_technology_pct` | `100 − Σ inputs[].quality_pct` | see [Derived fields](#derived-fields) |
 | `classification`, `industry` | our own grouping of `raw_class` | see below |
-| `icon_image_id`, `graphic_count` | **unknown** | see below |
 
 **`METHOD` has exactly five input slots.** That is why no recipe in the game has
 more than five ingredients — a structural limit, not a coincidence of the data.
@@ -125,18 +124,23 @@ invisible until the verifier forced them to be named.
 `raw_class` with no conflicts, so they are reproducible — but they are our
 taxonomy, and `classification_source` in the dataset should be read that way.
 
-### Known divergence: units vs quantities
+### Units and quantities
 
-`output_unit` is null in the dataset for the 73 products with no `METHOD` recipe —
-raw materials, crops and livestock — because the dataset treats the field as the
-unit of a production *run*. There is no run for these: a mine or a farm produces
-at a rate, not in batches.
+Each commodity has exactly one unit, and `ITEM.UNIT` agrees with the unit that
+commodity carries in every recipe consuming it — verified across all three
+gamesets, 0 disagreements. Gold is `oz` whether it comes out of a mine or goes
+into Jewelry. `output_unit` is therefore populated for every product.
 
-**The unit itself is not ambiguous.** Each commodity has exactly one unit, and
-`ITEM.UNIT` agrees with the unit that commodity carries in every recipe that
-consumes it — verified across all three gamesets, 0 disagreements. Gold is `oz`
-whether it comes out of a mine or goes into Jewelry. So the dataset is missing a
-unit it *could* state; the genuinely undefined thing is the quantity.
+`output_quantity` is a different matter and stays absent for the 73 products with
+no `METHOD` recipe, because a mine or a farm produces at a *rate*, not in batches.
+The site's Output section is gated on `output_quantity`, so a raw material never
+claims a per-run yield. The verifier asserts both halves: the unit is present and
+correct, and the quantity is absent wherever there is no recipe.
+
+> This was the project's one declared divergence, with `output_unit` left null for
+> those 73 products on the reasoning that the field meant "unit of a production
+> run". Conflating the unit with the quantity was the error — only the quantity was
+> ever undefined. There are now no tolerated divergences.
 
 Where the rate lives instead, none of it a per-batch yield:
 
@@ -146,74 +150,17 @@ Where the rate lives instead, none of it a per-batch yield:
 | Livestock products | `FARMPROD` | `MONTH_QTY` with a `SMONTH`–`EMONTH` window |
 | Crops | `FARMCROP` | the sow/harvest window only |
 
-`FARMPROD` distinguishes two ways a livestock good arrives, and the site now
-surfaces both (see [Production rates](#production-rates)).
-
-> **Correction.** An earlier version of this document said `KILLFLAG` marks the
-> slaughter products, having observed it set on every row. That observation was
-> an artefact of a bug in our own reader: logical columns store ASCII `'T'`/`'F'`,
-> and testing for a non-zero byte decodes `'F'` as true, so *every* boolean in
-> every table read as set. With that fixed, `KILLFLAG` does exactly what the name
-> suggests, and the conclusion happens to be the one originally stated — but it
-> was not supported by the evidence at the time.
-
-The verifier declares and counts this divergence rather than tolerating it, so a
-new disagreement cannot hide inside it, and it separately asserts the
-one-unit-per-commodity property that makes the above true.
-
-### Production rates
-
-Added to the dataset by `tools/augment_from_game.py` and checked by the verifier.
-The game's own Farmer's Guide and manuals publish **none** of this — a player has
-to establish it by experiment, which is exactly why a reference should carry it.
-
-`extraction`, from `RAW`, on raw materials: which site type works it
-(`FIRM_CODE` → Mine / Lumber Mill / Oil Well), the commodity's unit, relative
-speed, resource value, and how many sites a map may hold.
-
-**There is no units-per-month figure for extraction, and no table supplies one.**
-This is an asymmetry in the game's data rather than a gap in our reading:
-`FARMPROD` carries both `SPEED` and `MONTH_QTY`, so a livestock yield can be
-stated absolutely ("9 lb per month"), while `RAW` carries `SPEED` alone. All 16
-tables were checked. `RAW.SPEED` is also on a different scale from
-`FARMPROD.SPEED` — 1, 2 and 4 rather than percentages around 100 — so it has no
-absolute anchor at all, and the site states it against the other materials in the
-same gameset rather than against a baseline we would have had to invent.
-
-`MAX_SITE` describes the **gameset**, not the game being played, so the product
-page scopes it to "an unrestricted game" when the material is restricted.
-
-Raw materials are never excluded by class — `RAW` appears in no scenario's
-`excludedClasses` — but they are restricted *transitively* when every downstream
-consumer dies: Gold under Italy loses Jewelry, its only consumer. Mechanically a
-restricted raw material behaves like restricted livestock: a site could still be
-worked, and the Sales Unit would refuse to connect. In practice the distinction
-is moot, since a scenario will not offer an extraction site for a resource
-nothing can use. Either way the map contents live in the `.SCN` data, which we
-have not decoded, so the page scopes the figure rather than asserting anything
-about a particular map.
-
-`livestock_production`, from `FARMPROD`, on livestock-derived goods. Two modes,
-never both:
-
-- **continuous** — a monthly quantity within a season. Milk 555 quart/month all
-  year, Wool 9 lb/month but only June–October, Eggs 1.7 dozen/month.
-- **slaughter** — a percentage of the animal's weight. Meat is 100%, Leather 20%,
-  Tallow 100%.
-
-`KILLFLAG`, `P_PERCENT > 0` and `MONTH_QTY == 0` agree on all 25 rows across all
-three gamesets, so the mode is unambiguous. The verifier asserts that agreement
-as well as the values.
-
-`livestock_stats`, from `FARMLIVE`, on the animals: weight, growth and
-reproduction rates. Weight is what makes the slaughter percentages concrete —
-Cattle at 675 lb gives 675 lb of Frozen Beef and 135 lb of Leather.
+`FARMPROD` is worth calling out: Milk is 555 quart/month year-round, Wool 9 lb/month
+but **only in months 6–10**, Eggs 1.7 dozen/month. The slaughter products carry
+`MONTH_QTY` of 0 with `KILLFLAG` set.
 
 ### Still unresolved
 
-The dataset's `icon_image_id` and `graphic_count` match nothing in the files (see
-[Graphics](#graphics) below), so both came out of the icon-extraction process
-rather than the game data.
+`icon_image_id` and `graphic_count` **have been removed from the dataset.** They
+matched nothing in the game's files and no code read either, so they amounted to an
+invitation to trust a number whose origin nobody could state.
+`tools/build_site.py` now fails if they reappear. Evidence under
+[Graphics](#graphics) below.
 
 Roughly 36 of the 64 header bytes per table remain unexplained (`<type?>`,
 `<unused>`), which does not matter for reading the tables.
@@ -240,9 +187,9 @@ Two corrections to earlier assumptions:
   entries in some other container. The Palette grammar describes
   `RESOURCE/PAL_STD.RES`, which it matches exactly.
 - **`ITEM.ICONPTR` indexes `.II`, not `.II2`.** It is a byte offset with the
-  3608-byte stride (Car = 18040 = record 5). The dataset's `icon_image_id` for
-  Car is 10, and Car is entry 6 in `.II2`, so `icon_image_id` corresponds to
-  neither — it is extraction-tool numbering.
+  3608-byte stride (Car = 18040 = record 5). The `icon_image_id` the dataset used
+  to carry was 10 for Car, while Car is entry 6 in `.II2` — so it matched neither,
+  which is why the field is gone.
 
 `.II2` entry names are **DOS 8.3 filenames**, matching `ITEM.FILENAME` — which is
 why the numeric suffixes (`MILK-6`, `CAR-9`, `ALUMIN-1`) correlate with nothing:

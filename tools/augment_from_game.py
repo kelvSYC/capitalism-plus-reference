@@ -27,6 +27,29 @@ plant                 on the six crops that have one, from FARMCROP.PLANT_CODE
                       the growing plant as distinct from the harvested crop. The
                       game's own Farmer's Guide shows both images side by side;
                       its Manufacturer's Guide shows only the product.
+output_unit           filled in from ITEM.UNIT wherever it was null -- see below
+
+Fields removed
+--------------
+icon_image_id, graphic_count
+                      Neither corresponds to anything in the game's files, and no
+                      code reads either. ICONPTR indexes .II with a 3608-byte
+                      stride; the recorded icon_image_id matches neither that nor
+                      .II2's ordering, so both came out of a since-lost extraction
+                      tool. Carrying unverifiable data nobody uses invites someone
+                      to trust it later.
+
+Why output_unit is filled rather than left null
+-----------------------------------------------
+It was null for the 73 products with no METHOD recipe, because the dataset treated
+it as the unit of a production RUN and a mine has no runs. But the unit itself was
+never in doubt: each commodity has exactly one, and ITEM.UNIT agrees with the unit
+that commodity carries in every recipe consuming it -- verified, 0 disagreements.
+Gold is 'oz' whether mined or bought.
+
+output_quantity stays null for those products, which is the field that genuinely
+does not apply. The site's Output section is gated on output_quantity, so filling
+the unit alone cannot produce a phantom "yield N per production run".
 
 Requires Python 3.8+, standard library only.
 """
@@ -64,6 +87,11 @@ def livestock_production(row, unit):
             "all_year": row["SMONTH"] == 1 and row["EMONTH"] == 12}
 
 
+# Recorded by a tool nobody has, matching nothing in the game's files, and read
+# by no code. Removed rather than left to look authoritative.
+UNVERIFIABLE_FIELDS = ("icon_image_id", "graphic_count")
+
+
 def build_additions(game_dir):
     """(gameset, product name) -> dict of new fields."""
     additions = {}
@@ -75,6 +103,14 @@ def build_additions(game_dir):
         name_of = {r["CODE"]: r["NAME"] for r in tables["ITEM"]["rows"]}
         unit_of = {r["CODE"]: r["UNIT"] for r in tables["ITEM"]["rows"]}
 
+        # One unit per commodity, from ITEM.UNIT. Blank in the file for most
+        # manufactured goods, where the dataset's convention is "unit".
+        for row in tables["ITEM"]["rows"]:
+            if row["CLASS"] == "PLANT":          # plants are not products
+                continue
+            additions.setdefault((gameset, row["NAME"]), {})["output_unit"] = \
+                row["UNIT"] or "unit"
+
         for row in tables.get("RAW", {}).get("rows", []):
             product = name_of.get(row["ITEM_CODE"])
             if product is None:
@@ -83,11 +119,6 @@ def build_additions(game_dir):
             additions.setdefault((gameset, product), {})["extraction"] = {
                 "site": site["site"],
                 "unit": site["unit"],
-                # The commodity's own unit, from ITEM.UNIT. The dataset's
-                # output_unit is null for these (see the known divergence in
-                # docs/DECODING.md) but a page still has to say what a mine
-                # produces, and this unit is verified unambiguous.
-                "measured_in": unit_of.get(row["ITEM_CODE"]) or None,
                 "speed": row["SPEED"],
                 "resource_value": row["RES_VALUE"],
                 "max_sites": row["MAX_SITE"],
@@ -146,9 +177,13 @@ def main():
     cards = json.loads(CARDS.read_text(encoding="utf-8"))
     additions = build_additions(game)
 
-    added = changed = 0
+    added = changed = removed = 0
     unmatched = set(additions)
     for card in cards:
+        for dead in UNVERIFIABLE_FIELDS:
+            if dead in card:
+                del card[dead]
+                removed += 1
         key = (card["gameset"], card["name"])
         new = additions.get(key)
         if not new:
@@ -165,7 +200,8 @@ def main():
         print(f"warning: {len(unmatched)} game rows matched no product: "
               f"{sorted(unmatched)[:5]}")
 
-    print(f"{added} fields added, {changed} updated, across {len(cards)} products")
+    print(f"{added} fields added, {changed} updated, {removed} removed, "
+          f"across {len(cards)} products")
     if args.dry_run:
         print("--dry-run: nothing written")
         return 0

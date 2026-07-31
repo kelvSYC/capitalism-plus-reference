@@ -112,20 +112,20 @@ dependency graph with a table equivalent, and scenario-goal filtering (including
 domination targets, byte-decoded from real save files) across all three
 gamesets — but several things stand between here and go-live:
 
-- **Accessibility.** The site is effectively mouse-only: no `tabindex`, `role`,
-  `aria-*` or key handlers anywhere, so a keyboard user can reach three controls.
-  Several badge colours fail WCAG AA contrast badly (white on `#FFAB00` is
-  1.88:1). No focus management on view change.
-- **Mobile.** No `<meta name="viewport">` and no media queries at all; the fixed
-  220px sidebar leaves ~115px of content width on a phone.
+- **Accessibility is structurally done but unverified.** Keyboard operability,
+  focus preservation across re-renders, WCAG AA contrast, a text equivalent for
+  the dependency graph, and the growing calendar in text are all in place and
+  covered by tests. None of it has been through an actual screen reader, which is
+  the gap between "asserted" and "usable".
 - **The icon question** in `ATTRIBUTION.md` is unresolved, and gates any public
   deployment. The site is designed to work without artwork, but that is the
   permanent state until the question is answered.
 - **Reproducibility.** `index_cards.json` was assembled by hand from
   reverse-engineered file formats; no extractor has ever existed. There is now a
   verifier instead — `tools/verify_against_game.py` checks the committed data
-  against a real copy of the game (1,598 checks, 0 failures) — but nobody can yet
-  regenerate the dataset from scratch. See `docs/DECODING.md`.
+  against a real copy of the game (2,020 checks, 0 failures, no tolerated
+  divergences) — but nobody can yet regenerate the dataset from scratch. See
+  `docs/DECODING.md`.
 
 The `pages` workflow is manual-only and refuses to deploy until its preflight
 checks pass, so none of the above can be published by accident.

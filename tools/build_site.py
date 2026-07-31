@@ -41,8 +41,13 @@ PLACEHOLDER = "__PRODUCTS_JSON__"
 # products respectively) and every read of them in the template is guarded.
 REQUIRED_KEYS = frozenset({
     "id", "gameset", "name", "category", "classification", "raw_class",
-    "industry", "sellable", "icon_file", "inputs", "used_in",
+    "industry", "sellable", "icon_file", "inputs", "used_in", "output_unit",
 })
+
+# Recorded by a tool nobody has, matching nothing in the game's files, read by no
+# code. Removed from the dataset; the build fails if they come back, because their
+# presence invites someone to trust them.
+FORBIDDEN_KEYS = frozenset({"icon_image_id", "graphic_count"})
 
 
 def render() -> str:
@@ -78,6 +83,12 @@ def render() -> str:
             sys.exit(
                 f"error: {CARDS.name}[{i}] ({card.get('id')!r}) missing "
                 f"required key(s): {', '.join(sorted(missing))}"
+            )
+        forbidden = FORBIDDEN_KEYS & card.keys()
+        if forbidden:
+            sys.exit(
+                f"error: {CARDS.name}[{i}] ({card.get('id')!r}) carries "
+                f"unverifiable key(s): {', '.join(sorted(forbidden))}"
             )
 
     # The payload lands inside an inline <script>, which is an HTML *raw-text*

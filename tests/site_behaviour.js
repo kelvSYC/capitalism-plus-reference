@@ -718,6 +718,94 @@ state.graphLayout = 'table';
 setView('graph');
 ok('the graph table shows products only', !pane('graph-view').innerHTML.includes('Rubber_Plant'));
 
+print('--- the Almanac honours the sidebar, like every other view ---');
+// It previously ignored the search box and every chip, so a visibly-selected
+// filter meant nothing here and typing in the search box re-rendered to no effect.
+reset();
+state.gameset = 'Standard';
+setView('almanac');
+const allCrops = almanacCrops().length;
+const allStock = almanacLivestock().length;
+ok('unfiltered, the Almanac shows everything (' + allCrops + ' crops, ' + allStock + ' livestock)',
+   allCrops > 0 && allStock > 0);
+
+state.search = 'wheat';
+setView('almanac');
+ok('search narrows the crop table', almanacCrops().length < allCrops);
+ok('search finds the crop it names', almanacCrops().some(p => p.name === 'Wheat'));
+ok('search empties livestock when nothing matches', almanacLivestock().length === 0);
+ok('the rendered table reflects the search',
+   pane('almanac-view').innerHTML.includes('Wheat')
+   && !pane('almanac-view').innerHTML.includes('>Cotton</button>'));
+
+reset();
+state.classification = 'Plant Product';
+setView('almanac');
+ok('a chip that selects crops keeps them', almanacCrops().length === allCrops);
+ok('...and excludes the livestock half', almanacLivestock().length === 0);
+
+// A filter aimed at manufactured goods legitimately empties the whole view. It
+// must say the filters did it, not that the gameset has no crops.
+reset();
+state.category = ['Automobile'];
+setView('almanac');
+ok('a manufactured-goods filter empties the Almanac',
+   almanacCrops().length === 0 && almanacLivestock().length === 0);
+const emptyHtml = pane('almanac-view').innerHTML;
+ok('the empty state blames the filters, not the gameset',
+   emptyHtml.includes('match the current filters') && !emptyHtml.includes('in this gameset'));
+ok('the empty state explains why the Almanac is narrow',
+   emptyHtml.includes('farmed and raised goods only'));
+ok('the announcement says the count is filtered',
+   document.getElementById('resultStatus').textContent.includes('matching the current filters'));
+
+// With no filters the wording goes back to being a statement about the gameset.
+reset();
+setView('almanac');
+ok('unfiltered, the count line makes no claim about filters',
+   !pane('almanac-view').innerHTML.includes('crops matching'));
+
+print('--- two long-standing bugs ---');
+// The Almanac disclaimer explains crossed-out crops and tells the reader to
+// uncheck Show Restricted. With it already off, almanacCrops has removed every
+// restricted crop, so there was nothing crossed out and nothing to uncheck.
+reset();
+state.gameset = 'Standard';
+state.scenario = 'DRAGON';
+state.showRestricted = false;
+setView('almanac');
+ok('no disclaimer when restricted crops are already hidden',
+   !pane('almanac-view').innerHTML.includes('almanac-disclaimer'));
+ok('restricted crops really are absent in that state',
+   almanacCrops().every(p => !scenarioRestricted(p)));
+state.showRestricted = true;
+setView('almanac');
+ok('the disclaimer appears once crossed-out rows are on screen',
+   pane('almanac-view').innerHTML.includes('almanac-disclaimer'));
+
+// Clicking the gameset tab you are already on used to clear the scenario and
+// every filter.
+reset();
+renderAll();
+state.gameset = 'Standard';
+state.scenario = 'DRAGON';
+state.category = ['Automobile'];
+state.showRestricted = true;
+renderAll();
+const activeTab = document.getElementById('gamesetTabs').children
+  .find(d => d.textContent === 'Standard');
+ok('the active gameset tab is found', !!activeTab);
+activeTab.onclick();
+ok('re-clicking the active tab keeps the scenario', state.scenario === 'DRAGON');
+ok('re-clicking the active tab keeps the filters',
+   !!state.category && state.category.includes('Automobile') && state.showRestricted === true);
+// Switching to a different gameset still resets, which is the point of the reset.
+const other = document.getElementById('gamesetTabs').children
+  .find(d => d.textContent === 'Alternative');
+other.onclick();
+ok('switching gameset still clears the scenario', state.scenario === null);
+ok('switching gameset still clears the filters', state.category === null);
+
 print('--- wide tables scroll on their own ---');
 // Previously the whole document scrolled sideways, and the livestock table would
 // not shrink to the width the crops table managed because Leather's source list
