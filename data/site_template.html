@@ -55,10 +55,11 @@
   header h1 { font-size: 18px; margin: 0; white-space: nowrap; }
   header h1 span { color: var(--muted); font-weight: normal; font-size: 13px; }
   .tabs { display: flex; gap: 4px; }
-  /* The three gamesets are one choice, not three independent controls, so they
-     read as a single segmented button: shared edges, only the outer corners
-     rounded. Deliberately NOT done with overflow:hidden on the container --
-     that would clip the focus ring on the first and last segment. */
+  /* Segmented control, used by both tablists. Each is one choice among mutually
+     exclusive options, not a row of independent controls, so the buttons share
+     edges and only the outer corners are rounded.
+     Deliberately NOT done with overflow:hidden on the container -- that would
+     clip the focus ring on the first and last segment. */
   .tabs.segmented { gap: 0; }
   .tabs.segmented .tab { border-radius: 0; border-right-width: 0; }
   .tabs.segmented .tab:first-child { border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
@@ -247,8 +248,15 @@
   footer.attribution {
     border-top: 1px solid var(--border); background: var(--panel);
     padding: 14px 20px; font-size: 11px; line-height: 1.6; color: var(--muted);
+    /* Columns rather than one long measure. A single block capped at a readable
+       line length left most of a wide screen empty, but uncapping it would give
+       200-character lines. auto-fit collapses to fewer columns as the viewport
+       narrows, so this needs no breakpoint of its own. */
+    display: grid; gap: 4px 28px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    align-items: start;
   }
-  footer.attribution p { margin: 0 0 4px; max-width: 90ch; }
+  footer.attribution p { margin: 0; }
   footer.attribution a { color: #4C9AFF; }
   footer.attribution strong { color: var(--text); font-weight: 600; }
 
@@ -295,7 +303,7 @@
        announced. -->
   <label class="sr-only" for="searchBox">Search products</label>
   <input type="search" id="searchBox" placeholder="Search products…">
-  <div class="tabs" role="tablist" aria-label="View">
+  <div class="tabs segmented" role="tablist" aria-label="View">
     <button type="button" class="tab" id="viewGrid" role="tab" aria-controls="grid-view" onclick="setView('grid')">Grid</button>
     <button type="button" class="tab" id="viewGraph" role="tab" aria-controls="graph-view" onclick="setView('graph')">Dependency Graph</button>
     <button type="button" class="tab" id="viewAlmanac" role="tab" aria-controls="almanac-view" onclick="setView('almanac')">Farmer's Almanac</button>
