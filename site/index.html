@@ -93,7 +93,12 @@
      to read. 0.55 lands at 4.98:1 while still reading as clearly de-emphasised. */
   .chip.chip-restricted { opacity: 0.55; }
   .chip.chip-restricted .label { text-decoration: line-through; }
-  .chip.chip-partial { opacity: 0.75; border: 1px dashed var(--muted); }
+  /* A partial group is an annotation, not a state. It previously carried a
+     dashed border and reduced opacity, which read as a stronger claim than the
+     fact supports -- "some of these are restricted" says little about any
+     individual item -- and the border also shifted the chip 2px relative to its
+     neighbours. The marker glyph alone now carries it. */
+  .chip-flag { color: var(--muted); font-weight: 600; }
   .swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
   main { flex: 1; padding: 20px; min-width: 0; }
   .grid {
@@ -614,12 +619,22 @@ function readableOnWhite(hex) {
   return hexOf(rgb);
 }
 
-const EXCLUDED_COLOR = "#B00020";
+// ---- Restriction colours: one per mechanism, not one per label ----
+//
+// restrictionKind's own structure is the argument for two. Its first branch is
+// cannotProduce -- the item cannot be brought into existence. Everything after
+// it is !scenarioHasMarket -- the item is made or grown or raised perfectly
+// well, and then has nowhere to go. The four labels under that second branch
+// ("Not Sellable Here", "Not Growable Here", "No Market Here") differ only in
+// which game unit refuses to act, and the label text already says which.
+//
+// So colour carries the mechanism and the words carry the detail. This replaces
+// four hues picked at random -- a purple, a green, a red and an amber that
+// encoded nothing in particular and had to be memorised individually.
+const PRODUCTION_BLOCKED_COLOR = "#B00020";   // red: cannot be produced at all
 // Amber, lightened from #B36B00 so it clears WCAG AA against SOMETHING: the old
 // value managed only 4.18:1 on white and 4.33:1 on ink, failing both.
-const NO_MARKET_COLOR = "#D98E00";
-const MFG_BLOCKED_COLOR = "#6B4FBB";
-const CROP_BLOCKED_COLOR = "#2E7D32";
+const NO_MARKET_COLOR = "#D98E00";             // amber: produced fine, dead end
 
 function goodsTypeBadge(p, size) {
   const gt = goodsType(p);
@@ -813,11 +828,11 @@ function restrictionKind(p) {
 function restrictionKindInfo(p, kind) {
   switch (kind) {
     case 'mfg':
-      return { label: isRawMaterial(p) ? 'Cannot Be Extracted Here' : 'Cannot Be Made Here', color: MFG_BLOCKED_COLOR, title: mfgTitleFor(p) };
+      return { label: isRawMaterial(p) ? 'Cannot Be Extracted Here' : 'Cannot Be Made Here', color: PRODUCTION_BLOCKED_COLOR, title: mfgTitleFor(p) };
     case 'retail':
-      return { label: 'Not Sellable Here', color: EXCLUDED_COLOR, title: RETAIL_BLOCKED_TITLE };
+      return { label: 'Not Sellable Here', color: NO_MARKET_COLOR, title: RETAIL_BLOCKED_TITLE };
     case 'grow':
-      return { label: 'Not Growable Here', color: CROP_BLOCKED_COLOR, title: NOT_GROWABLE_TITLE };
+      return { label: 'Not Growable Here', color: NO_MARKET_COLOR, title: NOT_GROWABLE_TITLE };
     case 'market':
       return { label: 'No Market Here', color: NO_MARKET_COLOR, title: marketTitleFor(p) };
     case 'raise':
@@ -1260,7 +1275,9 @@ const CHIP_RESTRICTION_TEXT = {
 function makeChip(label, color, active, onclick, level) {
   const d = document.createElement('button');
   d.type = 'button';
-  const cls = level === 'full' ? ' chip-restricted' : level === 'partial' ? ' chip-partial' : '';
+  // Only 'full' changes the chip's appearance. 'partial' is carried by the
+  // marker glyph and the visually-hidden note alone -- see .chip-flag.
+  const cls = level === 'full' ? ' chip-restricted' : '';
   d.className = 'chip' + (active ? ' active' : '') + cls;
   d.setAttribute('aria-pressed', String(!!active));
   if (color) {
@@ -1273,6 +1290,7 @@ function makeChip(label, color, active, onclick, level) {
   span.className = 'label';
   if (level === 'full' || level === 'partial') {
     const glyph = document.createElement('span');
+    glyph.className = 'chip-flag';
     glyph.setAttribute('aria-hidden', 'true');
     glyph.textContent = level === 'full' ? '✕ ' : '± ';
     span.appendChild(glyph);
@@ -1978,7 +1996,7 @@ function drawLayeredGraph(svg, nodeList, opts) {
     el(g, 'circle', {
       r: r + 2,
       fill: CLASS_SOLID[p.classification] || '#888',
-      stroke: isFocal(p) ? '#fff' : (restricted ? '#B00020' : '#0006'),
+      stroke: isFocal(p) ? '#fff' : (restricted ? PRODUCTION_BLOCKED_COLOR : '#0006'),
       'stroke-width': isFocal(p) ? 2.5 : (restricted ? 2 : 1),
       'stroke-dasharray': restricted ? '3,2' : null,
     });

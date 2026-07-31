@@ -303,6 +303,27 @@ ok('Retail Product, Retailing and Consumer Goods share one blue',
    CLASS_SOLID['Retail Product'] === CONSUMER_GOODS_COLOR);
 ok('Livestock and Farming share one orange',
    CLASS_SOLID['Livestock'] === INDUSTRY_COLOR['Farming']);
+ok('Raw Material and Raw Material Production share one pink',
+   CLASS_SOLID['Raw Material'] === INDUSTRY_COLOR['Raw Material Production']);
+// Nothing outside PALETTE may introduce a classification or industry colour.
+ok('every classification and industry colour comes from PALETTE',
+   [...Object.values(CLASS_SOLID), ...Object.values(INDUSTRY_COLOR)]
+     .every(c => Object.values(PALETTE).includes(c)));
+
+print('--- restriction colour encodes the mechanism, not the label ---');
+// Two mechanisms: cannot be produced, or produced fine with no buyer anywhere.
+// The four labels under the second differ only in which unit refuses to act.
+const kindColour = kind => {
+  const probe = PRODUCTS[0];
+  return restrictionKindInfo(probe, kind).color;
+};
+ok('cannot-produce is the production-blocked colour',
+   kindColour('mfg') === PRODUCTION_BLOCKED_COLOR);
+ok('all four no-buyer kinds share the no-market colour',
+   ['retail', 'grow', 'market', 'raise'].every(k => kindColour(k) === NO_MARKET_COLOR),
+   ['retail', 'grow', 'market', 'raise'].map(k => k + '=' + kindColour(k)).join(' '));
+ok('restriction palette is exactly two colours',
+   new Set(['mfg', 'retail', 'grow', 'market', 'raise'].map(kindColour)).size === 2);
 
 // The livestock lineage must stay a warm family: goods derived from an orange
 // animal should not look unrelated to it. R > G > B is a crude but sufficient
@@ -333,7 +354,7 @@ const AA = 4.5;
 const swatches = [
   ...Object.values(CLASS_SOLID),
   CONSUMER_GOODS_COLOR, INDUSTRIAL_GOODS_COLOR,
-  EXCLUDED_COLOR, NO_MARKET_COLOR, MFG_BLOCKED_COLOR, CROP_BLOCKED_COLOR,
+  PRODUCTION_BLOCKED_COLOR, NO_MARKET_COLOR,
   '#555b66',
 ];
 for (let i = 0; i < 8; i++) swatches.push(pctColor(i));
@@ -348,7 +369,7 @@ ok('every badge/bar colour clears AA with its computed foreground (' + swatches.
 ok('onColor picks dark text on light amber', onColor('#FFAB00') === INK);
 ok('onColor picks dark text on light green', onColor('#57D9A3') === INK);
 ok('onColor picks white on dark blue', onColor('#0533FF') === '#ffffff');
-ok('onColor picks white on dark red', onColor(EXCLUDED_COLOR) === '#ffffff');
+ok('onColor picks white on dark red', onColor(PRODUCTION_BLOCKED_COLOR) === '#ffffff');
 ok('NO_MARKET_COLOR clears AA (was #B36B00: 4.18 white / 4.33 ink, failing both)',
    contrastRatio(NO_MARKET_COLOR, onColor(NO_MARKET_COLOR)) >= AA,
    contrastRatio(NO_MARKET_COLOR, onColor(NO_MARKET_COLOR)).toFixed(2));
@@ -419,6 +440,19 @@ ok('a fully-restricted chip carries readable restriction text',
 ok('the decorative glyph is hidden from assistive tech',
    restrictedChip.children.some(c =>
      (c.children || []).some(g => g.getAttribute && g.getAttribute('aria-hidden') === 'true')));
+
+print('--- a partial group is annotated, not restyled ---');
+reset();
+const partialChip = makeChip('Livestock', '#FF9300', false, () => {}, 'partial');
+ok('a partial chip is not dimmed or bordered',
+   partialChip.className === 'chip', partialChip.className);
+ok('a partial chip still carries its marker glyph',
+   JSON.stringify(partialChip.children).includes('chip-flag'));
+ok('a partial chip still explains itself to assistive tech',
+   partialChip.children.some(c => c.className === 'sr-only' && c.textContent.includes('Some products')));
+const fullChip = makeChip('Cigarettes', '#FF2600', false, () => {}, 'full');
+ok('a fully-restricted chip keeps its stronger treatment',
+   fullChip.className.includes('chip-restricted'));
 
 print('--- filtering is announced ---');
 reset();
