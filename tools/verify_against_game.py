@@ -359,7 +359,7 @@ def verify_products(gameset_dir, cards, report):
             report.check(f"{gameset}/{animal}", "livestock_yields",
                          yields, card.get("livestock_yields"))
 
-        # Production rates -- the fields augment_from_game.py adds. None of this
+        # Production rates -- the fields production_detail_from_game.py adds. None of this
         # appears in the game's own Farmer's Guide, so it is exactly the sort of
         # thing that would rot unnoticed if it were not checked.
         for row in tables.get("RAW", {}).get("rows", []):

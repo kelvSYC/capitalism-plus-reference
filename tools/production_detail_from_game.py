@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """
-augment_from_game.py — rewrite the production-rate fields of data/index_cards.json
-from the game's own tables.
+production_detail_from_game.py — re-read the production-detail fields of
+data/index_cards.json from the game's own tables.
+
+**Scope: the five fields listed below, and nothing else.** This does not produce
+the catalogue. Names, classes, categories, recipes and crop conditions come from
+ITEM, ITEMCLAS, METHOD and FARMCROP, and no committed tool writes them -- which is
+the mechanical gap docs/DECODING.md describes. What this covers is the detail
+hanging off FARMPROD, RAW, FARMLIVE and FARMCROP.PLANT_CODE: how fast a thing is
+produced or extracted, in what, and from which animal or plant.
 
 **The committed dataset is not waiting on this.** index_cards.json holds every
 field this writes; the site builds and the verifier passes with no game present,
@@ -9,21 +16,20 @@ and `--dry-run` against a retail copy reports nothing to do. tests/
 test_against_game.py asserts exactly that, so the day this tool finds work is the
 day the dataset has drifted.
 
-What it is for, then: the five fields below are read out of FARMPROD, RAW,
-FARMLIVE and FARMCROP by rules that live in code here rather than in a paragraph
+What it is for, then: those rules live in code here rather than in a paragraph
 someone has to trust. verify_against_game.py holds the same knowledge as a reader
 and checks the committed values against a real copy; this holds it as a writer and
 can reproduce them. Neither is a build step -- the game is not a dependency and
 cannot be one.
 
-    python3 tools/augment_from_game.py --game-dir "/path/to/game" [--dry-run]
+    python3 tools/production_detail_from_game.py --game-dir "/path/to/game" [--dry-run]
 
 Why these fields are worth having: none of this appears in the game's own
 Farmer's Guide or its manuals. A player has to establish it by experiment. That
 is precisely the sort of thing a reference should carry.
 
-Fields added
-------------
+Fields covered
+--------------
 extraction            on raw materials, from RAW
                       which site type works it, relative speed, resource value,
                       and how many sites a map may hold

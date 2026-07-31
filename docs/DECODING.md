@@ -24,7 +24,7 @@ game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
 > **derived by a documented rule that a test asserts** — see the table below.
 > `tools/verify_against_game.py` implements the `.SET` container and checks the
 > data against a retail copy: **2,020 checks, 0 failures, no tolerated
-> divergences.** `tools/augment_from_game.py` writes five of the fields outright,
+> divergences.** `tools/production_detail_from_game.py` writes five of the fields outright,
 > and `tools/extract_icons.py` reproduces the artwork.
 >
 > What does not exist is a single command that regenerates the whole file from

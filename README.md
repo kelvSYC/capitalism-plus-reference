@@ -34,11 +34,11 @@ data/
   index_cards.csv       the scalar columns of the above, for spreadsheets
                         (a hand-maintained projection, not a build output)
 tools/
-  build_site.py            regenerates site/index.html from the template + dataset
-  verify_against_game.py   checks the data against a real copy of the game
-  augment_from_game.py     reproduces the production-rate fields from the game;
-                           a no-op against the committed data, which is complete
-  extract_icons.py         builds site/images/ from your own copy of the game
+  build_site.py                   regenerates site/index.html from template + dataset
+  verify_against_game.py          checks the whole dataset against a real copy
+  production_detail_from_game.py  re-reads the farming and raw-material fields
+                                  only; a no-op against the committed data
+  extract_icons.py                builds site/images/ from your own copy
 docs/
   DECODING.md     the .SET / .SCN file formats and how each fact was verified
   formats/        Synalyze It! / Hexinator binary grammars for those formats
@@ -126,10 +126,9 @@ gamesets — but several things stand between here and go-live:
   tool or derived by a rule a test asserts, and
   `tools/verify_against_game.py` checks the whole dataset against a retail copy
   (2,020 checks, 0 failures, no tolerated divergences). What is missing is a single
-  command that regenerates `index_cards.json` from nothing — the original was
-  assembled by hand — but the reader, the field mapping and the derivation rules
-  are all committed, so that is a mechanical gap rather than a research one. See
-  `docs/DECODING.md`.
+  command that regenerates `index_cards.json` from nothing, but the reader, the
+  field mapping and the derivation rules are all committed, so that is a
+  mechanical gap rather than a research one. See `docs/DECODING.md`.
 
 The `pages` workflow is manual-only and refuses to deploy until its preflight
 checks pass, so none of the above can be published by accident.

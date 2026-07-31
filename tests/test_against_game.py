@@ -58,9 +58,10 @@ class TestAgainstGameFiles(unittest.TestCase):
 
 
 class TestDatasetIsComplete(unittest.TestCase):
-    def test_augmenting_from_the_game_changes_nothing(self):
-        """The committed dataset already holds everything augment_from_game.py
-        would write, so a fresh run against a retail copy is a no-op.
+    def test_re_reading_production_detail_from_the_game_changes_nothing(self):
+        """The committed dataset already holds every field
+        production_detail_from_game.py writes, so a fresh run against a retail
+        copy is a no-op.
 
         This is what separates the tool from a build step. index_cards.json is
         complete as committed -- the site builds, and the verifier passes, with
@@ -73,7 +74,7 @@ class TestDatasetIsComplete(unittest.TestCase):
         if directory is None:
             self.skipTest("set CAPITALISM_GAME_DIR to a game directory to run this")
         result = subprocess.run(
-            [sys.executable, str(ROOT / "tools" / "augment_from_game.py"),
+            [sys.executable, str(ROOT / "tools" / "production_detail_from_game.py"),
              "--game-dir", directory, "--dry-run"],
             capture_output=True, text=True,
         )
