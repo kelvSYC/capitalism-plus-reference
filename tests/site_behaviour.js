@@ -658,17 +658,51 @@ reset();
 state.gameset = 'Standard';
 openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Rubber').id);
 let cd = pane('detail-view').innerHTML;
-ok('the crop page shows the plant image', cd.includes('Standard_Rubber_Plant.png'));
-ok('the crop page still shows the crop image', cd.includes('Standard_Rubber.png'));
+// Both images belong to the title graphic, not repeated in a section below.
+const head = cd.slice(cd.indexOf('detail-head'), cd.indexOf('</div>', cd.indexOf('<h2')));
+ok('the title graphic pairs plant and crop',
+   head.includes('Standard_Rubber_Plant.png') && head.includes('Standard_Rubber.png'));
+ok('the pair is grouped as one title graphic', cd.includes('class="title-art"'));
+ok('neither image is repeated further down the page',
+   (cd.match(/Standard_Rubber_Plant\.png/g) || []).length === 1 &&
+   (cd.match(/Standard_Rubber\.png/g) || []).length === 1);
+ok('Growing Conditions no longer explains itself',
+   !cd.includes('The game shows both here too'));
 ok('the plant image is named for a screen reader',
    cd.includes('alt="Rubber Plant, the plant Rubber grows on"'));
 
+// The Almanac lists crops by their plant, as the in-game Farmer's Guide does.
 setView('almanac');
 const ac = pane('almanac-view').innerHTML;
-ok('the Almanac row shows both images',
-   ac.includes('Standard_Rubber_Plant.png') && ac.includes('Standard_Rubber.png'));
-ok('a crop with no distinct plant shows one image',
-   ac.includes('Standard_Wheat.png') && !/Wheat_Plant/.test(ac));
+ok('the Almanac row shows the plant, not the harvested crop',
+   ac.includes('Standard_Rubber_Plant.png') && !ac.includes('images/Standard_Rubber.png'));
+ok('a crop with no distinct plant still shows its own image',
+   ac.includes('Standard_Wheat.png'));
+// The graphic-less case matters as much as the graphic-enabled one. The tile in
+// this column is the PLANT, so without artwork a reader would see an "SC"
+// monogram beside a row labelled "Sugar" -- explained only by a title attribute,
+// which a keyboard or a touchscreen never surfaces. Naming the plant in text
+// resolves it, and matches the in-game Farmer's Guide listing crops by plant.
+ok('the plant tile carries a monogram for when artwork is absent',
+   ac.includes('data-initial="RP"'));
+ok('the plant is named in the row, not only in a title attribute',
+   ac.includes('class="plant-name">Rubber Plant<'));
+for (const gs of ['Standard', 'Alternative', 'Food & Beverage']) {
+  reset();
+  state.gameset = gs;
+  setView('almanac');
+  const html = pane('almanac-view').innerHTML;
+  const withPlant = byGameset(gs).filter(p => p.plant);
+  ok(gs + ': every plant-bearing crop names its plant (' + withPlant.length + ')',
+     withPlant.every(p => html.includes(`class="plant-name">${esc(p.plant.name)}<`)),
+     withPlant.filter(p => !html.includes(`class="plant-name">${esc(p.plant.name)}<`))
+       .map(p => p.name).join(', '));
+  ok(gs + ': crops without a distinct plant name none',
+     (html.match(/class="plant-name"/g) || []).length === withPlant.length);
+}
+reset();
+state.gameset = 'Standard';
+setView('almanac');
 
 // The Manufacturer's-Guide side of the split: the grid and the graph table are
 // product views and must not sprout plant art.

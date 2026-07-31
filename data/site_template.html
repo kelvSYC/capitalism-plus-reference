@@ -186,6 +186,10 @@
   .back:hover { color: var(--text); }
   .detail-head { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
   .detail-head .picon { width: 110px; height: 110px; border-radius: 10px; padding: 6px; --picon-font: 40px; }
+  /* A crop shown with its growing plant: two tiles reading as one title graphic,
+     sized so the pair occupies roughly the width a single tile would. */
+  .title-art { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .title-art .picon { width: 88px; height: 88px; border-radius: 8px; padding: 5px; --picon-font: 32px; }
   .detail-head h2 { margin: 0 0 4px; font-size: 24px; }
   .detail-head .cat { color: var(--muted); font-size: 14px; }
   .badge-lg { display: inline-block; margin-top: 8px; font-size: 12px; padding: 4px 10px; border-radius: 12px; color: #14161a; }
@@ -238,6 +242,12 @@
   .almanac-table tbody tr:hover { background: var(--panel2); }
   .almanac-crop { display: flex; align-items: center; gap: 8px; }
   .almanac-crop .picon { width: 30px; height: 30px; border-radius: 5px; padding: 2px; --picon-font: 12px; }
+  /* The tile in this column is the growing plant, not the harvested crop, so the
+     plant is named. That also keeps the column readable when there is no artwork:
+     otherwise a reader sees an "SC" monogram beside a row labelled "Sugar", with
+     only a title attribute to explain it -- and a title is no use to a keyboard or
+     a touchscreen. */
+  .plant-name { color: var(--muted); font-size: 11px; }
   .rain-bar { display: inline-flex; gap: 2px; vertical-align: middle; margin-right: 6px; }
   .rain-bar span { width: 6px; height: 10px; border-radius: 1px; background: var(--border); }
   .rain-bar span.filled { background: #4C9AFF; }
@@ -1624,8 +1634,10 @@ function openDetail(id) {
 
   let html = `<button type="button" class="back" onclick="backToGrid()">&larr; Back</button>`;
   html += `<div class="detail">`;
+  // A crop with a distinct growing plant gets both as its title graphic, the way
+  // the game's Farmer's Guide does. Not repeated further down the page.
   html += `<div class="detail-head">
-    ${productIcon(p)}
+    ${p.plant ? `<div class="title-art">${plantIcon(p)}${productIcon(p)}</div>` : productIcon(p)}
     <div>
       <h2 id="detailHeading" tabindex="-1">${esc(p.name)}</h2>
       <div class="cat">${p.category || ''}${p.category ? ' · ' : ''}${p.industry} · ${p.gameset} gameset</div>
@@ -1672,15 +1684,7 @@ function openDetail(id) {
 
     if (p.growing_conditions) {
       const g = p.growing_conditions;
-      html += `<div class="section"><h3>Growing Conditions</h3>`;
-      if (p.plant) {
-        html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-          ${plantIcon(p)}${productIcon(p)}
-          <span style="font-size:12px;color:var(--muted)">${esc(p.plant.name)} (the plant)
-          and ${esc(p.name)} (what you harvest). The game shows both here too.</span>
-        </div>`;
-      }
-      html += `<div class="kv">
+      html += `<div class="section"><h3>Growing Conditions</h3><div class="kv">
         <div class="k">Suitable Climate</div><div>${g.climate}</div>
         <div class="k">Suitable Rainfall</div><div>${g.rainfall}</div>
         <div class="k">Sowing Month</div><div>${g.sowing_month}</div>
@@ -2703,7 +2707,7 @@ function renderAlmanac() {
     const harvestIdx = MONTHS_FULL.indexOf(gc.harvesting_month);
     const restricted = scenarioRestricted(p);
     html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-      <th scope="row"><div class="almanac-crop">${plantIcon(p, restricted)}${productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div></th>
+      <th scope="row"><div class="almanac-crop">${p.plant ? plantIcon(p, restricted) : productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button>${p.plant ? ` <span class="plant-name">${esc(p.plant.name)}</span>` : ''}</div></th>
       <td>${climateBar(gc.climate)}${gc.climate}</td>
       <td>${rainBar(gc.rainfall)}${gc.rainfall}</td>
       <td>${goodsTypeLabel(p)}${restrictionNote(p)}</td>`;
