@@ -260,7 +260,14 @@ ok('monogram skips punctuation ("Wheel & Tire" -> "WT")',
    productIcon(wheel).includes('data-initial="WT"'), productIcon(wheel));
 ok('single-word product gets one initial',
    productIcon(PRODUCTS.find(p => p.name === 'Car')).includes('data-initial="C"'));
-ok('icon is tinted by classification', productIcon(wheel).includes('--picon-bg:'));
+ok('monogram is tinted by classification', productIcon(wheel).includes('--picon-fg:'));
+ok('monogram colour is legible on the white tile',
+   contrastRatio(readableOnWhite(CLASS_SOLID['Semi-Product']), '#ffffff') >= 4.5);
+ok('the lightest palette colour is darkened enough to read on white',
+   contrastRatio(readableOnWhite('#FFAB00'), '#ffffff') >= 4.5,
+   readableOnWhite('#FFAB00') + ' = ' + contrastRatio(readableOnWhite('#FFAB00'), '#ffffff').toFixed(2));
+ok('darkening preserves hue rather than going grey',
+   readableOnWhite('#FFAB00').toLowerCase() !== '#000000');
 ok('icon marks itself decorative (alt="")', productIcon(wheel).includes('alt=""'));
 ok('icon defers loading', productIcon(wheel).includes('loading="lazy"'));
 // 0.55, not lower: --text dimmed to 0.4 composites to 3.30:1 against the panel,

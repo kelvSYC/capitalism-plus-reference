@@ -55,6 +55,20 @@
   header h1 { font-size: 18px; margin: 0; white-space: nowrap; }
   header h1 span { color: var(--muted); font-weight: normal; font-size: 13px; }
   .tabs { display: flex; gap: 4px; }
+  /* The three gamesets are one choice, not three independent controls, so they
+     read as a single segmented button: shared edges, only the outer corners
+     rounded. Deliberately NOT done with overflow:hidden on the container --
+     that would clip the focus ring on the first and last segment. */
+  .tabs.segmented { gap: 0; }
+  .tabs.segmented .tab { border-radius: 0; border-right-width: 0; }
+  .tabs.segmented .tab:first-child { border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+  .tabs.segmented .tab:last-child {
+    border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-right-width: 1px;
+  }
+  /* An active segment owns both of its edges, so the neighbour to its right
+     does not paint a grey divider over the highlight. */
+  .tabs.segmented .tab.active { border-right-width: 1px; }
+  .tabs.segmented .tab.active + .tab { border-left-width: 0; }
   .tab {
     padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;
     border: 1px solid var(--border); background: var(--panel2); color: var(--text);
@@ -104,12 +118,16 @@
     background: #fff; vertical-align: middle;
   }
   .picon img { display: block; width: 100%; height: 100%; object-fit: contain; }
-  .picon-empty { background: var(--picon-bg, var(--panel2)); }
+  /* No background override: the tile keeps .picon's white, so a missing icon
+     reads as the same white square the artwork would sit on rather than a
+     saturated colour block. At 64px across a grid of 80+ cards, filling each
+     tile with its classification colour turned the whole view into a patchwork.
+     The classification is still encoded, just in the lettering. */
   .picon-empty img { display: none; }
   .picon-empty::after {
     content: attr(data-initial);
     position: absolute; inset: 0; display: flex; align-items: center;
-    justify-content: center; color: var(--picon-fg, #fff); font-weight: 700;
+    justify-content: center; color: var(--picon-fg, #55606f); font-weight: 700;
     font-size: var(--picon-font, 14px); letter-spacing: .02em;
   }
   .card .picon { width: 64px; height: 64px; margin-bottom: 6px; border-radius: 6px; padding: 4px; --picon-font: 24px; }
@@ -272,7 +290,7 @@
 
 <header>
   <h1>Capitalism Plus <span>Product Reference</span></h1>
-  <div class="tabs" id="gamesetTabs" role="tablist" aria-label="Gameset"></div>
+  <div class="tabs segmented" id="gamesetTabs" role="tablist" aria-label="Gameset"></div>
   <!-- A placeholder is not a label: it disappears on input and is not reliably
        announced. -->
   <label class="sr-only" for="searchBox">Search products</label>
@@ -323,13 +341,14 @@
 
 <footer class="attribution">
   <p><strong>Unofficial fan reference.</strong> Not affiliated with, endorsed by, or
-  sponsored by Enlight Software Limited. <em>Capitalism Plus</em> (1996) and the
-  Capitalism series are &copy; Enlight Software Limited; &ldquo;Capitalism,&rdquo;
-  &ldquo;Capitalism Plus,&rdquo; &ldquo;Capitalism II&rdquo; and &ldquo;Capitalism
-  Lab&rdquo; are trademarks of their respective owner. Enlight still actively
-  develops this series as
-  <a href="https://www.capitalismlab.com/" rel="noopener">Capitalism Lab</a> — if
-  you like this game, buy theirs.</p>
+  sponsored by Enlight Software Limited. <em>Capitalism Plus</em> is &copy; Enlight
+  Software Limited and &ldquo;Capitalism&rdquo; and &ldquo;Capitalism Plus&rdquo;
+  are their trademarks.</p>
+  <p>The game is still sold, and still worth buying:
+  <a href="https://www.gog.com/game/capitalism_plus" rel="noopener">Capitalism Plus on GOG</a>
+  (DRM-free), and Enlight's current game in the series,
+  <a href="https://www.capitalismlab.com/" rel="noopener">Capitalism Lab</a>,
+  direct from them.</p>
   <p>Gameplay facts here are independently decoded from the game's own
   <code>.SET</code> and <code>.SCN</code> data files; no game code, artwork, or
   narrative text is reproduced. Scenario descriptions are original paraphrases.
@@ -540,6 +559,22 @@ function contrastRatio(a, b) {
 // Whichever of ink/white scores higher against `bg`.
 function onColor(bg) {
   return contrastRatio(bg, INK) >= contrastRatio(bg, '#ffffff') ? INK : '#ffffff';
+}
+
+// Darken a palette colour until it is legible ON WHITE. Used for the monogram
+// that stands in for absent artwork: half this palette is far too light to read
+// at full saturation on a white tile (#FFAB00 manages 1.90:1), but darkening
+// toward black keeps the hue, so the classification is still recognisable.
+function readableOnWhite(hex) {
+  const h = hex.replace('#', '');
+  let rgb = [0, 1, 2].map(i => parseInt(h.slice(i * 2, i * 2 + 2), 16));
+  const hexOf = c => '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
+  // 20 steps of 5% is enough to darken anything in this palette past 4.5:1.
+  for (let step = 0; step < 20; step++) {
+    if (contrastRatio(hexOf(rgb), '#ffffff') >= 4.5) break;
+    rgb = rgb.map(v => v * 0.9);
+  }
+  return hexOf(rgb);
 }
 
 const EXCLUDED_COLOR = "#B00020";
@@ -851,7 +886,7 @@ function productIcon(p, dim) {
   const initial = p.name.replace(/[^A-Za-z0-9 ]/g, ' ').trim().split(/\s+/)
     .slice(0, 2).map(w => w[0]).join('').toUpperCase();
   const bg = CLASS_COLORS[p.classification];
-  const style = `--picon-bg:${bg};--picon-fg:${onColor(bg)}` + (dim ? ';opacity:0.55' : '');
+  const style = `--picon-fg:${readableOnWhite(bg)}` + (dim ? ';opacity:0.55' : '');
   return `<span class="picon" data-initial="${initial}" style="${style}">` +
     `<img src="images/${p.icon_file}" alt="" loading="lazy" decoding="async"></span>`;
 }
