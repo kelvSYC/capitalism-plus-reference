@@ -14,6 +14,7 @@ The directory is the one containing GAMESET/ and CapPlus.gog.
 import json
 import os
 import re
+import struct
 import subprocess
 import tempfile
 import sys
@@ -54,6 +55,38 @@ class TestAgainstGameFiles(unittest.TestCase):
         self.assertTrue(totals, f"no summary line found:\n{result.stdout}")
         self.assertGreater(int(totals[-1]), 1000,
                            f"suspiciously few checks ran:\n{result.stdout}")
+
+
+class TestPaletteFormat(unittest.TestCase):
+    """`.RES` is an extension, not a format: 30 files share it and only the two
+    palettes parse as one. That is why the Palette grammar sets no
+    fileextension -- auto-associating it would point it at MUSIC.RES."""
+
+    PALETTES = {"PAL_STD.RES", "IFCOLOR.RES"}
+    TAG = 0xB123
+
+    def _resources(self):
+        directory = game_dir()
+        if directory is None:
+            self.skipTest("set CAPITALISM_GAME_DIR to a game directory to run this")
+        return sorted((Path(directory) / "RESOURCE").glob("*.RES"))
+
+    def test_exactly_two_res_files_are_palettes(self):
+        # Both halves of the 8-byte header identify the format: the file states
+        # its own length, then carries a constant tag. Neither holds for the
+        # other 28, so the pair is decidable from the bytes rather than by name.
+        matched = set()
+        for path in self._resources():
+            head = path.read_bytes()[:8]
+            size, tag = struct.unpack("<II", head)
+            if size == path.stat().st_size and tag == self.TAG:
+                matched.add(path.name)
+        self.assertEqual(self.PALETTES, matched)
+
+    def test_a_palette_is_eight_bytes_then_256_rgb_triples(self):
+        for path in self._resources():
+            if path.name in self.PALETTES:
+                self.assertEqual(8 + 256 * 3, path.stat().st_size, path.name)
 
 
 class TestPngRoundTrip(unittest.TestCase):

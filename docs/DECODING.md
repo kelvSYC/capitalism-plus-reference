@@ -56,7 +56,7 @@ verified:
 |---|---|
 | `Capitalism Plus SET Grammar` | The `.SET` table format: file descriptors, table headers, column headers, per-column types (number vs non-number, with decimal places), and row data |
 | `Capitalism Database File` | `GAMESET/*.II2` — the named archive holding the 120×120 icons |
-| `Capitalism Palette File` | `RESOURCE/PAL_STD.RES` — the 256-colour palette |
+| `Capitalism Palette File` | `RESOURCE/PAL_STD.RES` and `IFCOLOR.RES` — the two 256-colour palettes |
 | `Capitalism Raster File` | One `GAMESET/*.II` record — a 60×60 icon |
 | `Capitalism Plus SCN Goal Header` | The goal fields of `SCENARIO/*.SCN` on the disc image |
 

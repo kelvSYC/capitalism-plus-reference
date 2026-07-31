@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ufwb version="1.17">
-    <grammar name="Capitalism Icon Image Format" start="id:57" author="Kelvin Chung">
+    <grammar name="Capitalism Raster File" start="id:57" author="Kelvin Chung">
         <description>Grammar for icon images found in Capitalism</description>
         <structure name="Image" id="57" encoding="ISO_8859-1:1987" endian="little" signed="no">
             <number name="Length" id="58" fillcolor="72FA78" type="integer" length="4"/>

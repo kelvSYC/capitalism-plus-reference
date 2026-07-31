@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ufwb version="1.17">
-    <grammar name="Capitalism .SET" start="id:3" author="Kelvin Chung" fileextension=".SET">
+    <grammar name="Capitalism Plus SET Grammar" start="id:3" author="Kelvin Chung" fileextension=".SET">
         <description>Format for Capitalism / Capitalism II .SET (game data) files</description>
         <scripts>
             <script name="Foo" type="DataType" id="74">

@@ -659,6 +659,15 @@ class TestGrammars(unittest.TestCase):
             rows = set(re.findall(r"(?m)^\| `(Capitalism [^`]+)` \|", text))
             self.assertEqual(stems, rows, f"{rel}'s table does not match docs/formats/")
 
+    def test_each_grammar_calls_itself_what_its_file_is_called(self):
+        # Synalyze It! lists a grammar by its name attribute, not its filename,
+        # so a mismatch means the docs name one thing and the tool shows
+        # another with no way to tell they are the same grammar.
+        import xml.etree.ElementTree as ET
+        for path in self.GRAMMARS:
+            declared = ET.parse(path).getroot().find("grammar").get("name")
+            self.assertEqual(path.stem, declared, f"{path.name} calls itself {declared!r}")
+
     def test_neither_doc_names_a_grammar_that_does_not_exist(self):
         stems = {p.stem for p in self.GRAMMARS}
         for rel in self.DOCS:

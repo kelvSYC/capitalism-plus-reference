@@ -14,7 +14,7 @@ corresponding game file.
 | `Capitalism Plus SET Grammar` | `GAMESET/*.SET` — the table container behind the whole product dataset | Verified: parses all three gamesets |
 | `Capitalism Database File` | `GAMESET/*.II2` — named image archive, 120×120 icons | Verified against `1STD.II2` |
 | `Capitalism Raster File` | one `GAMESET/*.II` record — 60×60 icon | Verified, with two corrections below |
-| `Capitalism Palette File` | `RESOURCE/PAL_STD.RES` — the 256-colour palette | Verified: 776 bytes = 8 + 256×3 |
+| `Capitalism Palette File` | `RESOURCE/PAL_STD.RES` and `IFCOLOR.RES` — the two 256-colour palettes | Verified: both are 776 bytes = 8 + 256×3 |
 | `Capitalism Plus SCN Goal Header` | the goal fields of `SCENARIO/*.SCN` on the disc image | **New**, and untested in the tool — see below |
 
 ## How these were checked
@@ -30,6 +30,28 @@ reading the real files in Python and confirming the sizes and headers come out a
 the grammars say. `1STD.II` is 303,072 bytes = 84 × 3608, one record per `ITEM`
 row, with each record `4 + (4 + 60×60)`. `1STD.II2` holds 84 entries 14,404 bytes
 apart = `4 + 120×120`.
+
+The palette's 8-byte header is fully accounted for: four bytes of the file's own
+length, then the constant `0x0000B123`. Of the 30 `.RES` files in `RESOURCE/`,
+exactly two satisfy both conditions — `PAL_STD.RES` and `IFCOLOR.RES` — so a
+palette is identifiable from its bytes rather than by name. The tag is byte-identical
+across two files with entirely different colour tables, which is what a format
+marker looks like and what a checksum does not.
+`tests/test_against_game.py` asserts both, given a copy of the game.
+
+## File association
+
+Three grammars declare a `fileextension`, so the tool offers them automatically:
+`Capitalism Plus SET Grammar` (`.SET`), `Capitalism Plus SCN Goal Header`
+(`.SCN`) and `Capitalism Database File` (`.II2`). Two deliberately do not, and
+adding one would make them worse:
+
+- **`Capitalism Palette File`** — `.RES` is an extension, not a format. Only two
+  of the thirty are palettes; the others are music, sound, text and fonts, and an
+  association would offer this grammar for all of them.
+- **`Capitalism Raster File`** — it describes **one** 60×60 record, while a `.II`
+  file holds 84 of them end to end. Pointed at the whole file it parses the first
+  icon and stops, which reads as a truncated file rather than a partial grammar.
 
 ## Corrections made to the Raster grammar
 
@@ -65,7 +87,6 @@ everything after it — map, terrain, company state — is undecoded.
   the tool shows rows as opaque blobs. The column metadata needed to decode them
   is all present and correct — `verify_against_game.py` uses exactly that — so
   this is unfinished wiring rather than missing knowledge.
-- The four bytes after `File Size` in the palette.
 - `GAMESET/*.PLA`, `*.PLP`, `*.PLO` are **not** palettes despite the names. They
   open with a ten-entry table of four-character tags (`RETA`, `FACT`). No grammar
   covers them.
