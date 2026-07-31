@@ -8,9 +8,23 @@ Meant to be kept open in a browser tab alongside the game itself.
 Every gameplay fact on the site (sale restrictions, scenario domination
 goals, production chains) is decoded directly from the game's own `.SET` /
 `.SCN` formats, not guessed from memory or secondary sources — and checked
-against a retail copy of the game by `tools/verify_against_game.py`. See
+against a retail copy of the game by `tools/verify_against_game.py`
+(2,020 checks, 0 failures). See
 `docs/DECODING.md` for the byte-level methodology and the evidence behind each
 mechanic.
+
+## What's on it
+
+- **Grid, List and Cards views** over every product in all three gamesets, with
+  search and filtering by classification, industry and scenario.
+- **A Farmer's Almanac** covering crops and livestock together: sowing and harvest
+  months as a calendar and in text, soil and rainfall, monthly yields, and the
+  slaughter percentages the game's own Farmer's Guide never prints.
+- **A dependency graph**, with a table equivalent carrying the same information
+  for anyone who cannot use the diagram.
+- **Scenario goals** for all 20 scenarios — duration, bonus, sale restrictions and
+  domination targets — decoded from the shipped save files, with a filter that
+  greys out what a given scenario forbids.
 
 ## Layout
 
@@ -94,6 +108,16 @@ files reaching anywhere public: `.gitignore`, a test asserting nothing but
 `.gitkeep` is tracked there, and the `pages` workflow refusing to deploy a tree
 containing them.
 
+## Accessibility
+
+Keyboard operability, focus preservation across re-renders, WCAG AA contrast, a
+text equivalent for the dependency graph and the growing calendar in text are all
+in place, and asserted by the test suites rather than left to inspection.
+
+They have not been through an actual screen reader. Everything above is
+structural, and structure is what a test can reach; whether the result is
+coherent to listen to is a separate question, and an open one.
+
 ## Licensing
 
 | What | Terms |
@@ -106,29 +130,27 @@ containing them.
 `LICENSE` has the full text; `REUSE.toml` is the machine-readable form. Nothing
 here grants any right in Enlight Software's game, artwork, or trademarks.
 
-## Status
+## Publishing
 
-**Not ready to publish.** Functionally complete for personal use — Grid/List/Cards
-views, a Farmer's Almanac covering both crops and livestock, an interactive
-dependency graph with a table equivalent, and scenario-goal filtering (including
-domination targets, byte-decoded from real save files) across all three
-gamesets — but several things stand between here and go-live:
+`site/index.html` is a static file with everything inlined, so any host will serve
+it and opening it from disk works too.
 
-- **Accessibility is structurally done but unverified.** Keyboard operability,
-  focus preservation across re-renders, WCAG AA contrast, a text equivalent for
-  the dependency graph, and the growing calendar in text are all in place and
-  covered by tests. None of it has been through an actual screen reader, which is
-  the gap between "asserted" and "usable".
-- **The icon question** in `ATTRIBUTION.md` is unresolved, and gates any public
-  deployment. The site is designed to work without artwork, but that is the
-  permanent state until the question is answered.
-- **Reproducibility.** Every field is either read from the game by a committed
-  tool or derived by a rule a test asserts, and
-  `tools/verify_against_game.py` checks the whole dataset against a retail copy
-  (2,020 checks, 0 failures, no tolerated divergences). What is missing is a single
-  command that regenerates `index_cards.json` from nothing, but the reader, the
-  field mapping and the derivation rules are all committed, so that is a
-  mechanical gap rather than a research one. See `docs/DECODING.md`.
+The `pages` workflow deploys to GitHub Pages and is **manual-only by design** — a
+deploy-on-push trigger would quietly overrule the icon hold below the first time
+somebody merged a typo fix. Its preflight job is the launch checklist as code,
+and every check is a hard failure with an explanation:
 
-The `pages` workflow is manual-only and refuses to deploy until its preflight
-checks pass, so none of the above can be published by accident.
+| Gate | Fails when |
+|---|---|
+| Committed artifact is current | `site/index.html` has fallen behind its source |
+| Data invariants | any test in `tests/` fails |
+| No game-extracted assets | artwork is present in the tree about to be uploaded |
+| Project LICENSE exists | publishing would leave this project's own work all-rights-reserved |
+| Nothing vendored without its license | a third-party file appears under `site/` |
+| Attribution is reachable | the rendered page never names Enlight Software, or never says it is unofficial |
+
+The last one is the point the repository would otherwise miss entirely:
+attribution that lives only in a markdown file is invisible to a visitor.
+
+The open question is the icon hold in `ATTRIBUTION.md`, which the third gate
+enforces. Everything else is mechanical and passes today.

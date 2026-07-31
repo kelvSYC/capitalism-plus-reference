@@ -28,9 +28,17 @@ game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
 > and `tools/extract_icons.py` reproduces the artwork.
 >
 > What does not exist is a single command that regenerates the whole file from
-> nothing. That is a mechanical gap rather than a research one: the reader, the
-> field mapping and every derivation rule are committed and exercised. Nothing
-> about the format remains to be discovered.
+> nothing, and that is a decision rather than a gap. Verification answers the
+> question a reader actually has — does what ships match the game? — while
+> generation answers one nobody is asking, and would reuse this same reader, so
+> it would demonstrate self-consistency rather than agreement with the source.
+> The content is a 1996 DOS title's and cannot change under us. And part of the
+> dataset is editorial (the taxonomy below, the five pluralised class names, blank
+> `ITEM.UNIT` becoming `"unit"`), which no extractor can derive.
+>
+> What would change the decision is a *different* edition or a modified gameset.
+> There, generating a dataset is a feature in its own right rather than a
+> reproducibility argument, and should be scoped as one.
 >
 > Run the verifier with
 > `python3 tools/verify_against_game.py --game-dir /path/to/game`, or set
