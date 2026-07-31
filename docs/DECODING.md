@@ -19,12 +19,44 @@ game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
 | `.SCN` (scenario/save) | Scenario goals: duration, bonus, sale restrictions, domination targets |
 | `.SCT` | The scenario's human-readable goal prose, used only as an independent check against the decoded bytes |
 
-> **Reproducibility gap.** The `.SET` extractor that produced
-> `data/index_cards.json` is **not committed**, so a third party cannot currently
-> regenerate the dataset from their own copy of the game. The dataset and
-> `data/index_cards.csv` are effectively opaque blobs with no committed producer.
-> Closing this means committing `tools/extract_set.py` and `tools/decode_scn.py`
-> (or reconstructing them from the offsets recorded below).
+> **There is no extractor, and there never was one.** `data/index_cards.json` was
+> not produced by a script. The formats were reverse-engineered by inspecting
+> `.SET` and `.SCN` files directly, and the dataset was assembled by hand from
+> what that revealed. So a third party cannot currently regenerate it — not
+> because a tool was lost, but because no tool has ever existed.
+>
+> That is a smaller gap than it sounds. The formats themselves are specified, in
+> a set of Synalyze It! / Hexinator binary grammars written during that work (see
+> [Method](#method) below). An extractor is a thing somebody could now write from
+> a specification, rather than something that must be rediscovered.
+
+## Method
+
+Nothing here was decoded by running a parser over the files. The work was done by
+reading bytes in a hex editor, forming a hypothesis about a field, and then
+checking it against something independent — the `.SCT` goal prose, a second save
+file, or the game's own behaviour under DOSBox. Where a hypothesis survived every
+check it is recorded below; where one failed, the counterexample that killed it
+is recorded too (see [Falsified hypotheses](#falsified-hypotheses)).
+
+Four binary grammars were written along the way, in
+[Synalyze It! / Hexinator](https://www.synalysis.net/) format. They are the
+closest thing to a specification this project has:
+
+| Grammar | Describes |
+|---|---|
+| Capitalism Plus SET | The `.SET` table format: file descriptors, table headers, column headers, per-column types (number vs non-number, with decimal places), and row data |
+| Capitalism Database | The generic container the games use for bundled data files |
+| Capitalism Palette | The colour palette format |
+| Capitalism Icon Image | The raster format the product icons are stored in |
+
+The `.SET` grammar is the important one for reproducing `index_cards.json`: it
+describes a self-describing table structure, so an extractor reads the column
+definitions rather than hard-coding offsets. `ITEM`, `ITEMCLAS`, `METHOD` and
+`FARMCROP` are tables in that format.
+
+The `.SCN` offsets in the next section were found separately and by hand; they
+are not covered by a grammar.
 
 ## Scenario byte offsets (`.SCN`)
 

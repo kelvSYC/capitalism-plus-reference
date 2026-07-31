@@ -40,8 +40,8 @@ docs/
 
 Scenario goal data (durations, bonuses, sale restrictions, domination targets)
 lives in the `SCENARIOS` array in `data/site_template.html`, decoded from the
-`.SCN` files — see `docs/DECODING.md`. The extractor that produced
-`index_cards.json` is not yet committed; see the reproducibility note there.
+`.SCN` files — see `docs/DECODING.md`, which also documents the file formats
+and how each fact was verified.
 
 ## Build
 
@@ -105,8 +105,10 @@ across all three gamesets — but several things stand between here and go-live:
 - **The icon question** in `ATTRIBUTION.md` is unresolved, and gates any public
   deployment. The site is designed to work without artwork, but that is the
   permanent state until the question is answered.
-- **Reproducibility.** The `.SET` extractor that produced `index_cards.json` is
-  not committed, so nobody else can regenerate the dataset (`docs/DECODING.md`).
+- **Reproducibility.** `index_cards.json` was assembled by hand from
+  reverse-engineered file formats; no extractor has ever existed, so nobody else
+  can regenerate it from their own copy of the game. The formats themselves are
+  specified — see `docs/DECODING.md`.
 
 The `pages` workflow is manual-only and refuses to deploy until its preflight
 checks pass, so none of the above can be published by accident.
