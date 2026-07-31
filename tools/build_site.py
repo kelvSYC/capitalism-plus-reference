@@ -47,7 +47,7 @@ REQUIRED_KEYS = frozenset({
 # Recorded by a tool nobody has, matching nothing in the game's files, read by no
 # code. Removed from the dataset; the build fails if they come back, because their
 # presence invites someone to trust them.
-FORBIDDEN_KEYS = frozenset({"icon_image_id", "graphic_count"})
+FORBIDDEN_KEYS = frozenset({"icon_image_id", "graphic_count", "classification_source"})
 
 
 def render() -> str:

@@ -19,21 +19,26 @@ game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
 | `.SCN` (scenario/save) | Scenario goals: duration, bonus, sale restrictions, domination targets |
 | `.SCT` | The scenario's human-readable goal prose, used only as an independent check against the decoded bytes |
 
-> **There is no extractor, and there never was one.** `data/index_cards.json` was
-> not produced by a script. The formats were reverse-engineered by inspecting
-> `.SET` and `.SCN` files directly, and the dataset was assembled by hand.
+> **How reproducible this is, precisely.** `data/index_cards.json` was originally
+> assembled by hand: the formats were reverse-engineered by inspecting `.SET` and
+> `.SCN` files directly, and no script produced the first version.
 >
-> What exists instead is a **verifier**: `tools/verify_against_game.py` reads a
-> real copy of the game and checks the committed data against it, field by field.
-> It never writes to `data/`. Capitalism Plus is a 1996 DOS title whose content
-> will not change, so a disagreement means our data is wrong rather than that the
-> game moved — which is what makes verification the useful direction.
+> That is no longer where things stand. Every field is now either **read from the
+> game by a committed tool** or **derived by a documented rule that a test
+> asserts** — see the table below. `tools/verify_against_game.py` implements the
+> `.SET` container and checks the data against a retail copy: **2,020 checks, 0
+> failures, no tolerated divergences.** `tools/augment_from_game.py` writes five
+> of the fields outright, and `tools/extract_icons.py` reproduces the artwork.
 >
-> Current result against a retail copy: **1,598 checks pass, 0 fail**, with one
-> declared divergence (see below). Run it with
+> What still does not exist is a single command that regenerates the whole file
+> from nothing. But that is now a mechanical gap rather than a research one: the
+> reader, the field mapping and every derivation rule are all committed and
+> exercised. Nothing about the format remains to be discovered.
+>
+> Run the verifier with
 > `python3 tools/verify_against_game.py --game-dir /path/to/game`, or set
-> `CAPITALISM_GAME_DIR` and the test suite will pick it up and skip cleanly
-> without it.
+> `CAPITALISM_GAME_DIR` and the test suite picks it up, skipping cleanly without
+> it.
 
 ## Method
 
@@ -93,6 +98,28 @@ six matter here.
 
 **`METHOD` has exactly five input slots.** That is why no recipe in the game has
 more than five ingredients — a structural limit, not a coincidence of the data.
+
+### Read from the game, or derived?
+
+Every field falls into one of two groups, and nothing falls outside them.
+
+| Read from the game (checked by the verifier) | Derived by rule (asserted by `tests/test_data.py`) |
+|---|---|
+| `name`, `raw_class`, `category` | `id` — gameset initial + name |
+| `sale_index`, `sellable` | `icon_file` — slugified gameset + name |
+| `output_unit`, `output_quantity` | `used_in` — the inverse of `inputs` |
+| `inputs` | `derived_from_livestock` — the inverse of `livestock_yields` |
+| `livestock_yields`, `growing_conditions` | `production_technology_pct` — `100 − Σ input quality_pct` |
+| `extraction`, `livestock_production`, `livestock_stats`, `plant` | `classification`, `industry` — our grouping of the 32 class codes |
+
+`classification` and `industry` deserve the caveat: they are **our** taxonomy, not
+fields in the file. They are reproducible only while each stays an unambiguous
+function of `raw_class`, which a test checks.
+
+The dataset used to carry a `classification_source` field repeating the same
+sentence on all 245 records. Data asserting its own provenance is a claim, not
+evidence; the claim now lives here, where it can be wrong in one place, and the
+evidence is the verifier.
 
 ### Enumerations
 

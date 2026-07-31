@@ -386,6 +386,45 @@ const badges = cards.match(/class="badge"[^>]*/g) || [];
 ok('every rendered badge carries an explicit colour (' + badges.length + ')',
    badges.length > 0 && badges.every(b => b.includes('color:')));
 
+print('--- label/value pairs are a description list ---');
+// The new sections (Extraction, Yield, Raising Unit) lean on this pattern, which
+// was a CSS grid of anonymous divs: visually paired, programmatically unrelated.
+// <dt>/<dd> pairs each label with its value so a screen reader reads
+// "Site: Mine" rather than two runs of text that only look adjacent.
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Gold').id);
+let dl = pane('detail-view').innerHTML;
+ok('Extraction uses a description list', dl.includes('<dl class="kv">'));
+ok('labels are dt', /<dt>Site<\/dt>/.test(dl));
+ok('values are dd', /<dt>Site<\/dt><dd>/.test(dl));
+ok('no anonymous label divs remain', !dl.includes('<div class="k">'));
+
+// Every kv block on every kind of page, balanced.
+for (const name of ['Gold', 'Wool', 'Leather', 'Cattle', 'Sugar', 'Car']) {
+  reset();
+  openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === name).id);
+  const h = pane('detail-view').innerHTML;
+  const opens = (h.match(/<dl class="kv"/g) || []).length;
+  const closes = (h.match(/<\/dl>/g) || []).length;
+  const dt = (h.match(/<dt>/g) || []).length, dd = (h.match(/<dd>/g) || []).length;
+  ok(name + ': description lists are balanced and paired',
+     opens === closes && dt === dd && (opens === 0 || dt > 0),
+     `dl ${opens}/${closes} dt ${dt} dd ${dd}`);
+}
+
+print('--- both graph views announce ---');
+reset();
+state.graphLayout = 'table';
+setView('graph');
+ok('the table view announces', document.getElementById('resultStatus').textContent.includes('production chain'));
+state.graphLayout = 'diagram';
+setView('graph');
+ok('the diagram view announces too',
+   document.getElementById('resultStatus').textContent.includes('dependency diagram'),
+   document.getElementById('resultStatus').textContent);
+ok('the diagram announcement points at the readable alternative',
+   document.getElementById('resultStatus').textContent.includes('Table view'));
+
 print('--- production rates the game never publishes ---');
 // Extraction speeds and livestock yields appear in neither the in-game Farmer's
 // Guide nor the manuals; a player has to derive them by experiment.

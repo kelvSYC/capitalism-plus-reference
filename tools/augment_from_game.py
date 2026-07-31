@@ -87,9 +87,16 @@ def livestock_production(row, unit):
             "all_year": row["SMONTH"] == 1 and row["EMONTH"] == 12}
 
 
-# Recorded by a tool nobody has, matching nothing in the game's files, and read
-# by no code. Removed rather than left to look authoritative.
-UNVERIFIABLE_FIELDS = ("icon_image_id", "graphic_count")
+# Fields the dataset should not carry, with the reason:
+#
+#   icon_image_id, graphic_count  Matched nothing in the game's files and read by
+#                                 no code -- numbers from a since-lost tool.
+#   classification_source         The same sentence on all 245 records, asserting
+#                                 the data's own provenance. Provenance belongs in
+#                                 docs/DECODING.md, where it can be wrong in one
+#                                 place, and in the verifier, which demonstrates it
+#                                 rather than claiming it.
+UNVERIFIABLE_FIELDS = ("icon_image_id", "graphic_count", "classification_source")
 
 
 def build_additions(game_dir):

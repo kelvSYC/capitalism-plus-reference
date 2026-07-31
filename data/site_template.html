@@ -208,8 +208,13 @@
 
   .section { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
   .section h3 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
-  .kv { display: grid; grid-template-columns: 140px 1fr; row-gap: 6px; font-size: 13px; }
-  .kv .k { color: var(--muted); }
+  /* A description list, not a grid of anonymous divs: <dt>/<dd> pairs each label
+     with its value programmatically, so a screen reader reads "Site: Mine"
+     rather than two unrelated runs of text that only look adjacent. The grid
+     layout is unchanged. */
+  .kv { display: grid; grid-template-columns: 140px 1fr; row-gap: 6px; font-size: 13px; margin: 0; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
 
   .yield-list, .rel-list { list-style: none; margin: 0; padding: 0; }
   .yield-list li, .rel-list li {
@@ -1540,12 +1545,12 @@ function extractionSection(p) {
     ? `up to ${e.max_sites} in an unrestricted game`
     : `up to ${e.max_sites}`;
 
-  return `<div class="section"><h3>Extraction</h3><div class="kv">
-    <div class="k">Site</div><div>${esc(e.site)}${e.unit ? ` — worked by a ${esc(e.unit)}` : ''}</div>
-    <div class="k">Extraction speed</div><div>${e.speed} of ${hi}${speedNote}</div>
-    <div class="k">Resource value</div><div>${e.resource_value}${e.resource_value > 1 ? ' — richer than an ordinary deposit' : ''}</div>
-    <div class="k">Sites per map</div><div>${sites}</div>
-  </div>
+  return `<div class="section"><h3>Extraction</h3><dl class="kv">
+    <dt>Site</dt><dd>${esc(e.site)}${e.unit ? ` — worked by a ${esc(e.unit)}` : ''}</dd>
+    <dt>Extraction speed</dt><dd>${e.speed} of ${hi}${speedNote}</dd>
+    <dt>Resource value</dt><dd>${e.resource_value}${e.resource_value > 1 ? ' — richer than an ordinary deposit' : ''}</dd>
+    <dt>Sites per map</dt><dd>${sites}</dd>
+  </dl>
   <p style="font-size:12px;color:var(--muted);margin:10px 0 0">A site produces
   ${esc(p.output_unit || 'units')} continuously. The game records
   no quantity per month for mining, only the relative speed above, so this
@@ -1570,20 +1575,20 @@ function livestockProductionSection(p) {
     const season = lp.all_year
       ? 'all year round'
       : `only from ${esc(lp.from_month)} to ${esc(lp.to_month)}`;
-    return `<div class="section"><h3>Yield</h3><div class="kv">
-      <div class="k">Per month</div><div>${lp.monthly_quantity} ${esc(lp.unit || '')}</div>
-      <div class="k">Season</div><div>${season}</div>
-      <div class="k">Processing rate</div><div>${lp.rate_percent}%${rateNote(lp.rate_percent, 100)}</div>
-    </div>
+    return `<div class="section"><h3>Yield</h3><dl class="kv">
+      <dt>Per month</dt><dd>${lp.monthly_quantity} ${esc(lp.unit || '')}</dd>
+      <dt>Season</dt><dd>${season}</dd>
+      <dt>Processing rate</dt><dd>${lp.rate_percent}%${rateNote(lp.rate_percent, 100)}</dd>
+    </dl>
     <p style="font-size:12px;color:var(--muted);margin:10px 0 0">Harvested from a
     living animal${source ? ` (${esc(source)})` : ''}, so the animal is not consumed.</p>
     </div>`;
   }
-  return `<div class="section"><h3>Yield</h3><div class="kv">
-    <div class="k">Obtained by</div><div>slaughtering the animal</div>
-    <div class="k">Proportion</div><div>${lp.slaughter_percent}% of the animal's weight</div>
-    <div class="k">Processing rate</div><div>${lp.rate_percent}%${rateNote(lp.rate_percent, 100)}</div>
-  </div>${slaughterExamples(p)}</div>`;
+  return `<div class="section"><h3>Yield</h3><dl class="kv">
+    <dt>Obtained by</dt><dd>slaughtering the animal</dd>
+    <dt>Proportion</dt><dd>${lp.slaughter_percent}% of the animal's weight</dd>
+    <dt>Processing rate</dt><dd>${lp.rate_percent}%${rateNote(lp.rate_percent, 100)}</dd>
+  </dl>${slaughterExamples(p)}</div>`;
 }
 
 // A percentage means little without the weight it applies to, and the weights
@@ -1624,11 +1629,11 @@ function livestockYieldSection(p) {
   let html = `<div class="section"><h3>Raising Unit</h3>
       <p style="font-size:13px;color:var(--muted);margin-top:0">Livestock aren't bought or sold as products — they populate a Livestock unit on a farm and are processed there to continuously yield the goods below.</p>`;
   if (st) {
-    html += `<div class="kv" style="margin-bottom:12px">
-      <div class="k">Weight</div><div>${st.weight} ${esc(st.unit)} — the basis for any slaughter yield</div>
-      <div class="k">Growth rate</div><div>${st.grow_rate}%${rateNote(st.grow_rate, 100)}</div>
-      <div class="k">Reproduction rate</div><div>${st.reproduce_rate}%${rateNote(st.reproduce_rate, 100)}</div>
-    </div>`;
+    html += `<dl class="kv" style="margin-bottom:12px">
+      <dt>Weight</dt><dd>${st.weight} ${esc(st.unit)} — the basis for any slaughter yield</dd>
+      <dt>Growth rate</dt><dd>${st.grow_rate}%${rateNote(st.grow_rate, 100)}</dd>
+      <dt>Reproduction rate</dt><dd>${st.reproduce_rate}%${rateNote(st.reproduce_rate, 100)}</dd>
+    </dl>`;
   }
   html += `<ul class="yield-list">`;
   if (visibleYields.length) {
@@ -1705,7 +1710,7 @@ function openDetail(id) {
     }
 
     if (p.output_quantity) {
-      html += `<div class="section"><h3>Output</h3><div class="kv"><div class="k">Yield</div><div>${p.output_quantity} ${p.output_unit || ''} per production run</div></div></div>`;
+      html += `<div class="section"><h3>Output</h3><dl class="kv"><dt>Yield</dt><dd>${p.output_quantity} ${p.output_unit || ''} per production run</dd></dl></div>`;
     }
 
     html += extractionSection(p);
@@ -1713,12 +1718,12 @@ function openDetail(id) {
 
     if (p.growing_conditions) {
       const g = p.growing_conditions;
-      html += `<div class="section"><h3>Growing Conditions</h3><div class="kv">
-        <div class="k">Suitable Climate</div><div>${g.climate}</div>
-        <div class="k">Suitable Rainfall</div><div>${g.rainfall}</div>
-        <div class="k">Sowing Month</div><div>${g.sowing_month}</div>
-        <div class="k">Harvesting Month</div><div>${g.harvesting_month}</div>
-      </div></div>`;
+      html += `<div class="section"><h3>Growing Conditions</h3><dl class="kv">
+        <dt>Suitable Climate</dt><dd>${g.climate}</dd>
+        <dt>Suitable Rainfall</dt><dd>${g.rainfall}</dd>
+        <dt>Sowing Month</dt><dd>${g.sowing_month}</dd>
+        <dt>Harvesting Month</dt><dd>${g.harvesting_month}</dd>
+      </dl></div>`;
     }
 
     // Everything above is intrinsic to the product -- its recipe proportions,
@@ -2546,6 +2551,10 @@ function renderGraph() {
     announce(`${nodesList.length} products in the production chain table.`);
     return;
   }
+
+  // Both branches announce, or switching Table -> Diagram would say nothing while
+  // Diagram -> Table said something.
+  announce(`${nodesList.length} products in the dependency diagram. Switch to Table view to read the same information as text.`);
 
   // The diagram is an SVG: role="img" stops a screen reader crawling hundreds of
   // shape elements to no purpose, and the label states what it shows and where

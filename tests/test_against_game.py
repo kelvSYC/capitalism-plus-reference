@@ -109,6 +109,44 @@ class TestIconExtraction(unittest.TestCase):
         self.assertIn(f"{expected} icons would be written", result.stdout)
 
 
+class TestDocumentedCounts(unittest.TestCase):
+    """Numbers quoted in prose go stale silently. Two have already: the README
+    described the site as mouse-only long after the accessibility work, and three
+    documents disagreed about how many checks the verifier runs."""
+
+    DOCS = ("README.md", "docs/DECODING.md", "docs/formats/README.md")
+
+    def _claims(self):
+        found = {}
+        for name in self.DOCS:
+            text = (ROOT / name).read_text(encoding="utf-8")
+            for m in re.finditer(r"([0-9][0-9,]*) checks", text):
+                found.setdefault(m.group(1).replace(",", ""), []).append(name)
+        return found
+
+    def test_the_docs_agree_with_each_other(self):
+        """Every "N checks" in the docs is either the verifier's total or the
+        scenario subtotal it states separately."""
+        claims = self._claims()
+        self.assertTrue(claims, "no counts found; has the wording changed?")
+        totals = {c for c in claims if c != "100"}
+        self.assertEqual(1, len(totals),
+                         f"documents disagree about the total: { {c: claims[c] for c in totals} }")
+
+    def test_the_documented_total_is_what_the_verifier_reports(self):
+        directory = game_dir()
+        if directory is None:
+            self.skipTest("set CAPITALISM_GAME_DIR to a game directory to run this")
+        result = subprocess.run(
+            [sys.executable, str(VERIFIER), "--game-dir", directory],
+            capture_output=True, text=True,
+        )
+        actual = re.findall(r"^(\d+) checks passed", result.stdout, re.M)[-1]
+        totals = {c for c in self._claims() if c != "100"}
+        self.assertEqual({actual}, totals,
+                         f"docs claim {totals}, verifier reports {actual}")
+
+
 class TestVerifierWithoutGame(unittest.TestCase):
     """The verifier must be honest when it has nothing to check, rather than
     exiting 0 and looking like a pass."""

@@ -1,9 +1,10 @@
 # Binary grammars
 
 [Synalyze It! / Hexinator](https://www.synalysis.net/) grammars for the file
-formats behind this project. They are the closest thing to a specification the
-game has, and they are what a third party would need to write an extractor —
-which nobody has: see the reproducibility note in [`../DECODING.md`](../DECODING.md).
+formats behind this project — the closest thing to a specification the game has,
+and the basis for the tools in [`../../tools/`](../../tools/) that read it. See the
+reproducibility note in [`../DECODING.md`](../DECODING.md) for what is automated
+and what is not.
 
 Open a `.grammar` file in Synalyze It! Pro or Hexinator, then open the
 corresponding game file.
@@ -20,7 +21,7 @@ corresponding game file.
 
 Not by opening them in the tool. `../../tools/verify_against_game.py` implements
 the `.SET` container from the SET grammar's specification and reads a retail copy
-of the game with it — 1,830 checks against the committed data, 0 failures. That
+of the game with it — 2,020 checks against the committed data, 0 failures. That
 exercises the format description far harder than eyeballing a hex dump does, and
 it is what "verified" means in the table above.
 

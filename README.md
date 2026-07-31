@@ -7,9 +7,10 @@ Meant to be kept open in a browser tab alongside the game itself.
 
 Every gameplay fact on the site (sale restrictions, scenario domination
 goals, production chains) is decoded directly from the game's own `.SET` /
-`.SCN` save-file formats, not guessed from memory or secondary sources — see
-the commentary in `data/site_template.html` for the byte-level methodology
-and verification evidence behind each mechanic.
+`.SCN` formats, not guessed from memory or secondary sources — and checked
+against a retail copy of the game by `tools/verify_against_game.py`. See
+`docs/DECODING.md` for the byte-level methodology and the evidence behind each
+mechanic.
 
 ## Layout
 
@@ -120,11 +121,13 @@ gamesets — but several things stand between here and go-live:
 - **The icon question** in `ATTRIBUTION.md` is unresolved, and gates any public
   deployment. The site is designed to work without artwork, but that is the
   permanent state until the question is answered.
-- **Reproducibility.** `index_cards.json` was assembled by hand from
-  reverse-engineered file formats; no extractor has ever existed. There is now a
-  verifier instead — `tools/verify_against_game.py` checks the committed data
-  against a real copy of the game (2,020 checks, 0 failures, no tolerated
-  divergences) — but nobody can yet regenerate the dataset from scratch. See
+- **Reproducibility.** Every field is either read from the game by a committed
+  tool or derived by a rule a test asserts, and
+  `tools/verify_against_game.py` checks the whole dataset against a retail copy
+  (2,020 checks, 0 failures, no tolerated divergences). What is missing is a single
+  command that regenerates `index_cards.json` from nothing — the original was
+  assembled by hand — but the reader, the field mapping and the derivation rules
+  are all committed, so that is a mechanical gap rather than a research one. See
   `docs/DECODING.md`.
 
 The `pages` workflow is manual-only and refuses to deploy until its preflight

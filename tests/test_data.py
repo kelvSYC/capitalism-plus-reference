@@ -270,6 +270,51 @@ class TestUnitsAndQuantities(unittest.TestCase):
         self.assertIn("graphic_count", build)
 
 
+class TestDerivedFields(unittest.TestCase):
+    """Fields the dataset computes rather than reads from the game. Each was
+    documented as following a rule but nothing checked that it did, which is the
+    condition under which a documented rule quietly stops being true."""
+
+    def test_production_technology_is_the_remainder_of_input_quality(self):
+        """100 - sum(input quality_pct). Absent where there are no inputs, since
+        there is no recipe to take a remainder of."""
+        for c in CARDS_DATA:
+            if not c["inputs"]:
+                self.assertIsNone(c["production_technology_pct"], c["id"])
+                continue
+            want = 100 - sum(i["quality_pct"] or 0 for i in c["inputs"])
+            self.assertAlmostEqual(want, c["production_technology_pct"] or 0,
+                                   places=6, msg=c["id"])
+
+    def test_derived_from_livestock_is_the_inverse_of_livestock_yields(self):
+        forward = Counter((c["gameset"], c["name"], y)
+                          for c in CARDS_DATA for y in (c.get("livestock_yields") or []))
+        backward = Counter((c["gameset"], a, c["name"])
+                           for c in CARDS_DATA for a in (c.get("derived_from_livestock") or []))
+        self.assertEqual(forward, backward)
+
+    def test_id_follows_its_convention(self):
+        initial = {"Standard": "S", "Alternative": "A", "Food & Beverage": "F"}
+        for c in CARDS_DATA:
+            self.assertEqual(f"{initial[c['gameset']]} - {c['name']}", c["id"])
+
+    def test_classification_and_industry_are_functions_of_raw_class(self):
+        """Both are our grouping of the game's 32 class codes, not fields in the
+        file. They are reproducible only while the mapping stays unambiguous."""
+        for field in ("classification", "industry"):
+            seen = {}
+            for c in CARDS_DATA:
+                seen.setdefault(c["raw_class"], set()).add(c[field])
+            ambiguous = {k: v for k, v in seen.items() if len(v) > 1}
+            self.assertEqual({}, ambiguous, f"{field} is not a function of raw_class")
+
+    def test_the_dataset_makes_no_claim_about_its_own_provenance(self):
+        """classification_source was the same sentence on every record. Provenance
+        lives in docs/DECODING.md and is demonstrated by the verifier."""
+        for c in CARDS_DATA:
+            self.assertNotIn("classification_source", c, c["id"])
+
+
 class TestCropPlants(unittest.TestCase):
     """Six crops have a distinct growing plant. PLANT rows are not products, so
     the plant rides along on the crop's record."""
@@ -445,6 +490,13 @@ class TestAccessibility(unittest.TestCase):
     def test_has_viewport_meta(self):
         # Without it, mobile browsers scale a 980px layout down to ~38%.
         self.assertIn('name="viewport"', self.HTML)
+
+    def test_label_value_pairs_use_a_description_list(self):
+        """A CSS grid of anonymous divs pairs a label with its value visually but
+        not programmatically. Every kv block is a <dl>."""
+        self.assertNotIn('<div class="k">', self.HTML)
+        self.assertIn('<dl class="kv"', self.HTML)
+        self.assertEqual(self.HTML.count('<dl class="kv"'), self.HTML.count("</dl>"))
 
     def test_tables_are_not_display_block(self):
         """Setting display:block on a <table> to make it scroll strips the
