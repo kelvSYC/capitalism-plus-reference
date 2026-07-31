@@ -246,14 +246,15 @@ Six crops have a separate `PLANT` row with its own artwork, linked by
 **The game shows both.** Its Farmer's Guide displays the plant and the harvested
 crop side by side (Flax: the spiky plant, then the golden fibre), and lists crops
 under the *plant's* name — "Flax", "Palm" — while its Manufacturer's Guide shows
-the product alone. So the extractor writes both, 251 files rather than 245, and the
-site follows the same split: both images in the Farmer's Almanac and on the crop's
-own page, product alone in the grid and the dependency views.
+the product alone. So the extractor writes both, 251 files rather than 245, and
+leaves the choice to the site, which picks by context: both on the crop's own
+page, the plant alone in the Farmer's Almanac, and the product alone in the grid
+and the dependency views. The Almanac departs from the game here deliberately —
+every row there is already a crop, so the commodity tile adds nothing the column
+does not say.
 
 `PLANT` rows are not products and stay out of the dataset as products; the plant
-rides along on its crop as a `plant` field. The original extraction wrote one image
-per product and chose the plant for four of the six but the commodity for the other
-two, which was an inconsistency rather than a rule.
+rides along on its crop as a `plant` field.
 
 None of this is needed to build the site, which is designed to work without
 artwork entirely — see `ATTRIBUTION.md`. It is recorded for completeness, and

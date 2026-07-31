@@ -38,13 +38,10 @@ as distinct from the harvested commodity -- linked by FARMCROP.PLANT_CODE:
     Coffee / Coffee Plant      Flax Fiber / Flax       Tea / Tea Plant
 
 The game shows BOTH in its Farmer's Guide, side by side, and only the product in
-its Manufacturer's Guide. So this writes both -- 251 files rather than 245 -- and
-the site follows the same rule: both in the Farmer's Almanac and on the crop's own
-page, product alone everywhere else.
-
-The original extraction wrote one image per product and picked the plant for four
-of the six (Rubber, Sugar, Coconut, Coffee) but the commodity for the other two,
-which was an inconsistency rather than a rule.
+its Manufacturer's Guide. So this writes both, 251 files rather than 245, and
+leaves the choice to the site, which picks by context: both on the crop's own
+page, the plant alone in the Farmer's Almanac (where every row is a crop, so the
+commodity tile earns nothing), and the product alone everywhere else.
 
 Requires Python 3.8+, standard library only. PNG is written directly with zlib.
 """
@@ -87,7 +84,11 @@ def read_icon_archive(path):
 
 
 def write_png(path, width, height, rgb):
-    """Truecolour 8-bit PNG, matching the shape of the original extraction.
+    """Truecolour 8-bit PNG (IHDR colour type 2).
+
+    Truecolour rather than indexed even though the source is palette-indexed:
+    callers resolve indices through PAL_STD.RES before calling, so the data
+    arrives as RGB and no PLTE chunk has to be written or kept in step with it.
 
     Written by hand because the standard library has no PNG writer and this tool
     deliberately has no dependencies. Filter 0 on every scanline: larger than an
