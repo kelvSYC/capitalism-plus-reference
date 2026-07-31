@@ -411,6 +411,28 @@ class TestScenarios(unittest.TestCase):
         allowed = {c["industry"] for c in CARDS_DATA} | {"Retailing"}
         self.assertEqual(set(), self._codes("dominateIndustries") - allowed)
 
+    def test_the_docs_pair_each_scenario_title_with_the_right_filename(self):
+        # docs/DECODING.md writes scenarios as "Title (`STEM`)" in its evidence
+        # tables. Neither half is derivable from the other -- UK.SCN is Rule
+        # Britannia -- so a wrong pairing sends a reader to the wrong file with
+        # nothing to catch them. Check both directions against the live array.
+        names = dict(re.findall(r'key: "([A-Z]+)", name: "([^"]+)"', self.block))
+        doc = (ROOT / "docs" / "DECODING.md").read_text(encoding="utf-8")
+        # Anchored on the known strings rather than a "Title (`STEM`)" pattern:
+        # the same shape spells out class codes -- Frozen Beef (`LPRODUCT`) --
+        # and an unanchored title capture runs back through the sentence.
+        seen = 0
+        for stem, title in names.items():
+            # Right stem, wrong title.
+            for m in re.finditer(r"\(`%s`\)" % stem, doc):
+                before = doc[: m.start()].rstrip()
+                self.assertTrue(before.endswith(title), f"`{stem}` is titled {before[-40:]!r}")
+                seen += 1
+            # Right title, wrong stem.
+            for found in re.findall(re.escape(title) + r" \(`([A-Z_]+)`\)", doc):
+                self.assertEqual(stem, found, f"{title} is {stem}.SCN, not {found}.SCN")
+        self.assertTrue(seen, "no Title (`STEM`) pairs found -- has the convention changed?")
+
 
 class TestBuildContract(unittest.TestCase):
     def test_template_has_exactly_one_placeholder(self):

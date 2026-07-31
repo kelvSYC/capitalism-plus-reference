@@ -268,6 +268,13 @@ The scenarios are specially-built save games, and they ship **on the CD image**
 `.SCT` prose file beside each. The verifier reads them straight out of the ISO9660
 image without mounting it.
 
+**Naming.** Every scenario has two: the stem of its file on the disc image
+(`SPAIN.SCN`) and the title the game displays (*The Reign in Spain*). Neither is
+derivable from the other — `UK.SCN` is *Rule Britannia*, `ROUGH.SCN` is *The Rough
+Road Ahead* — so this document uses the **backticked stem** where the subject is
+the file or its bytes, and the **displayed title** where the subject is gameplay.
+Tables below give both; the site lists all 20.
+
 `tools/verify_against_game.py` checks all five fields below for all 20 scenarios:
 **100 checks, 0 failures.** Note that the class-code comparisons implicitly verify
 each scenario's gameset too: the flag arrays are one byte per row of *that
@@ -307,12 +314,12 @@ zero mismatches:
 
 | Scenario | Decoded array | Goal prose |
 |---|---|---|
-| `TECHNO` | Automobile, Chemical Products, Computers, Electronic Products, Toys, Watches | lists exactly those six |
-| `FORTIFY` | Beverage | "leading the beverage market" |
-| `UNDER` | Food, Canned Food, Snacks | — |
-| `VOGUE` | Apparel, Cosmetics, Jewelry, Optical Products | — |
-| `DRAGON` | Chemical Products, Electronic Products | — |
-| `GLOBAL` | every sellable Standard category | "market dominance in every market" |
+| Techno-Sweep (`TECHNO`) | Automobile, Chemical Products, Computers, Electronic Products, Toys, Watches | lists exactly those six |
+| Market Fortification (`FORTIFY`) | Beverage | "leading the beverage market" |
+| Domination Down Under (`UNDER`) | Food, Canned Food, Snacks | — |
+| Staying in Vogue (`VOGUE`) | Apparel, Cosmetics, Jewelry, Optical Products | — |
+| The Emerging Dragon (`DRAGON`) | Chemical Products, Electronic Products | — |
+| Global Domination (`GLOBAL`) | every sellable Standard category | "market dominance in every market" |
 
 Scenarios whose goal is phrased at the *industry* level instead ("dominate
 manufacturing and retail") decode to an **empty** array here. That is consistent
@@ -321,10 +328,10 @@ lives in its own array.
 
 ### `dominateIndustries` (offsets 305–308)
 
-Found by comparing two DOSBox saves: `SCENARIO_SPAIN`, and a custom `UTGAME1`
-game built by hand with the same Manufacturing + Farming goal enabled. Both
-showed identical bytes `[0,1,1,0]` at 305–308, while a save with no industry goal
-(`TECHNO`) and an earlier state of the custom game before its goal was set both
+Found by comparing two DOSBox saves: one from The Reign in Spain (`SPAIN`), and
+one from a custom game built by hand with the same Manufacturing + Farming goal
+enabled. Both showed identical bytes `[0,1,1,0]` at 305–308, while a save with no
+industry goal (Techno-Sweep) and the custom game before its goal was set both
 showed `[0,0,0,0]` — an independently reproduced signal.
 
 **The byte order is reversed relative to the display convention used elsewhere on
@@ -344,11 +351,11 @@ anchors every other scenario with zero contradictions:
 
 | Scenario | Decoded | Goal prose |
 |---|---|---|
-| `ASIAN`, `ITALY` | Manufacturing, Retailing | "manufacturing and retail sectors" |
-| `SPAIN` | Manufacturing, Farming | "manufacturing… retaining leadership in farming" |
-| `UK` | Manufacturing, Raw Material Production | "mining and manufacturing sectors" (mining = Raw Material Production) |
-| `VERTICAL` | Farming, Manufacturing, Retailing | "farming, manufacturing, and retail industries" |
-| `GLOBAL` | all four | "dominance in every single market" |
+| The Asian Gold Rush (`ASIAN`), Italy — Looking South (`ITALY`) | Manufacturing, Retailing | "manufacturing and retail sectors" |
+| The Reign in Spain (`SPAIN`) | Manufacturing, Farming | "manufacturing… retaining leadership in farming" |
+| Rule Britannia (`UK`) | Manufacturing, Raw Material Production | "mining and manufacturing sectors" (mining = Raw Material Production) |
+| Vertical Integration (`VERTICAL`) | Farming, Manufacturing, Retailing | "farming, manufacturing, and retail industries" |
+| Global Domination (`GLOBAL`) | all four | "dominance in every single market" |
 
 `GLOBAL` is the only scenario with both arrays populated (15 per-class codes *and*
 all four industries), since "everything" is expressible either way. The UI prefers
