@@ -197,6 +197,11 @@
   .rel-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .rel-cols h4 { font-size: 12px; color: var(--muted); margin: 0 0 8px; font-weight: normal; }
 
+  /* The table alternative to the diagram. Unlike the other tables this one has
+     genuinely long cells (a product can feed a dozen others), so it wraps. */
+  .graph-table td, .graph-table th { white-space: normal; vertical-align: top; }
+  .graph-table td:first-child { text-align: right; color: var(--muted); width: 3em; }
+  .graph-table .cell-activate { display: inline; }
   .graph-scroll { overflow: auto; background: var(--panel); border-radius: 8px; border: 1px solid var(--border); max-height: calc(100vh - 170px); }
   .node text { fill: var(--text); font-size: 11px; pointer-events: none; }
   .node text.node-yield { fill: var(--muted); font-size: 9px; }
@@ -1008,6 +1013,11 @@ let state = {
   // filter changes and gameset/scenario switches (resetFilters intentionally
   // doesn't touch it), the same way state.view itself isn't reset by filters.
   gridLayout: "cards",
+  // Diagram or table for the Dependency Graph. The diagram is an SVG and cannot
+  // be read or operated without sight; the table carries the same edges as text
+  // with the same product buttons, so it is a genuine alternative rather than a
+  // summary. Persists across filter changes like gridLayout.
+  graphLayout: "diagram",
   detailId: null,   // id of the product currently open in the detail view, if any
 };
 
@@ -1332,6 +1342,13 @@ function restrictionLevel(list) {
   return 'partial';
 }
 
+function setGraphLayout(v) {
+  state.graphLayout = v;
+  renderGraph();
+  const btn = document.getElementById(v === 'table' ? 'graphTable' : 'graphDiagram');
+  if (btn && btn.focus) btn.focus();
+}
+
 function setGridLayout(v) {
   state.gridLayout = v;
   renderGrid();
@@ -1565,7 +1582,9 @@ function openDetail(id) {
     if (!chainBlocked) {
       html += `<div class="section"><h3>Dependency Diagram (transitive)</h3>
       <p style="font-size:12px;color:var(--muted);margin-top:0">Everything this product is transitively made from (left) through everything it transitively ends up in (right). Click any node to jump to it.</p>
-      <div class="spider-wrap"><svg id="spider-svg"></svg></div>
+      <div class="spider-wrap" tabindex="0" role="region" aria-label="Dependency diagram for ${p.name}, scrollable">
+        <svg id="spider-svg" role="img" aria-label="Everything ${p.name} is transitively made from and ends up in. The same relationships are listed under Immediate Dependencies above."></svg>
+      </div>
     </div>`;
     }
   }
@@ -1846,7 +1865,10 @@ function computeLayeredPositions(nodeList) {
     }
   }
 
-  return { tierGroups, realLinks, chainOf, maxTier, orderOutgoing, orderIncoming };
+  // `tier` is exported so the table view can order products by exactly the
+  // stage the diagram draws them in -- the two cannot disagree about what is
+  // upstream of what.
+  return { tierGroups, realLinks, chainOf, maxTier, orderOutgoing, orderIncoming, tier };
 }
 
 function drawLayeredGraph(svg, nodeList, opts) {
@@ -2190,6 +2212,56 @@ function graphScopeProducts() {
   return result;
 }
 
+// The diagram as a table: same products, same edges, same amounts, reachable by
+// keyboard and readable by a screen reader. Offered as a visible choice rather
+// than a hidden mirror -- a visually-hidden copy would put 80-odd invisible tab
+// stops in the page, and the table is genuinely easier to scan for "what feeds
+// this?" regardless of how you are reading it.
+function graphTableHtml(nodes) {
+  const { realLinks, tier } = computeLayeredPositions(nodes);
+  const madeFrom = new Map(), usedIn = new Map();
+  realLinks.forEach(l => {
+    if (!madeFrom.has(l.target)) madeFrom.set(l.target, []);
+    madeFrom.get(l.target).push(l);
+    if (!usedIn.has(l.source)) usedIn.set(l.source, []);
+    usedIn.get(l.source).push(l);
+  });
+  const qty = l => l.amount != null ? ` (${l.amount}${l.unit ? ' ' + l.unit : ''})` : '';
+  const byName = new Map(nodes.map(n => [n.name, n]));
+  const cell = (links, pick) => {
+    if (!links || !links.length) return '<span style="color:var(--muted)">—</span>';
+    return links.map(l => {
+      const other = byName.get(pick(l));
+      const label = esc(pick(l)) + qty(l);
+      return other
+        ? `<button type="button" class="cell-activate" onclick="openDetail('${other.id.replace(/'/g,"\\'")}')">${label}</button>`
+        : label;
+    }).join(', ');
+  };
+
+  const ordered = nodes.slice().sort((a, b) =>
+    (tier.get(a.name) - tier.get(b.name)) || a.name.localeCompare(b.name));
+
+  let html = `<table class="grid-table graph-table">
+    <caption class="sr-only">Production chain for ${esc(state.gameset)}: ${ordered.length} products,
+    ordered from raw materials through to finished goods. Stage 1 is extracted or
+    raised rather than made from anything else in view.</caption>
+    <thead><tr>
+      <th scope="col">Stage</th><th scope="col">Product</th>
+      <th scope="col">Made from</th><th scope="col">Used in</th>
+    </tr></thead><tbody>`;
+  ordered.forEach(p => {
+    const restricted = scenarioRestricted(p);
+    html += `<tr class="${restricted ? 'restricted-row' : ''}">
+      <td>${(tier.get(p.name) || 0) + 1}</td>
+      <th scope="row"><div class="grid-name-cell">${productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div>${restrictionNote(p)}</th>
+      <td>${cell(madeFrom.get(p.name), l => l.source)}</td>
+      <td>${cell(usedIn.get(p.name), l => l.target)}</td>
+    </tr>`;
+  });
+  return html + '</tbody></table>';
+}
+
 function renderGraph() {
   const el = document.getElementById('graph-view');
   // Name every filter that's actually being applied. A filter silently omitted
@@ -2214,17 +2286,37 @@ function renderGraph() {
       ? ' — dimmed / struck-through nodes are restricted in this scenario'
       : ' — restricted nodes are hidden (see "Show Restricted" in the sidebar)';
   }
-  el.innerHTML = `<div class="graph-toolbar"><span style="color:var(--muted)">Showing ${scopeLabel}</span>
-    </div>
-    <div class="tier-legend">Raw materials / livestock on the left &rarr; finished, never-reprocessed products on the right</div>
-    <div class="graph-scroll"><svg id="full-graph-svg"></svg></div>`;
-
   const nodesList = graphScopeProducts();
+  const asTable = state.graphLayout === 'table';
+  const toggle = `<span class="layout-toggle">
+    <button type="button" id="graphDiagram" class="chip${asTable ? '' : ' active'}" aria-pressed="${!asTable}" onclick="setGraphLayout('diagram')">Diagram</button>
+    <button type="button" id="graphTable" class="chip${asTable ? ' active' : ''}" aria-pressed="${asTable}" onclick="setGraphLayout('table')">Table</button>
+  </span>`;
+
+  el.innerHTML = `<div class="graph-toolbar"><span style="color:var(--muted)">Showing ${scopeLabel}</span>${toggle}
+    </div>`;
+
   if (nodesList.length === 0) {
     const restrictionHint = (state.scenario && !state.showRestricted) ? ' Check "Show Restricted" in the sidebar if this filter is entirely restricted in this scenario.' : '';
-    document.querySelector('.graph-scroll').innerHTML = `<div class="empty">No products match the current filters.${restrictionHint}</div>`;
+    el.innerHTML += `<div class="empty">No products match the current filters.${restrictionHint}</div>`;
     return;
   }
+
+  if (asTable) {
+    el.innerHTML += graphTableHtml(nodesList);
+    announce(`${nodesList.length} products in the production chain table.`);
+    return;
+  }
+
+  // The diagram is an SVG: role="img" stops a screen reader crawling hundreds of
+  // shape elements to no purpose, and the label states what it shows and where
+  // the readable equivalent is. The scroll container is focusable so it can be
+  // scrolled with the arrow keys, which an overflow:auto div otherwise cannot.
+  el.innerHTML += `
+    <div class="tier-legend">Raw materials / livestock on the left &rarr; finished, never-reprocessed products on the right</div>
+    <div class="graph-scroll" tabindex="0" role="region" aria-label="Dependency diagram, scrollable">
+      <svg id="full-graph-svg" role="img" aria-label="Dependency diagram: ${nodesList.length} products in ${esc(state.gameset)}, drawn from raw materials on the left to finished goods on the right. Switch to Table view for the same information as text."></svg>
+    </div>`;
   drawLayeredGraph(document.getElementById('full-graph-svg'), nodesList, {
     colWidth: 220, rowHeight: 32, minWidth: 900, minHeight: 500,
     showYield: false,

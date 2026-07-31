@@ -386,6 +386,75 @@ const badges = cards.match(/class="badge"[^>]*/g) || [];
 ok('every rendered badge carries an explicit colour (' + badges.length + ')',
    badges.length > 0 && badges.every(b => b.includes('color:')));
 
+print('--- the dependency graph has a real text equivalent ---');
+// The diagram is an SVG with no text alternative and no focusable nodes, so the
+// whole view was unreadable by a screen reader and unusable without a mouse.
+// The table is a genuine alternative, not a summary: same products, same edges,
+// same amounts, same navigation buttons.
+reset();
+state.gameset = 'Standard';
+state.graphLayout = 'table';
+setView('graph');
+const tableHtml = pane('graph-view').innerHTML;
+const scope = graphScopeProducts();
+
+ok('every product in scope has a row (' + scope.length + ')',
+   scope.every(p => tableHtml.includes('>' + esc(p.name) + '</button>')),
+   scope.filter(p => !tableHtml.includes('>' + esc(p.name) + '</button>')).slice(0, 3).map(p => p.name).join(', '));
+
+// Parity: the table must carry every edge the diagram draws. This is the whole
+// claim -- if it silently dropped links it would be a summary pretending to be
+// an equivalent.
+const edges = buildLinks(scope);
+// Split into real rows and match on the row header, not the first occurrence of
+// a name anywhere -- a product's name also appears in other rows' "Used in"
+// cells. Names go through the site's own esc(), so "Wheel & Tire" is compared as
+// the markup actually writes it.
+const rows = tableHtml.split('<tr').slice(1);
+const rowFor = name => rows.find(r => {
+  const head = r.slice(r.indexOf('<th scope="row"'), r.indexOf('</th>'));
+  return head.includes('>' + esc(name) + '</button>');
+});
+const missingEdges = edges.filter(l => {
+  const row = rowFor(l.target);
+  if (!row) return true;
+  const madeFrom = row.slice(row.indexOf('</th>'));
+  return !madeFrom.includes('>' + esc(l.source));
+});
+ok('every diagram edge appears in the table (' + edges.length + ' edges)',
+   missingEdges.length === 0,
+   missingEdges.slice(0, 3).map(l => l.source + '->' + l.target).join(', '));
+ok('edge quantities are carried too', /\(\d+(\.\d+)? [a-z]+\)/.test(tableHtml));
+ok('the table is captioned and scoped',
+   tableHtml.includes('<caption') && tableHtml.includes('<th scope="col"') &&
+   tableHtml.includes('<th scope="row"'));
+ok('stage ordering starts at the raw materials',
+   tableHtml.indexOf('<td>1</td>') < tableHtml.indexOf('<td>2</td>'));
+ok('switching to the table announces the change',
+   document.getElementById('resultStatus').textContent.includes('production chain'));
+
+state.graphLayout = 'diagram';
+setView('graph');
+const diagramHtml = pane('graph-view').innerHTML;
+ok('the diagram is exposed as a single image, not a pile of shapes',
+   diagramHtml.includes('role="img"'));
+ok('the image says what it shows and where the readable version is',
+   /aria-label="Dependency diagram:[^"]*Table view/.test(diagramHtml));
+ok('the scroll container can be reached and scrolled by keyboard',
+   diagramHtml.includes('class="graph-scroll" tabindex="0" role="region"'));
+ok('the view toggle exposes which view is active',
+   diagramHtml.includes('id="graphDiagram"') && diagramHtml.includes('aria-pressed="true"'));
+
+// The detail page's spider diagram gets the same treatment; its text equivalent
+// is the Immediate Dependencies list already on the page.
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.inputs.length && p.used_in.length).id);
+const detail = pane('detail-view').innerHTML;
+ok('the spider diagram is labelled and points at its text equivalent',
+   detail.includes('id="spider-svg" role="img"') &&
+   detail.includes('Immediate Dependencies above'));
+ok('the spider diagram is keyboard scrollable', detail.includes('class="spider-wrap" tabindex="0"'));
+
 print('--- the growing calendar exists in text, not just in colour ---');
 // The calendar was 12 empty <td>s per crop whose entire content was a background
 // colour and two border edges -- invisible to a screen reader, in the one view
