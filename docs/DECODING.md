@@ -178,15 +178,18 @@ tables were checked. `RAW.SPEED` is also on a different scale from
 absolute anchor at all, and the site states it against the other materials in the
 same gameset rather than against a baseline we would have had to invent.
 
-`MAX_SITE` needs similar care. It is a property of the **gameset**, not of the
-game being played. Raw materials are never excluded by class — `RAW` appears in
-no scenario's `excludedClasses` — but they are restricted *transitively* when
-every downstream consumer dies: Gold under Italy loses Jewelry, its only
-consumer, and so has no market. A scenario has no reason to place sites for a
-material nothing will buy, so the product page qualifies the figure as an upper
-bound whenever the material is restricted, rather than repeating a gameset fact
-as though it described the current game. Whether a given scenario's map actually
-contains such sites is in the `.SCN` map data, which we have not decoded.
+`MAX_SITE` describes the **gameset**, not the game being played, so the product
+page scopes it to "an unrestricted game" when the material is restricted.
+
+Raw materials are never excluded by class — `RAW` appears in no scenario's
+`excludedClasses` — but they are restricted *transitively* when every downstream
+consumer dies: Gold under Italy loses Jewelry, its only consumer. Mechanically a
+restricted raw material behaves like restricted livestock: a site could still be
+worked, and the Sales Unit would refuse to connect. In practice the distinction
+is moot, since a scenario will not offer an extraction site for a resource
+nothing can use. Either way the map contents live in the `.SCN` data, which we
+have not decoded, so the page scopes the figure rather than asserting anything
+about a particular map.
 
 `livestock_production`, from `FARMPROD`, on livestock-derived goods. Two modes,
 never both:

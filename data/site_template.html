@@ -1494,29 +1494,23 @@ function extractionSection(p) {
     : e.speed === lo && hi !== lo ? ' — the slowest in this gameset'
     : '';
 
-  // max_sites is a property of the gameset, not of the game you are playing. A
-  // scenario that leaves a material without a market has no reason to place
-  // sites for it, so presenting the figure unqualified would overstate it.
-  const restricted = scenarioRestricted(p);
-  const sitesRow = restricted
-    ? `<div class="k">Sites per map</div><div><span style="color:var(--muted)">up to ${e.max_sites}
-       in an unrestricted game</span> — but ${esc(p.name)} has no market in this
-       scenario, and a scenario has no reason to place sites for a material
-       nothing will buy. Treat the figure as an upper bound, not a promise.</div>`
-    : `<div class="k">Sites per map</div><div>up to ${e.max_sites}</div>`;
+  // max_sites describes the gameset, not the game being played, so it is scoped
+  // rather than repeated flat when the material is restricted. Why a restricted
+  // material behaves as it does is the restriction badge's job, not this row's.
+  const sites = scenarioRestricted(p)
+    ? `up to ${e.max_sites} in an unrestricted game`
+    : `up to ${e.max_sites}`;
 
   return `<div class="section"><h3>Extraction</h3><div class="kv">
     <div class="k">Site</div><div>${esc(e.site)}${e.unit ? ` — worked by a ${esc(e.unit)}` : ''}</div>
     <div class="k">Extraction speed</div><div>${e.speed} of ${hi}${speedNote}</div>
     <div class="k">Resource value</div><div>${e.resource_value}${e.resource_value > 1 ? ' — richer than an ordinary deposit' : ''}</div>
-    ${sitesRow}
+    <div class="k">Sites per map</div><div>${sites}</div>
   </div>
-  <p style="font-size:12px;color:var(--muted);margin:10px 0 0">Extraction is
-  continuous rather than batched, so a site produces
-  ${esc(e.measured_in || p.output_unit || 'units')} steadily rather than in
-  batches. Unlike livestock, the game records no quantity per month for mining —
-  only the relative speed above — so the absolute rate is not something this
-  reference can state.</p>
+  <p style="font-size:12px;color:var(--muted);margin:10px 0 0">A site produces
+  ${esc(e.measured_in || p.output_unit || 'units')} continuously. The game records
+  no quantity per month for mining, only the relative speed above, so this
+  reference cannot state an absolute rate.</p>
   </div>`;
 }
 
