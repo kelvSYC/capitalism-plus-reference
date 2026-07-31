@@ -153,7 +153,10 @@
   .layout-toggle .chip { padding: 3px 10px; font-size: 12px; }
   .grid-table { border-collapse: collapse; width: 100%; font-size: 12px; }
   .grid-table th, .grid-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
-  .grid-table th { color: var(--muted); font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
+  .grid-table thead th { color: var(--muted); font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
+  /* Row headers are <th scope="row"> for cell-to-crop association, but should
+     read as ordinary cells, not as column headings. */
+  .grid-table tbody th { font-weight: normal; text-align: left; }
   .grid-table tbody tr { cursor: pointer; }
   .grid-table tbody tr:hover { background: var(--panel2); }
   .grid-table tr.restricted-row { opacity: 0.55; }
@@ -209,7 +212,10 @@
 
   .almanac-table { border-collapse: collapse; width: 100%; font-size: 12px; }
   .almanac-table th, .almanac-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
-  .almanac-table th { color: var(--muted); font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
+  .almanac-table thead th { color: var(--muted); font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
+  /* Row headers are <th scope="row"> for cell-to-crop association, but should
+     read as ordinary cells, not as column headings. */
+  .almanac-table tbody th { font-weight: normal; text-align: left; }
   .almanac-table tbody tr { cursor: pointer; }
   .almanac-table tbody tr:hover { background: var(--panel2); }
   .almanac-crop { display: flex; align-items: center; gap: 8px; }
@@ -1351,13 +1357,15 @@ function renderGrid() {
     // One row per product instead of an icon-forward card, for scanning a large
     // filtered set quickly. Shares the Almanac's table layout and restricted-row
     // treatment so the site has two visual languages, not three.
-    html += `<table class="grid-table"><thead><tr>
-      <th>Product</th><th>Category</th><th>Classification</th><th>Goods Type</th><th></th>
+    html += `<table class="grid-table">
+      <caption class="sr-only">${list.length} product${list.length === 1 ? '' : 's'} in the ${state.gameset} gameset.</caption>
+      <thead><tr>
+      <th scope="col">Product</th><th scope="col">Category</th><th scope="col">Classification</th><th scope="col">Goods Type</th><th scope="col">Scenario restriction</th>
     </tr></thead><tbody>`;
     list.forEach(p => {
       const restricted = scenarioRestricted(p);
       html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-        <td><div class="grid-name-cell">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></td>
+        <th scope="row"><div class="grid-name-cell">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></th>
         <td>${p.category || p.classification}</td>
         <td><span class="badge" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</span></td>
         <td>${goodsTypeLabel(p)}</td>
@@ -2177,7 +2185,9 @@ function climateBands(climate) {
 }
 function climateBar(climate) {
   const active = new Set(climateBands(climate));
-  let html = `<span class="climate-bar" title="${climate}">`;
+  // The cell prints the climate name next to this bar, so the bar is a
+  // duplicate; its title would otherwise announce the same word a second time.
+  let html = `<span class="climate-bar" aria-hidden="true">`;
   CLIMATE_BANDS.forEach(band => {
     html += `<span class="climate-seg${active.has(band) ? ' filled' : ''}" style="${active.has(band) ? `background:${CLIMATE_COLOR[band]}` : ''}"></span>`;
   });
@@ -2188,7 +2198,7 @@ const RAINFALL_LEVEL = { 'Little': 1, 'Moderate': 2, 'Plentiful': 3 };
 
 function rainBar(rainfall) {
   const level = RAINFALL_LEVEL[rainfall] || 0;
-  let html = '<span class="rain-bar">';
+  let html = '<span class="rain-bar" aria-hidden="true">';
   for (let i = 1; i <= 3; i++) html += `<span class="${i <= level ? 'filled' : ''}"></span>`;
   html += '</span>';
   return html;
@@ -2197,6 +2207,19 @@ function rainBar(rainfall) {
 // Growing season can wrap around the calendar year (e.g. sow in May, harvest the
 // following February) -- walk forward from the sowing month to the harvesting
 // month, inclusive, wrapping past December back to January as needed.
+// Visually-hidden description of one month cell. Sowing and harvesting months
+// are also growing months, so the more specific event wins; a month with nothing
+// happening stays genuinely empty rather than announcing "not growing" twelve
+// times a row.
+function monthStateLabel(m, months, sowIdx, harvestIdx) {
+  let state = '';
+  if (m === sowIdx && m === harvestIdx) state = 'Sown and harvested';
+  else if (m === sowIdx) state = 'Sown';
+  else if (m === harvestIdx) state = 'Harvested';
+  else if (months.has(m)) state = 'Growing';
+  return state ? `<span class="sr-only">${state}</span>` : '';
+}
+
 function growingMonths(sowMonth, harvestMonth) {
   const sowIdx = MONTHS_FULL.indexOf(sowMonth);
   const harvestIdx = MONTHS_FULL.indexOf(harvestMonth);
@@ -2253,9 +2276,12 @@ function renderAlmanac() {
   if (state.scenario) {
     html += `<div class="almanac-disclaimer">Crossed-out crops can still be sown and harvested -- the game won't stop you -- but the Sales Unit will never connect: neither the crop itself nor anything made from it, however many stages downstream, can be sold -- it's restricted in this scenario. Uncheck "Show Restricted" above if you'd rather filter them out of the list entirely.</div>`;
   }
-  html += `<table class="almanac-table"><thead><tr>
-    <th>Crop</th><th>Climate</th><th>Rainfall</th><th>Goods Type</th>
-    ${MONTHS_SHORT.map(m => `<th class="month-cell">${m}</th>`).join('')}
+  html += `<table class="almanac-table">
+    <caption class="sr-only">Growing calendar: climate, rainfall and the sowing,
+    growing and harvesting months for every crop in the ${state.gameset} gameset.</caption>
+    <thead><tr>
+    <th scope="col">Crop</th><th scope="col">Climate</th><th scope="col">Rainfall</th><th scope="col">Goods Type</th>
+    ${MONTHS_SHORT.map((m, i) => `<th scope="col" class="month-cell"><span aria-hidden="true">${m}</span><span class="sr-only">${MONTHS_FULL[i]}</span></th>`).join('')}
   </tr></thead><tbody>`;
   crops.forEach(p => {
     const gc = p.growing_conditions;
@@ -2264,7 +2290,7 @@ function renderAlmanac() {
     const harvestIdx = MONTHS_FULL.indexOf(gc.harvesting_month);
     const restricted = scenarioRestricted(p);
     html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-      <td><div class="almanac-crop">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></td>
+      <th scope="row"><div class="almanac-crop">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></th>
       <td>${climateBar(gc.climate)}${gc.climate}</td>
       <td>${rainBar(gc.rainfall)}${gc.rainfall}</td>
       <td>${goodsTypeLabel(p)}${restrictionNote(p)}</td>`;
@@ -2273,7 +2299,12 @@ function renderAlmanac() {
       if (months.has(m)) classes.push('grow');
       if (m === sowIdx) classes.push('sow');
       if (m === harvestIdx) classes.push('harvest');
-      html += `<td class="${classes.join(' ')}"></td>`;
+      // The calendar's entire content was a background colour and two border
+      // edges on an empty cell, so none of it existed for a screen reader --
+      // and the calendar is the reason this view exists. The state goes in as
+      // text; with scope="col"/scope="row" above, a cell announces as
+      // "Wheat, March, Sown".
+      html += `<td class="${classes.join(' ')}">${monthStateLabel(m, months, sowIdx, harvestIdx)}</td>`;
     }
     html += '</tr>';
   });

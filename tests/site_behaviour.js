@@ -383,6 +383,59 @@ const badges = cards.match(/class="badge"[^>]*/g) || [];
 ok('every rendered badge carries an explicit colour (' + badges.length + ')',
    badges.length > 0 && badges.every(b => b.includes('color:')));
 
+print('--- the growing calendar exists in text, not just in colour ---');
+// The calendar was 12 empty <td>s per crop whose entire content was a background
+// colour and two border edges -- invisible to a screen reader, in the one view
+// that exists to show it.
+const MONTH_STATE = /<span class="sr-only">(Sown|Harvested|Growing|Sown and harvested)<\/span>/;
+let statelessCells = [], missingRows = [];
+for (const gs of ['Standard', 'Alternative', 'Food & Beverage']) {
+  reset();
+  state.gameset = gs;
+  setView('almanac');
+  const html = pane('almanac-view').innerHTML;
+  // Every cell carrying a visual state class must also carry text.
+  const cells = html.match(/<td class="month-cell[^"]*">[^<]*(<span[^>]*>[^<]*<\/span>)?/g) || [];
+  for (const cell of cells) {
+    const visual = /grow|sow|harvest/.test(cell.slice(0, cell.indexOf('>')));
+    const textual = MONTH_STATE.test(cell + '</span>');
+    if (visual && !textual) statelessCells.push(gs + ': ' + cell.slice(0, 60));
+  }
+  for (const p of byGameset(gs).filter(x => x.growing_conditions)) {
+    if (!html.includes(p.name)) missingRows.push(gs + '/' + p.name);
+  }
+}
+ok('no month cell conveys its state by colour alone',
+   statelessCells.length === 0, statelessCells.slice(0, 3).join(' | '));
+ok('every crop appears in its gameset calendar', missingRows.length === 0,
+   missingRows.slice(0, 3).join(', '));
+
+reset(); state.gameset = 'Standard'; setView('almanac');
+const almanac = pane('almanac-view').innerHTML;
+ok('sowing is announced', almanac.includes('>Sown<'));
+ok('harvesting is announced', almanac.includes('>Harvested<'));
+ok('growing months are announced', almanac.includes('>Growing<'));
+ok('month columns carry full names, not just an initial',
+   almanac.includes('>January<') && almanac.includes('>December<'));
+ok('the calendar table has a caption', almanac.includes('<caption'));
+ok('columns are scoped', almanac.includes('<th scope="col"'));
+ok('each crop row is a row header', almanac.includes('<th scope="row"'));
+ok('the decorative climate bar is hidden from assistive tech',
+   almanac.includes('class="climate-bar" aria-hidden="true"'));
+ok('the decorative rain bar is hidden from assistive tech',
+   almanac.includes('class="rain-bar" aria-hidden="true"'));
+// The climate/rainfall words themselves must survive -- they were the only
+// non-decorative carrier once the bars went aria-hidden.
+ok('climate is still stated in words', /aria-hidden="true">.*?<\/span>Warm/.test(almanac.replace(/\n/g, '')));
+
+reset(); state.gridLayout = 'list'; setView('grid');
+const listView = pane('grid-view').innerHTML;
+ok('the product list table is captioned and scoped',
+   listView.includes('<caption') && listView.includes('<th scope="col"') &&
+   listView.includes('<th scope="row"'));
+ok('the restriction column has a header name', listView.includes('Scenario restriction'));
+state.gridLayout = 'cards';
+
 print('--- keyboard operability ---');
 // The site was mouse-only: zero tabindex/role/aria/key handlers anywhere, so a
 // keyboard user could reach exactly three controls.
