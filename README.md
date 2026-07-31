@@ -38,6 +38,7 @@ tools/
   augment_from_game.py     one-shot: adds production-rate fields from the game
 docs/
   DECODING.md     the .SET / .SCN file formats and how each fact was verified
+  formats/        Synalyze It! / Hexinator binary grammars for those formats
 ```
 
 Scenario goal data (durations, bonuses, sale restrictions, domination targets)

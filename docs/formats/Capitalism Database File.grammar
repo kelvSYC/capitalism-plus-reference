@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="Capitalism Database" start="id:65" author="Kelvin Chung">
+        <description>Generic Database for Capitalism Games</description>
+        <structure name="Database" id="65" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="NumberOfFiles" id="66" fillcolor="72FA78" type="integer" length="2"/>
+            <structref name="File" id="68" repeatmin="NumberOfFiles" repeatmax="NumberOfFiles" structure="id:67"/>
+            <structref name="Terminator File" id="70" structure="id:69"/>
+        </structure>
+        <structure name="File" id="67" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <string name="File Name" id="72" fillcolor="FEFC78" type="fixed-length" length="9"/>
+            <number name="Offset" id="73" fillcolor="FF84FF" type="integer" length="4"/>
+            <scriptelement name="File Length" id="74">
+                <script name="unnamed" type="Generic">
+                    <source language="Python">results = currentMapper.getCurrentResults()
+
+currentOffset = results.getResultByName(&quot;Offset&quot;).getValue().getUnsignedNumber()
+
+# Read the offset of the next file
+view = currentMapper.getCurrentByteView()
+nextOffset = view.readUnsignedInt(currentMapper.getCurrentOffset() + 9, 4, ENDIAN_LITTLE)
+
+value = Value()
+value.setUnsigned(nextOffset - currentOffset)
+
+currentElement = currentMapper.getCurrentElement()
+results.addElement(currentElement, 0, 0, value)</source>
+                </script>
+            </scriptelement>
+            <scriptelement name="File Data" id="75">
+                <script name="unnamed" type="Generic">
+                    <source language="Python">results = currentMapper.getCurrentResults()
+
+offset = results.getResultByName(&quot;Offset&quot;).getValue().getUnsignedNumber()
+length = results.getResultByName(&quot;File Length&quot;).getValue().getUnsignedNumber()
+
+# Retrieve Placeholder Structure
+currentGrammar = currentMapper.getCurrentGrammar()
+dataStruct = currentGrammar.getStructureByName(&quot;File Data&quot;)
+
+currentMapper.mapStructureAtPosition(dataStruct, offset, length)</source>
+                </script>
+            </scriptelement>
+        </structure>
+        <structure name="Terminator File" id="69" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <binary name="File Name" id="77" fillcolor="929292" length="9"/>
+            <number name="Offset (File Length)" id="78" fillcolor="FF84FF" type="integer" length="4"/>
+        </structure>
+        <structure name="File Data" id="80" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="Width" id="81" fillcolor="72FA78" type="integer" length="2"/>
+            <number name="Height" id="82" fillcolor="72FA78" type="integer" length="2"/>
+            <binary name="&lt;new binary&gt;" id="83" length="remaining"/>
+        </structure>
+    </grammar>
+</ufwb>

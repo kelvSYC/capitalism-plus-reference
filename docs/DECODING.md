@@ -44,9 +44,11 @@ file, or the game's own behaviour under DOSBox. Where a hypothesis survived ever
 check it is recorded below; where one failed, the counterexample that killed it
 is recorded too (see [Falsified hypotheses](#falsified-hypotheses)).
 
-Four binary grammars were written along the way, in
-[Synalyze It! / Hexinator](https://www.synalysis.net/) format. They are the
-closest thing to a specification this project has:
+Five binary grammars now live in [`formats/`](formats/), in
+[Synalyze It! / Hexinator](https://www.synalysis.net/) format — four written
+during the original work and one added since. They are the closest thing to a
+specification this project has; see [`formats/README.md`](formats/README.md) for
+what each covers and how far each is verified:
 
 | Grammar | Describes |
 |---|---|

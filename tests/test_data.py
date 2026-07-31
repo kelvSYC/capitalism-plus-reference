@@ -463,6 +463,54 @@ class TestAccessibility(unittest.TestCase):
             self.assertNotIn("color: white", decl, rule)
 
 
+class TestGrammars(unittest.TestCase):
+    """The binary grammars in docs/formats/ are the project's format
+    specification. These are cheap structural checks -- the real verification is
+    tools/verify_against_game.py, which implements the .SET grammar and reads a
+    retail copy with it."""
+
+    GRAMMARS = sorted((ROOT / "docs" / "formats").glob("*.grammar"))
+
+    def test_grammars_are_present(self):
+        self.assertGreaterEqual(len(self.GRAMMARS), 5, "expected the documented grammar set")
+
+    def test_grammars_are_well_formed_xml(self):
+        import xml.etree.ElementTree as ET
+        for path in self.GRAMMARS:
+            with self.subTest(path.name):
+                ET.parse(path)      # raises on malformed XML
+
+    def test_every_grammar_is_listed_in_the_readme(self):
+        readme = (ROOT / "docs" / "formats" / "README.md").read_text(encoding="utf-8")
+        for path in self.GRAMMARS:
+            self.assertIn(path.stem, readme, f"{path.name} is not described in the README")
+
+    def test_scn_grammar_offsets_match_the_documented_ones(self):
+        """The SCN grammar is hand-written and has not been opened in Synalyze
+        It!, so at minimum its cumulative element lengths must put each field at
+        the offset docs/DECODING.md and the verifier both rely on."""
+        import xml.etree.ElementTree as ET
+        path = ROOT / "docs" / "formats" / "Capitalism Plus SCN Goal Header.grammar"
+        grammar = ET.parse(path).getroot().find("grammar")
+        structs = {s.get("id"): s for s in grammar.findall("structure")}
+        expected = {"Years": 179, "Bonus": 183, "Dominate Industries": 305,
+                    "Excluded Classes": 315, "Dominate Classes": 415}
+        offset, seen = 0, {}
+        for child in structs["1"]:
+            if child.tag == "description":
+                continue
+            if child.tag == "structref":
+                sub = structs[child.get("structure").split(":")[1]]
+                size = sum(int(x.get("length")) for x in sub
+                           if x.tag in ("number", "binary"))
+            else:
+                size = int(child.get("length"))
+            seen[child.get("name")] = offset
+            offset += size
+        for field, want in expected.items():
+            self.assertEqual(want, seen.get(field), f"{field} is at the wrong offset")
+
+
 class TestIconLicensingHold(unittest.TestCase):
     """The icons are withheld from version control pending a licensing
     determination (ATTRIBUTION.md), enforced today only by .gitignore. This

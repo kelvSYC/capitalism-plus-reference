@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="Capitalism .SET" start="id:3" author="Kelvin Chung" fileextension=".SET">
+        <description>Format for Capitalism / Capitalism II .SET (game data) files</description>
+        <scripts>
+            <script name="Foo" type="DataType" id="74">
+                <source language="Python"># custom data type script
+
+def parseByteRange(element, byteView, bitPos, bitLength, results):
+	# this method parses data starting at bitPos, bitLength bits are remaining
+	&quot;&quot;&quot;parseByteRange method&quot;&quot;&quot;
+
+	# create and set new value
+	value = Value()
+	value.setString(&quot;Value of custom element&quot;)
+
+	# how many bytes were processed?
+	processedBytes = 0
+	iteration = 0
+
+	results.addElement(element, processedBytes, iteration, value)
+
+	# return number of processed bytes
+	return processedBytes
+
+def fillByteRange(value, byteArray, bitPos, bitLength):
+	# this method translates edited values back to the file
+	&quot;&quot;&quot;fillByteRange method&quot;&quot;&quot;
+
+	# write an integer back to file
+	# byteArray.writeUnsignedIntBits(highWord, bitPos, bitLength, ENDIAN_BIG)
+</source>
+            </script>
+        </scripts>
+        <structure name="Capitalism Plus .SET" id="3" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="NumberOfFiles" id="4" fillcolor="72FA78" type="integer" length="2"/>
+            <structref name="File Descriptors" id="6" repeatmax="NumberOfFiles" structure="id:5"/>
+            <structref name="Terminator Chunk Header" id="8" structure="id:7"/>
+        </structure>
+        <structure name="File Descriptor" id="5" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <string name="Name" id="10" fillcolor="FEFC78" type="fixed-length" length="9"/>
+            <offset name="Offset" id="12" fillcolor="FF84FF" length="4" references="id:11" follownullreference="yes"/>
+            <scriptelement name="File Length" id="13">
+                <script name="unnamed" type="Generic">
+                    <source language="Python">results = currentMapper.getCurrentResults()
+
+currentOffset = results.getResultByName(&quot;Offset&quot;).getValue().getUnsignedNumber()
+
+# Read the offset of the next file
+view = currentMapper.getCurrentByteView()
+nextOffset = view.readUnsignedInt(currentMapper.getCurrentOffset() + 9, 4, ENDIAN_LITTLE)
+
+value = Value()
+value.setUnsigned(nextOffset - currentOffset)
+
+currentElement = currentMapper.getCurrentElement()
+results.addElement(currentElement, 0, 0, value)</source>
+                </script>
+            </scriptelement>
+        </structure>
+        <structure name="Terminator" id="7" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <binary name="Name" id="15" fillcolor="919191" length="9"/>
+            <number name="Offset (File Length)" id="16" fillcolor="FF84FF" type="integer" length="4"/>
+        </structure>
+        <structure name="File" id="11" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <structure name="Table Header" id="18">
+                <binary name="&lt;type?&gt;" id="19" length="1"/>
+                <binary name="&lt;unused&gt;" id="20" fillcolor="000000" length="3"/>
+                <number name="Row Count" id="21" fillcolor="72FA78" type="integer" length="4"/>
+                <number name="Data Offset" id="22" fillcolor="FF84FF" type="integer" length="2" display="hex"/>
+                <scriptelement name="Column Count" id="23" fillcolor="FEFFFF">
+                    <script name="unnamed" type="Generic">
+                        <source language="Python">results = currentMapper.getCurrentResults()
+
+dataOffset = results.getResultByName(&quot;Data Offset&quot;).getValue().getUnsignedNumber()
+
+colCount = (dataOffset - 32) / 32
+
+value = Value()
+value.setUnsigned(colCount)
+
+currentElement = currentMapper.getCurrentElement()
+results.addElement(currentElement, 0, 0, value)</source>
+                    </script>
+                </scriptelement>
+                <number name="Row Length" id="24" fillcolor="72FA78" type="integer" length="4" display="hex"/>
+                <binary name="&lt;unused-1&gt;" id="25" fillcolor="000000" length="18"/>
+            </structure>
+            <scriptelement name="Columns" id="27">
+                <script name="unnamed" type="Generic">
+                    <source language="Python">results = currentMapper.getCurrentResults()
+
+colCount = results.getResultByName(&quot;Column Count&quot;).getValue().getUnsignedNumber()
+
+currentGrammar = currentMapper.getCurrentGrammar()
+headerStruct = currentGrammar.getStructureByName(&quot;Column Header&quot;)
+
+for i in range(colCount):
+  currentMapper.mapStructure(headerStruct)
+</source>
+                </script>
+            </scriptelement>
+            <binary name="&lt;column end marker&gt;" mustmatch="yes" id="28" fillcolor="919191" length="1">
+                <fixedvalues>
+                    <fixedvalue name="&lt;unnamed&gt;" value="0D"/>
+                </fixedvalues>
+            </binary>
+            <scriptelement name="Data" id="29">
+                <script name="unnamed" type="Generic">
+                    <source language="Python">results = currentMapper.getCurrentResults()
+
+rowCount = results.getResultByName(&quot;Row Count&quot;).getValue().getUnsignedNumber()
+
+rowLength = results.getResultByName(&quot;Row Length&quot;).getValue().getUnsignedNumber()
+
+dataOffset = results.getResultByName(&quot;Data Offset&quot;).getValue().getUnsignedNumber()
+
+colCount = results.getResultByName(&quot;Column Count&quot;).getValue().getUnsignedNumber()
+
+resultStart = results.getResultByName(&quot;File&quot;).getStartBytePos()
+
+# Retrieve placeholder structure
+currentGrammar = currentMapper.getCurrentGrammar()
+headerStruct = currentGrammar.getStructureByName(&quot;Row Data&quot;)
+
+# Map out data
+for i in range(rowCount):
+  results.addStructureStart(headerStruct, resultStart + dataOffset + (i * rowLength), i, &quot;Row&quot;, True)
+  results.addStructureEnd(resultStart + dataOffset + ((i + 1) * rowLength))
+</source>
+                </script>
+            </scriptelement>
+            <binary name="&lt;file end marker&gt;" mustmatch="yes" id="30" fillcolor="7F7F7F" length="1">
+                <fixedvalues>
+                    <fixedvalue name="&lt;unnamed&gt;" value="20"/>
+                </fixedvalues>
+            </binary>
+        </structure>
+        <structure name="Column Header" id="32" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <string name="Name" id="33" fillcolor="FEFC78" type="fixed-length" length="11"/>
+            <structure name="Column Type" id="34" consists-of="id:35" order="variable">
+                <structref name="Column Type - Number" id="37" repeatmin="0" structure="id:36"/>
+                <structref name="Column Type - Non-Number" id="39" repeatmin="0" structure="id:38"/>
+            </structure>
+            <binary name="&lt;unused&gt;" id="41" fillcolor="000000" length="14"/>
+        </structure>
+        <structure name="Row Data" id="43" encoding="ISO_8859-1:1987" endian="little" signed="no"/>
+        <structure name="Column Type" id="35" length="7" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <string name="Type" mustmatch="yes" id="45" fillcolor="FEFC78" type="fixed-length" length="1">
+                <fixedvalues>
+                    <fixedvalue name="Number" value="N"/>
+                    <fixedvalue name="String" value="C"/>
+                    <fixedvalue name="Boolean" value="L"/>
+                </fixedvalues>
+            </string>
+            <number name="Offset" id="46" fillcolor="FF84FF" type="integer" length="4"/>
+        </structure>
+        <structure name="Column Type - Number" id="36" extends="id:35">
+            <string name="Type" id="48" type="fixed-length">
+                <fixedvalues>
+                    <fixedvalue name="Number" value="N"/>
+                </fixedvalues>
+            </string>
+            <number name="Offset" id="49" type="integer"/>
+            <number name="Length" id="50" fillcolor="72FA78" type="integer" length="1"/>
+            <number name="Decimal Places" id="51" fillcolor="72FA78" type="integer" length="1"/>
+        </structure>
+        <structure name="Column Type - Non-Number" id="38" extends="id:35">
+            <string name="Type" id="53" type="fixed-length">
+                <fixedvalues>
+                    <fixedvalue name="String" value="C"/>
+                    <fixedvalue name="Boolean" value="L"/>
+                </fixedvalues>
+            </string>
+            <number name="Offset" id="54" type="integer"/>
+            <number name="Length" id="55" type="integer" length="2"/>
+        </structure>
+    </grammar>
+</ufwb>

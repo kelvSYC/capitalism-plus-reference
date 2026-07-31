@@ -22,7 +22,7 @@ SPDX-FileCopyrightText = "2026 Kelvin Chung"
 SPDX-License-Identifier = "CC-BY-4.0"
 
 [[annotations]]
-path = ["*.md", "docs/**", ".gitignore", ".gitattributes", "REUSE.toml", "site/images/.gitkeep"]
+path = ["*.md", "docs/**", "LICENSE", ".gitignore", ".gitattributes", "REUSE.toml", "site/images/.gitkeep"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Kelvin Chung"
 SPDX-License-Identifier = "CC-BY-4.0"

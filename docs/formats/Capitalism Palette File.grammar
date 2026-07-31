@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="Capitalism Palette File" start="id:1" author="Kelvin Chung">
+        <description>Color Palette File for Capitalism</description>
+        <structure name="Palette File" id="1" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="File Size" id="85" fillcolor="72FA78" type="integer" length="4"/>
+            <binary name="&lt;unknown&gt;" id="86" fillcolor="929292" length="4"/>
+            <structref name="Color" id="92" repeatmin="256" repeatmax="256" structure="id:87"/>
+        </structure>
+        <structure name="Color" id="87" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="Red" id="89" fillcolor="72FA78" type="integer" length="1"/>
+            <number name="Green" id="90" fillcolor="72FA78" type="integer" length="1"/>
+            <number name="Blue" id="91" fillcolor="72FA78" type="integer" length="1"/>
+        </structure>
+    </grammar>
+</ufwb>

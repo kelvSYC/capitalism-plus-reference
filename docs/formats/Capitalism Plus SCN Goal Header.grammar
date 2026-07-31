@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="Capitalism Plus .SCN goal header" start="id:1" author="Kelvin Chung" fileextension=".SCN">
+        <description>Scenario goal fields in a Capitalism Plus .SCN file. Scenarios are specially-built save games; this grammar covers only the goal header at the start of the file, not the map or company state that follows. Every offset here is verified against all 20 scenarios on the CapPlus.gog disc image -- see docs/DECODING.md.</description>
+        <structure name="SCN Goal Header" id="1" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <binary name="&lt;not decoded&gt;" id="2" fillcolor="929292" length="179"/>
+            <number name="Years" id="3" fillcolor="72FA78" type="integer" length="1">
+                <description>Scenario duration in years. Matches the .SCT prose for all 20 scenarios.</description>
+            </number>
+            <binary name="&lt;not decoded&gt;" id="4" fillcolor="929292" length="3"/>
+            <number name="Bonus" id="5" fillcolor="72FA78" type="integer" length="1">
+                <description>Starting bonus.</description>
+            </number>
+            <binary name="&lt;not decoded&gt;" id="6" fillcolor="929292" length="121"/>
+            <structref name="Dominate Industries" id="7" structure="id:20"/>
+            <binary name="&lt;not decoded&gt;" id="8" fillcolor="929292" length="6"/>
+            <binary name="Excluded Classes" id="9" fillcolor="FF9300" length="100">
+                <description>One byte per row of the gameset's own ITEMCLAS table, in table order. 1 = the class may be sold, 0 = excluded. Only the first ITEMCLAS row count bytes are meaningful (20 in Standard); the remainder is padding. Because the array is indexed by the gameset's table, decoding it correctly also confirms which gameset a scenario uses.</description>
+            </binary>
+            <binary name="Dominate Classes" id="10" fillcolor="0433FF" length="100">
+                <description>Same layout as Excluded Classes, exactly 100 bytes later. 1 = this market must be dominated to win. Empty for scenarios whose goal is stated at the industry level instead -- see Dominate Industries.</description>
+            </binary>
+        </structure>
+        <structure name="Dominate Industries" id="20" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <description>Four flags at offset 305. NOTE the order is reversed relative to the convention used elsewhere in the game's UI.</description>
+            <number name="Retailing" id="21" fillcolor="0433FF" type="integer" length="1"/>
+            <number name="Manufacturing" id="22" fillcolor="FF2600" type="integer" length="1"/>
+            <number name="Farming" id="23" fillcolor="FF9300" type="integer" length="1"/>
+            <number name="Raw Material Production" id="24" fillcolor="FF40FF" type="integer" length="1"/>
+        </structure>
+    </grammar>
+</ufwb>

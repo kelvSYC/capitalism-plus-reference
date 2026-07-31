@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="Capitalism Icon Image Format" start="id:57" author="Kelvin Chung">
+        <description>Grammar for icon images found in Capitalism</description>
+        <structure name="Image" id="57" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="Length" id="58" fillcolor="72FA78" type="integer" length="4"/>
+            <number name="Width" id="59" type="integer" length="2"/>
+            <number name="Height" id="60" type="integer" length="2"/>
+            <scriptelement name="Data" id="61">
+                <script name="unnamed" type="Generic">
+                    <source language="Python">results = currentMapper.getCurrentResults()
+
+rowCount = results.getResultByName(&quot;Height&quot;).getValue().getUnsignedNumber()
+colCount = results.getResultByName(&quot;Width&quot;).getValue().getUnsignedNumber()
+
+# Placeholder structure
+currentGrammar = currentMapper.getCurrentGrammar()
+rowDataStruct = currentGrammar.getStructureByName(&quot;Row Data&quot;)
+
+for i in range(rowCount):
+  results.addStructureStart(rowDataStruct, currentMapper.getCurrentOffset() + (i * colCount), i, &quot;Row&quot;, True)
+  results.addStructureEnd(currentMapper.getCurrentOffset() + ((i + 1) * colCount))</source>
+                </script>
+            </scriptelement>
+        </structure>
+        <structure name="Row Data" id="63" encoding="ISO_8859-1:1987" endian="big" signed="no"/>
+    </grammar>
+</ufwb>
