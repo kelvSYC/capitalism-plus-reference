@@ -663,6 +663,10 @@ const head = cd.slice(cd.indexOf('detail-head'), cd.indexOf('</div>', cd.indexOf
 ok('the title graphic pairs plant and crop',
    head.includes('Standard_Rubber_Plant.png') && head.includes('Standard_Rubber.png'));
 ok('the pair is grouped as one title graphic', cd.includes('class="title-art"'));
+// Without artwork the pair would be two monograms saying the same thing, so the
+// plant tile is classed for CSS to drop it, leaving one. The Almanac's plant tile
+// carries the same class but is not inside .title-art, so it keeps its monogram.
+ok('the plant tile is classed so it can collapse', cd.includes('class="picon plant-tile"'));
 ok('neither image is repeated further down the page',
    (cd.match(/Standard_Rubber_Plant\.png/g) || []).length === 1 &&
    (cd.match(/Standard_Rubber\.png/g) || []).length === 1);

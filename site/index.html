@@ -190,6 +190,12 @@
      sized so the pair occupies roughly the width a single tile would. */
   .title-art { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .title-art .picon { width: 88px; height: 88px; border-radius: 8px; padding: 5px; --picon-font: 32px; }
+  /* The pair exists to contrast two pictures. With no artwork it would be two
+     monograms side by side -- "SC" and "S" for Sugar -- which says nothing the
+     product's alone does not, so the plant tile drops out and one monogram
+     remains. Scoped to .title-art: in the Almanac the plant IS the only tile and
+     must keep its monogram, which is why that row names the plant in text. */
+  .title-art .picon-empty.plant-tile { display: none; }
   .detail-head h2 { margin: 0 0 4px; font-size: 24px; }
   .detail-head .cat { color: var(--muted); font-size: 14px; }
   .badge-lg { display: inline-block; margin-top: 8px; font-size: 12px; padding: 4px 10px; border-radius: 12px; color: #14161a; }
@@ -247,6 +253,10 @@
      otherwise a reader sees an "SC" monogram beside a row labelled "Sugar", with
      only a title attribute to explain it -- and a title is no use to a keyboard or
      a touchscreen. */
+  /* Stacked under the crop name rather than beside it: the first column is
+     already the widest in a 16-column table, and on a narrow screen the month
+     grid is the thing that needs the room. */
+  .crop-label { display: flex; flex-direction: column; line-height: 1.25; }
   .plant-name { color: var(--muted); font-size: 11px; }
   .rain-bar { display: inline-flex; gap: 2px; vertical-align: middle; margin-right: 6px; }
   .rain-bar span { width: 6px; height: 10px; border-radius: 1px; background: var(--border); }
@@ -1584,7 +1594,7 @@ function plantIcon(p, dim) {
     .slice(0, 2).map(w => w[0]).join('').toUpperCase();
   const style = `--picon-fg:${readableOnWhite(CLASS_COLORS[p.classification])}`
     + (dim ? ';opacity:0.55' : '');
-  return `<span class="picon" data-initial="${initial}" style="${style}" title="${esc(p.plant.name)} — the plant ${esc(p.name)} grows on">` +
+  return `<span class="picon plant-tile" data-initial="${initial}" style="${style}" title="${esc(p.plant.name)} — the plant ${esc(p.name)} grows on">` +
     `<img src="images/${p.plant.icon_file}" alt="${esc(p.plant.name)}, the plant ${esc(p.name)} grows on" loading="lazy" decoding="async"></span>`;
 }
 
@@ -2707,7 +2717,7 @@ function renderAlmanac() {
     const harvestIdx = MONTHS_FULL.indexOf(gc.harvesting_month);
     const restricted = scenarioRestricted(p);
     html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-      <th scope="row"><div class="almanac-crop">${p.plant ? plantIcon(p, restricted) : productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button>${p.plant ? ` <span class="plant-name">${esc(p.plant.name)}</span>` : ''}</div></th>
+      <th scope="row"><div class="almanac-crop">${p.plant ? plantIcon(p, restricted) : productIcon(p, restricted)}<span class="crop-label"><button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button>${p.plant ? `<span class="plant-name">${esc(p.plant.name)}</span>` : ''}</span></div></th>
       <td>${climateBar(gc.climate)}${gc.climate}</td>
       <td>${rainBar(gc.rainfall)}${gc.rainfall}</td>
       <td>${goodsTypeLabel(p)}${restrictionNote(p)}</td>`;

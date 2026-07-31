@@ -486,6 +486,19 @@ class TestAccessibility(unittest.TestCase):
     def test_has_noscript_fallback(self):
         self.assertIn("<noscript>", self.HTML)
 
+    def test_paired_title_graphic_collapses_without_artwork(self):
+        """A crop shown with its plant has two tiles. With no artwork both would
+        render as monograms -- "SC" and "S" for Sugar -- which conveys nothing the
+        product's alone does not, so the plant tile is dropped."""
+        self.assertIn(".title-art .picon-empty.plant-tile { display: none; }", self.HTML)
+
+    def test_the_collapse_is_scoped_to_the_title_graphic(self):
+        """In the Almanac the plant is the ONLY tile, so it must keep its
+        monogram; an unscoped rule would blank that column without artwork."""
+        for line in self.HTML.split("\n"):
+            if ".picon-empty.plant-tile" in line and "{" in line:
+                self.assertIn(".title-art", line, line.strip())
+
     def test_no_hardcoded_white_on_coloured_badges(self):
         """Badge foregrounds are computed by onColor(); a literal `color: white`
         on .badge/.badge-lg/.bar-seg is what produced 1.90:1 text."""
