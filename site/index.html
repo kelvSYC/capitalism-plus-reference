@@ -238,6 +238,11 @@
   .edge-label rect { fill: var(--bg); fill-opacity: 0.9; stroke: var(--border); stroke-width: 0.6px; }
   .edge-label text { fill: var(--muted); font-size: 9.5px; pointer-events: none; }
 
+  /* Wide tables scroll on their own rather than dragging the whole document
+     sideways. Focusable, because an overflow container cannot otherwise be
+     scrolled from the keyboard. */
+  .table-scroll { overflow-x: auto; max-width: 100%; }
+  .table-scroll:focus-visible { outline: 2px solid #4C9AFF; outline-offset: 2px; }
   .almanac-table { border-collapse: collapse; width: 100%; font-size: 12px; }
   .almanac-table th, .almanac-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
   .almanac-table thead th { color: var(--muted); font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
@@ -248,6 +253,13 @@
   .almanac-table tbody tr:hover { background: var(--panel2); }
   .almanac-crop { display: flex; align-items: center; gap: 8px; }
   .almanac-crop .picon { width: 30px; height: 30px; border-radius: 5px; padding: 2px; --picon-font: 12px; }
+  /* Leather's sources run to "any one of Cattle (675 lb), Pig (250 lb) or Sheep
+     (150 lb)", which on its own kept the livestock table from ever shrinking to
+     the width the crops table managed. These two columns wrap; the month grid
+     does not, so the calendar stays legible. */
+  .almanac-table .from-cell, .almanac-table .yield-cell { white-space: normal; min-width: 11ch; }
+  .almanac-table .from-cell { max-width: 26ch; }
+  .almanac-table .yield-cell { max-width: 20ch; }
   /* The tile in this column is the growing plant, not the harvested crop, so the
      plant is named. That also keeps the column readable when there is no artwork:
      otherwise a reader sees an "SC" monogram beside a row labelled "Sugar", with
@@ -327,8 +339,10 @@
     .rel-cols { grid-template-columns: 1fr; }
     .detail-head { flex-wrap: wrap; gap: 12px; }
     .graph-scroll { max-height: none; }
-    /* Tables stay wide; scroll them rather than the whole document. */
-    .grid-table, .almanac-table { display: block; overflow-x: auto; }
+    /* Tables scroll inside .table-scroll at every width, so nothing needed
+       here. Setting display:block on the <table> itself was wrong twice over: it
+       only applied below this breakpoint, and it strips the element's implicit
+       ARIA table role, so a screen reader stops announcing rows and columns. */
   }
 
   /* One transition in the whole file, but honouring the preference costs a
@@ -1457,7 +1471,8 @@ function renderGrid() {
     // One row per product instead of an icon-forward card, for scanning a large
     // filtered set quickly. Shares the Almanac's table layout and restricted-row
     // treatment so the site has two visual languages, not three.
-    html += `<table class="grid-table">
+    html += `<div class="table-scroll" tabindex="0" role="region" aria-label="Product list, scrollable">
+      <table class="grid-table">
       <caption class="sr-only">${list.length} product${list.length === 1 ? '' : 's'} in the ${state.gameset} gameset.</caption>
       <thead><tr>
       <th scope="col">Product</th><th scope="col">Category</th><th scope="col">Classification</th><th scope="col">Goods Type</th><th scope="col">Scenario restriction</th>
@@ -1472,7 +1487,7 @@ function renderGrid() {
         <td>${restrictionBadge(p)}</td>
       </tr>`;
     });
-    html += '</tbody></table>';
+    html += '</tbody></table></div>';
   } else {
     html += '<div class="grid">';
     list.forEach(p => {
@@ -2463,7 +2478,8 @@ function graphTableHtml(nodes) {
   // Rows run raw materials first through to finished goods, the same order the
   // diagram lays out left to right. The tier number itself is not shown: it is
   // an artefact of the topological sort with no meaning in the game.
-  let html = `<table class="grid-table graph-table">
+  let html = `<div class="table-scroll" tabindex="0" role="region" aria-label="Production chain, scrollable">
+    <table class="grid-table graph-table">
     <caption class="sr-only">Production chain for ${esc(state.gameset)}: ${ordered.length} products,
     ordered from raw materials and livestock through to finished goods.</caption>
     <thead><tr>
@@ -2478,7 +2494,7 @@ function graphTableHtml(nodes) {
       <td>${cell(usedIn.get(p.name), l => l.target, false)}</td>
     </tr>`;
   });
-  return html + '</tbody></table>';
+  return html + '</tbody></table></div>';
 }
 
 function renderGraph() {
@@ -2703,6 +2719,7 @@ function renderAlmanac() {
     html += `<div class="almanac-disclaimer">Crossed-out crops can still be sown and harvested -- the game won't stop you -- but the Sales Unit will never connect: neither the crop itself nor anything made from it, however many stages downstream, can be sold -- it's restricted in this scenario. Uncheck "Show Restricted" above if you'd rather filter them out of the list entirely.</div>`;
   }
   html += `<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 10px">Crops</h2>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Growing calendar, scrollable">
     <table class="almanac-table">
     <caption class="sr-only">Growing calendar: climate, rainfall and the sowing,
     growing and harvesting months for every crop in the ${state.gameset} gameset.</caption>
@@ -2735,7 +2752,7 @@ function renderAlmanac() {
     }
     html += '</tr>';
   });
-  html += '</tbody></table>';
+  html += '</tbody></table></div>';
 
   html += livestockAlmanacHtml();
   el.innerHTML = html;
@@ -2753,11 +2770,12 @@ function livestockAlmanacHtml() {
       <span class="item"><span class="month-cell grow" style="display:inline-block;width:14px;height:10px"></span> Yielding month</span>
       <span class="item"><span class="month-cell anytime" style="display:inline-block;width:14px;height:10px"></span> Available any month, by slaughtering</span>
     </div>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Livestock yields, scrollable">
     <table class="almanac-table">
     <caption class="sr-only">Livestock yields for the ${esc(state.gameset)} gameset:
     what each animal produces, how much, and when.</caption>
     <thead><tr>
-      <th scope="col">Product</th><th scope="col">From</th><th scope="col">Yield</th>
+      <th scope="col">Product</th><th scope="col" class="from-cell">From</th><th scope="col" class="yield-cell">Yield</th>
       ${MONTHS_SHORT.map((m, i) => `<th scope="col" class="month-cell"><span aria-hidden="true">${m}</span><span class="sr-only">${MONTHS_FULL[i]}</span></th>`).join('')}
     </tr></thead><tbody>`;
 
@@ -2772,8 +2790,8 @@ function livestockAlmanacHtml() {
 
     html += `<tr class="${restricted ? 'restricted-row' : ''}">
       <th scope="row"><div class="almanac-crop">${productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div>${restrictionNote(p)}</th>
-      <td>${livestockSourceCell(p)}</td>
-      <td>${yieldText}</td>`;
+      <td class="from-cell">${livestockSourceCell(p)}</td>
+      <td class="yield-cell">${yieldText}</td>`;
     for (let m = 0; m < 12; m++) {
       // A slaughter product is available in any month -- you decide when -- so
       // the row is filled, but with a different treatment from a seasonal yield,
@@ -2788,7 +2806,7 @@ function livestockAlmanacHtml() {
     }
     html += '</tr>';
   });
-  return html + '</tbody></table>';
+  return html + '</tbody></table></div>';
 }
 
 function renderAll() {

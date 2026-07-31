@@ -718,6 +718,43 @@ state.graphLayout = 'table';
 setView('graph');
 ok('the graph table shows products only', !pane('graph-view').innerHTML.includes('Rubber_Plant'));
 
+print('--- wide tables scroll on their own ---');
+// Previously the whole document scrolled sideways, and the livestock table would
+// not shrink to the width the crops table managed because Leather's source list
+// runs to "any one of Cattle (675 lb), Pig (250 lb) or Sheep (150 lb)".
+const balanced = html => (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length;
+for (const gs of ['Standard', 'Alternative', 'Food & Beverage']) {
+  reset();
+  state.gameset = gs;
+  setView('almanac');
+  const html = pane('almanac-view').innerHTML;
+  const wrappers = (html.match(/class="table-scroll"/g) || []).length;
+  const tables = (html.match(/<table/g) || []).length;
+  ok(gs + ': every table has its own scroll container', wrappers === tables,
+     `${wrappers} wrappers for ${tables} tables`);
+  // A wrapper opened and never closed silently swallows everything after it.
+  ok(gs + ': the almanac markup is balanced', balanced(html));
+}
+reset();
+state.gridLayout = 'list';
+setView('grid');
+ok('the product list scrolls on its own', pane('grid-view').innerHTML.includes('class="table-scroll"'));
+ok('the product list markup is balanced', balanced(pane('grid-view').innerHTML));
+state.gridLayout = 'cards';
+reset();
+state.graphLayout = 'table';
+setView('graph');
+ok('the production chain table scrolls on its own',
+   pane('graph-view').innerHTML.includes('class="table-scroll"'));
+ok('the production chain markup is balanced', balanced(pane('graph-view').innerHTML));
+reset();
+setView('almanac');
+const almHtml = pane('almanac-view').innerHTML;
+ok('scroll containers are keyboard reachable',
+   /class="table-scroll" tabindex="0" role="region" aria-label="[^"]+scrollable"/.test(almHtml));
+ok('the long source and yield columns are allowed to wrap',
+   almHtml.includes('class="from-cell"') && almHtml.includes('class="yield-cell"'));
+
 print('--- the Almanac covers livestock as well as crops ---');
 // Seasonal livestock data (Wool is June-October) is exactly what an almanac is
 // for, and the game publishes it nowhere.

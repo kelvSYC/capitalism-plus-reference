@@ -412,6 +412,15 @@ class TestAccessibility(unittest.TestCase):
         # Without it, mobile browsers scale a 980px layout down to ~38%.
         self.assertIn('name="viewport"', self.HTML)
 
+    def test_tables_are_not_display_block(self):
+        """Setting display:block on a <table> to make it scroll strips the
+        element's implicit ARIA table role, so a screen reader stops announcing
+        rows and columns. Wide tables use a .table-scroll wrapper instead."""
+        for line in self.HTML.split("\n"):
+            if "display: block" in line and ("-table" in line or "table {" in line):
+                self.fail(f"table set to display:block: {line.strip()}")
+        self.assertIn(".table-scroll { overflow-x: auto;", self.HTML)
+
     def test_has_responsive_and_print_styles(self):
         self.assertIn("@media (max-width: 760px)", self.HTML)
         self.assertIn("@media print", self.HTML)
