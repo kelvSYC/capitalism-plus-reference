@@ -123,27 +123,80 @@ invisible until the verifier forced them to be named.
 `raw_class` with no conflicts, so they are reproducible — but they are our
 taxonomy, and `classification_source` in the dataset should be read that way.
 
-### Known divergence
+### Known divergence: units vs quantities
 
-`output_unit` is null in the dataset for the 73 products with no `METHOD`
-recipe — raw materials, crops and livestock — because the dataset treats it as
-the unit of a *production run*. The game's `ITEM.UNIT` is the unit the commodity
-is *measured in* and exists regardless: Coal is `lb`, Gold is `oz`. Our data is
-incomplete here rather than wrong, since the unit is still recoverable from
-`inputs[].unit` on any consumer, but a raw material's page cannot say what it is
-measured in. The verifier declares and counts this rather than tolerating it, so
-a new disagreement cannot hide inside it.
+`output_unit` is null in the dataset for the 73 products with no `METHOD` recipe —
+raw materials, crops and livestock — because the dataset treats the field as the
+unit of a production *run*. There is no run for these: a mine or a farm produces
+at a rate, not in batches.
+
+**The unit itself is not ambiguous.** Each commodity has exactly one unit, and
+`ITEM.UNIT` agrees with the unit that commodity carries in every recipe that
+consumes it — verified across all three gamesets, 0 disagreements. Gold is `oz`
+whether it comes out of a mine or goes into Jewelry. So the dataset is missing a
+unit it *could* state; the genuinely undefined thing is the quantity.
+
+Where the rate lives instead, none of it a per-batch yield:
+
+| Kind | Table | Fields |
+|---|---|---|
+| Mining / extraction | `RAW` | `SPEED`, `RES_VALUE`, `MAX_SITE`, and `FIRM_CODE` naming the unit (`MINE`, `FORE`, `OIL`) |
+| Livestock products | `FARMPROD` | `MONTH_QTY` with a `SMONTH`–`EMONTH` window |
+| Crops | `FARMCROP` | the sow/harvest window only |
+
+`FARMPROD` is worth calling out because the site currently surfaces none of it:
+Milk is 555 quart/month year-round, Wool 9 lb/month but **only in months 6–10**,
+Eggs 1.7 dozen/month. The slaughter products (Frozen Beef, Pork, Lamb, Chicken,
+and Leather) carry `MONTH_QTY` of 0 with `KILLFLAG` set — they come from killing
+the animal rather than from a continuous yield, which is what that flag marks.
+
+The verifier declares and counts this divergence rather than tolerating it, so a
+new disagreement cannot hide inside it, and it separately asserts the
+one-unit-per-commodity property that makes the above true.
 
 ### Still unresolved
 
-`ITEM.ICONPTR` is a byte offset into the gameset's `.II` file with a constant
-3608-byte stride — `1STD.II` is 303,072 bytes, exactly 84 × 3608, one record per
-`ITEM` row. But the dataset's `icon_image_id` does not correspond to it (Car's
-`ICONPTR` is record 5; the dataset records 10), so that field came out of the
-icon-extraction process rather than the `.SET`. `graphic_count` likewise.
+The dataset's `icon_image_id` and `graphic_count` match nothing in the files (see
+[Graphics](#graphics) below), so both came out of the icon-extraction process
+rather than the game data.
 
 Roughly 36 of the 64 header bytes per table remain unexplained (`<type?>`,
 `<unused>`), which does not matter for reading the tables.
+
+## Graphics
+
+The artwork is split across several files, which is why there are separate raster
+and palette grammars. Verified against `1STD.*`:
+
+| File | Contents |
+|---|---|
+| `GAMESET/*.II` | 84 records × 3608 bytes: `u32 length` (3604) + `u16 W` + `u16 H` + `W×H` bytes. **60 × 60**, 8-bit palette-indexed, one per `ITEM` row |
+| `GAMESET/*.II2` | 84 named entries: a `.SET`-style descriptor block (9-byte name + `u32` offset) then `u16 W` + `u16 H` + `W×H`. **120 × 120** — the size of the extracted PNGs, so this is where they came from, not an upscale of `.II` |
+| `GAMESET/*.PIC` | a single bare raster, `u16 W` + `u16 H` + data: 464 × 63 |
+| `RESOURCE/PAL_STD.RES` | the 256-colour palette: `u32 file size` (776) + 4 unknown + 256 × RGB |
+
+So the two header shapes differ: `.II` records carry a length prefix, while
+`.II2` entries and `.PIC` start straight at `W, H`.
+
+Two corrections to earlier assumptions:
+
+- **`.PLA` / `.PLP` / `.PLO` are not palettes**, despite the names. They begin
+  `0a 00` then four-character tags (`RETA`, `FACT`), i.e. a small table of ten
+  entries in some other container. The Palette grammar describes
+  `RESOURCE/PAL_STD.RES`, which it matches exactly.
+- **`ITEM.ICONPTR` indexes `.II`, not `.II2`.** It is a byte offset with the
+  3608-byte stride (Car = 18040 = record 5). The dataset's `icon_image_id` for
+  Car is 10, and Car is entry 6 in `.II2`, so `icon_image_id` corresponds to
+  neither — it is extraction-tool numbering.
+
+`.II2` entry names are `<CODE>-<n>` (`MILK-4`, `CAR-9`, `VCAM-1`). The suffix is
+**not** `graphic_count`: it matches for only 5 of 41 products checked. What it
+denotes is unknown.
+
+None of this is needed to build the site, which is designed to work without
+artwork entirely — see `ATTRIBUTION.md`. It is recorded for completeness, and
+because knowing the format is separate from having the right to redistribute
+what it contains.
 
 ## Scenario byte offsets (`.SCN`)
 

@@ -218,12 +218,21 @@ def is_product_row(item_row):
 # an accepted one, and so the count itself is a tripwire if the shape changes.
 KNOWN_DIVERGENCES = {
     "output_unit": (
-        "The dataset treats output_unit as the unit of a production run, so it is null\n"
-        "    for every product with no METHOD recipe (raw materials, crops, livestock).\n"
-        "    The game's ITEM.UNIT is the unit the commodity is measured in and exists\n"
-        "    regardless. Our data is incomplete here rather than wrong -- the unit is\n"
-        "    still recoverable from inputs[].unit on any consumer -- but a product page\n"
-        "    cannot say 'measured in lb'. Expected count: 73."
+        "The dataset leaves output_unit null for the products with no METHOD recipe\n"
+        "    (raw materials, crops, livestock), because it treats the field as the unit\n"
+        "    of a production RUN. There is no production run for these: a mine or a farm\n"
+        "    produces at a rate, not in batches.\n"
+        "\n"
+        "    But the UNIT itself is not ambiguous. Each commodity has exactly one unit,\n"
+        "    and ITEM.UNIT agrees with the unit that commodity carries in every recipe\n"
+        "    that consumes it -- verified below, 0 disagreements. Gold is 'oz' whether\n"
+        "    mined or bought. So the dataset is missing a unit it could state, while the\n"
+        "    genuinely undefined thing is the QUANTITY.\n"
+        "\n"
+        "    Where the rate actually lives, for reference: RAW.SPEED for mining,\n"
+        "    FARMPROD.MONTH_QTY plus SMONTH/EMONTH for livestock products (Milk 555\n"
+        "    quart/month, Wool 9 lb/month in months 6-10), FARMCROP's sow/harvest window\n"
+        "    for crops. None of it is a per-batch yield. Expected count: 73."
     ),
 }
 EXPECTED_DIVERGENCES = 73
@@ -310,6 +319,19 @@ def verify_products(gameset_dir, cards, report):
                 mine = [(i["material"], float(i["amount"]), float(i["quality_pct"]))
                         for i in card["inputs"]]
                 report.check(who, "inputs", got, mine)
+
+        # One unit per commodity: ITEM.UNIT must agree with the unit that
+        # commodity carries wherever it is consumed. This is what makes the
+        # output_unit divergence a missing value rather than an ambiguity.
+        consumed = {}
+        for card in ours.values():
+            for i in card["inputs"]:
+                consumed.setdefault(i["material"], set()).add(i["unit"])
+        for row in items:
+            seen = consumed.get(row["NAME"])
+            if seen:
+                report.check(f"{gameset}/{row['NAME']}", "unit is consistent when consumed",
+                             {normalise_unit(row["UNIT"])}, seen)
 
         for row in tables["FARMLIVE"]["rows"]:
             animal = name_of.get(row["LSTOCK"], row["LSTOCK"])
