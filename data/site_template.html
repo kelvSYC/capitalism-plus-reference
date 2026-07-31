@@ -1561,6 +1561,23 @@ function slaughterExamples(p) {
   return `<p style="font-size:12px;color:var(--muted);margin:10px 0 0">${rows.join('; ')}.</p>`;
 }
 
+// The growing plant beside the harvested crop. The game does exactly this in its
+// Farmer's Guide and nowhere else -- its Manufacturer's Guide shows the product
+// alone -- so this appears in the Almanac and on the crop's own page only.
+//
+// The plant is not a product: it has no page of its own, so this is a plain tile
+// rather than a link, and it carries a real alt text because unlike a product
+// icon there is no adjacent label naming it.
+function plantIcon(p, dim) {
+  if (!p.plant) return '';
+  const initial = p.plant.name.replace(/[^A-Za-z0-9 ]/g, ' ').trim().split(/\s+/)
+    .slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  const style = `--picon-fg:${readableOnWhite(CLASS_COLORS[p.classification])}`
+    + (dim ? ';opacity:0.55' : '');
+  return `<span class="picon" data-initial="${initial}" style="${style}" title="${esc(p.plant.name)} — the plant ${esc(p.name)} grows on">` +
+    `<img src="images/${p.plant.icon_file}" alt="${esc(p.plant.name)}, the plant ${esc(p.name)} grows on" loading="lazy" decoding="async"></span>`;
+}
+
 function livestockYieldSection(p) {
   const yieldOf = yName => PRODUCTS.find(x => x.gameset === p.gameset && x.name === yName);
   const visibleYields = (p.livestock_yields || []).filter(yName => relVisible(yieldOf(yName)));
@@ -1655,7 +1672,15 @@ function openDetail(id) {
 
     if (p.growing_conditions) {
       const g = p.growing_conditions;
-      html += `<div class="section"><h3>Growing Conditions</h3><div class="kv">
+      html += `<div class="section"><h3>Growing Conditions</h3>`;
+      if (p.plant) {
+        html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          ${plantIcon(p)}${productIcon(p)}
+          <span style="font-size:12px;color:var(--muted)">${esc(p.plant.name)} (the plant)
+          and ${esc(p.name)} (what you harvest). The game shows both here too.</span>
+        </div>`;
+      }
+      html += `<div class="kv">
         <div class="k">Suitable Climate</div><div>${g.climate}</div>
         <div class="k">Suitable Rainfall</div><div>${g.rainfall}</div>
         <div class="k">Sowing Month</div><div>${g.sowing_month}</div>
@@ -2678,7 +2703,7 @@ function renderAlmanac() {
     const harvestIdx = MONTHS_FULL.indexOf(gc.harvesting_month);
     const restricted = scenarioRestricted(p);
     html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-      <th scope="row"><div class="almanac-crop">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div></th>
+      <th scope="row"><div class="almanac-crop">${plantIcon(p, restricted)}${productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div></th>
       <td>${climateBar(gc.climate)}${gc.climate}</td>
       <td>${rainBar(gc.rainfall)}${gc.rainfall}</td>
       <td>${goodsTypeLabel(p)}${restrictionNote(p)}</td>`;

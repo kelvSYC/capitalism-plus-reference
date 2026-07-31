@@ -48,6 +48,11 @@ SET_FOR_GAMESET = {
 MONTHS = ["January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"]
 
+
+def slug(text):
+    """The icon_file naming rule: non-alphanumerics collapse to a single '_'."""
+    return re.sub(r"_+", "_", re.sub(r"[^A-Za-z0-9]", "_", text))
+
 # FARMCROP.RAIN is a plain enum.
 RAINFALL = {1: "Little", 2: "Moderate", 3: "Plentiful"}
 
@@ -403,6 +408,25 @@ def verify_products(gameset_dir, cards, report):
                    "grow_rate": row["GROW"], "reproduce_rate": row["REPRODUCE"]}
             report.check(f"{gameset}/{card['name']}", "livestock_stats",
                          got, card["livestock_stats"])
+
+        # The plant that a crop grows on, where it has a distinct one.
+        for row in tables["FARMCROP"]["rows"]:
+            card = ours.get(name_of.get(row["ITEM_CODE"], ""))
+            plant_name = name_of.get(row["PLANT_CODE"])
+            plant_row = next((r for r in tables["ITEM"]["rows"]
+                              if r["CODE"] == row["PLANT_CODE"]), None)
+            has_plant = (plant_row is not None and plant_row["CLASS"] == "PLANT"
+                         and plant_name != (card or {}).get("name"))
+            if card is None:
+                continue
+            if has_plant:
+                report.check(f"{gameset}/{card['name']}", "plant",
+                             {"name": plant_name,
+                              "icon_file": f"{slug(gameset)}_{slug(plant_name)}.png"},
+                             card.get("plant"))
+            else:
+                report.check(f"{gameset}/{card['name']}", "has no plant",
+                             False, "plant" in card)
 
         for row in tables["FARMCROP"]["rows"]:
             crop = name_of.get(row["ITEM_CODE"], row["ITEM_CODE"])

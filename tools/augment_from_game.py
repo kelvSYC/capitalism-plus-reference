@@ -23,6 +23,10 @@ livestock_production  on livestock-derived goods, from FARMPROD
 livestock_stats       on the animals themselves, from FARMLIVE
                       weight, growth and reproduction rates. Weight is the base
                       the slaughter percentages apply to.
+plant                 on the six crops that have one, from FARMCROP.PLANT_CODE
+                      the growing plant as distinct from the harvested crop. The
+                      game's own Farmer's Guide shows both images side by side;
+                      its Manufacturer's Guide shows only the product.
 
 Requires Python 3.8+, standard library only.
 """
@@ -34,7 +38,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 from verify_against_game import (  # noqa: E402  (path set above)
-    MONTHS, SET_FOR_GAMESET, SITE_FOR_FIRM, find_game_dir, read_set,
+    MONTHS, SET_FOR_GAMESET, SITE_FOR_FIRM, find_game_dir, read_set, slug,
 )
 
 CARDS = ROOT / "data" / "index_cards.json"
@@ -95,6 +99,24 @@ def build_additions(game_dir):
                 continue
             additions.setdefault((gameset, product), {})["livestock_production"] = \
                 livestock_production(row, unit_of.get(row["ITEM_CODE"]))
+
+        # FARMCROP links a crop to the plant it grows on. Six of them have a
+        # distinct PLANT row with its own artwork -- Rubber/Rubber Plant,
+        # Coconut/Palm and so on. PLANT rows are not products and stay out of the
+        # dataset, so the plant rides along on the crop instead.
+        for row in tables.get("FARMCROP", {}).get("rows", []):
+            crop = name_of.get(row["ITEM_CODE"])
+            plant = name_of.get(row["PLANT_CODE"])
+            if crop is None or plant is None or plant == crop:
+                continue
+            plant_row = next((r for r in tables["ITEM"]["rows"]
+                              if r["CODE"] == row["PLANT_CODE"]), None)
+            if plant_row is None or plant_row["CLASS"] != "PLANT":
+                continue
+            additions.setdefault((gameset, crop), {})["plant"] = {
+                "name": plant,
+                "icon_file": f"{slug(gameset)}_{slug(plant)}.png",
+            }
 
         for row in tables.get("FARMLIVE", {}).get("rows", []):
             animal = name_of.get(row["LSTOCK"])

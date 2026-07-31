@@ -1764,7 +1764,11 @@
         "unit": "lb",
         "quality_pct": 5.0
       }
-    ]
+    ],
+    "plant": {
+      "name": "Rubber Plant",
+      "icon_file": "Standard_Rubber_Plant.png"
+    }
   },
   {
     "id": "S - Sugar",
@@ -1812,7 +1816,11 @@
         "unit": "lb",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "plant": {
+      "name": "Sugar Cane",
+      "icon_file": "Standard_Sugar_Cane.png"
+    }
   },
   {
     "id": "S - Tobacco",
@@ -5176,7 +5184,11 @@
         "unit": "lb",
         "quality_pct": 50.0
       }
-    ]
+    ],
+    "plant": {
+      "name": "Palm",
+      "icon_file": "Alternative_Palm.png"
+    }
   },
   {
     "id": "A - Corn",
@@ -5251,7 +5263,11 @@
         "unit": "lb",
         "quality_pct": 50.0
       }
-    ]
+    ],
+    "plant": {
+      "name": "Flax",
+      "icon_file": "Alternative_Flax.png"
+    }
   },
   {
     "id": "A - Lemon",
@@ -8567,7 +8583,11 @@
         "unit": "lb",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "plant": {
+      "name": "Coffee Plant",
+      "icon_file": "Food_Beverage_Coffee_Plant.png"
+    }
   },
   {
     "id": "F - Lemon",
@@ -8970,7 +8990,11 @@
         "unit": "lb",
         "quality_pct": 15.0
       }
-    ]
+    ],
+    "plant": {
+      "name": "Tea Plant",
+      "icon_file": "Food_Beverage_Tea_Plant.png"
+    }
   },
   {
     "id": "F - Tomato",

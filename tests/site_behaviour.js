@@ -640,6 +640,46 @@ ok('the product list table is captioned and scoped',
 ok('the restriction column has a header name', listView.includes('Scenario restriction'));
 state.gridLayout = 'cards';
 
+print('--- crops with a growing plant show both images ---');
+// The in-game Farmer's Guide shows the plant and the harvested crop side by side;
+// its Manufacturer's Guide shows the product alone. The site follows that split.
+const WITH_PLANT = [['Standard', 'Rubber', 'Rubber Plant'],
+                    ['Standard', 'Sugar', 'Sugar Cane'],
+                    ['Alternative', 'Coconut', 'Palm'],
+                    ['Alternative', 'Flax Fiber', 'Flax'],
+                    ['Food & Beverage', 'Coffee', 'Coffee Plant'],
+                    ['Food & Beverage', 'Tea', 'Tea Plant']];
+for (const [gs, crop, plant] of WITH_PLANT) {
+  const c = PRODUCTS.find(p => p.gameset === gs && p.name === crop);
+  ok(`${crop} records its plant as ${plant}`, !!c && c.plant && c.plant.name === plant,
+     c && JSON.stringify(c.plant));
+}
+reset();
+state.gameset = 'Standard';
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Rubber').id);
+let cd = pane('detail-view').innerHTML;
+ok('the crop page shows the plant image', cd.includes('Standard_Rubber_Plant.png'));
+ok('the crop page still shows the crop image', cd.includes('Standard_Rubber.png'));
+ok('the plant image is named for a screen reader',
+   cd.includes('alt="Rubber Plant, the plant Rubber grows on"'));
+
+setView('almanac');
+const ac = pane('almanac-view').innerHTML;
+ok('the Almanac row shows both images',
+   ac.includes('Standard_Rubber_Plant.png') && ac.includes('Standard_Rubber.png'));
+ok('a crop with no distinct plant shows one image',
+   ac.includes('Standard_Wheat.png') && !/Wheat_Plant/.test(ac));
+
+// The Manufacturer's-Guide side of the split: the grid and the graph table are
+// product views and must not sprout plant art.
+reset();
+setView('grid');
+ok('the grid shows products only', !pane('grid-view').innerHTML.includes('Rubber_Plant'));
+reset();
+state.graphLayout = 'table';
+setView('graph');
+ok('the graph table shows products only', !pane('graph-view').innerHTML.includes('Rubber_Plant'));
+
 print('--- the Almanac covers livestock as well as crops ---');
 // Seasonal livestock data (Wool is June-October) is exactly what an almanac is
 // for, and the game publishes it nowhere.

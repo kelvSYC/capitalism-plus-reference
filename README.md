@@ -85,7 +85,8 @@ If you own Capitalism Plus and want your local copy to show the game's artwork:
 python3 tools/extract_icons.py --game-dir "/path/to/Capitalism Plus"
 ```
 
-That writes 245 PNGs into `site/images/`, which stays git-ignored. The tool reads
+That writes 251 PNGs into `site/images/`, which stays git-ignored — 245 products
+plus the six growing plants that the game itself shows alongside their crop. The tool reads
 only the path you give it and bundles nothing. Three separate guards stop those
 files reaching anywhere public: `.gitignore`, a test asserting nothing but
 `.gitkeep` is tracked there, and the `pages` workflow refusing to deploy a tree

@@ -236,6 +236,38 @@ class TestProductionRates(unittest.TestCase):
             self.assertTrue(all(weights), f"{c['id']}: a source animal has no weight")
 
 
+class TestCropPlants(unittest.TestCase):
+    """Six crops have a distinct growing plant. PLANT rows are not products, so
+    the plant rides along on the crop's record."""
+
+    WITH_PLANT = {("Standard", "Rubber"), ("Standard", "Sugar"),
+                  ("Alternative", "Coconut"), ("Alternative", "Flax Fiber"),
+                  ("Food & Beverage", "Coffee"), ("Food & Beverage", "Tea")}
+
+    def test_exactly_the_expected_crops_have_a_plant(self):
+        got = {(c["gameset"], c["name"]) for c in CARDS_DATA if "plant" in c}
+        self.assertEqual(self.WITH_PLANT, got)
+
+    def test_plant_is_never_itself_a_product(self):
+        """A PLANT row must not have leaked into the dataset as a product."""
+        names = {(c["gameset"], c["name"]) for c in CARDS_DATA}
+        for c in CARDS_DATA:
+            if "plant" in c:
+                self.assertNotIn((c["gameset"], c["plant"]["name"]), names, c["id"])
+
+    def test_plant_icon_follows_the_naming_rule(self):
+        for c in CARDS_DATA:
+            if "plant" not in c:
+                continue
+            want = f"{slug(c['gameset'])}_{slug(c['plant']['name'])}.png"
+            self.assertEqual(want, c["plant"]["icon_file"], c["id"])
+
+    def test_only_crops_have_plants(self):
+        for c in CARDS_DATA:
+            if "plant" in c:
+                self.assertIsNotNone(c.get("growing_conditions"), c["id"])
+
+
 class TestCsvMirror(unittest.TestCase):
     """index_cards.csv is a hand-maintained flat projection with no generator,
     so nothing but this test stops it drifting from the JSON."""

@@ -252,9 +252,9 @@ carries `FILENAME` `APPLERAW` while its entry is `APPLE`, so `ITEM.CODE` serves 
 a fallback.
 
 `tools/extract_icons.py` uses exactly this to rebuild `site/images/` from a local
-copy of the game, and reproduces **241 of the 245 PNGs the original site shipped
-with, pixel for pixel**. The other four are explained rather than mysterious: six
-crops have a separate `PLANT` row with its own artwork, linked by
+copy of the game, reproducing the original PNGs pixel for pixel.
+
+Six crops have a separate `PLANT` row with its own artwork, linked by
 `FARMCROP.PLANT_CODE` —
 
 | Crop | Plant |
@@ -266,10 +266,19 @@ crops have a separate `PLANT` row with its own artwork, linked by
 | Flax Fiber | Flax |
 | Tea | Tea Plant |
 
-— and the original extraction used the plant's artwork for the first four but the
-commodity's own for the last two. All six pairs are genuinely different images, so
-that was an inconsistency in the old tool rather than a rule. The extractor always
-uses `ITEM.FILENAME`, the association the game itself makes.
+— and all six pairs are genuinely different images.
+
+**The game shows both.** Its Farmer's Guide displays the plant and the harvested
+crop side by side (Flax: the spiky plant, then the golden fibre), and lists crops
+under the *plant's* name — "Flax", "Palm" — while its Manufacturer's Guide shows
+the product alone. So the extractor writes both, 251 files rather than 245, and the
+site follows the same split: both images in the Farmer's Almanac and on the crop's
+own page, product alone in the grid and the dependency views.
+
+`PLANT` rows are not products and stay out of the dataset as products; the plant
+rides along on its crop as a `plant` field. The original extraction wrote one image
+per product and chose the plant for four of the six but the commodity for the other
+two, which was an inconsistency rather than a rule.
 
 None of this is needed to build the site, which is designed to work without
 artwork entirely — see `ATTRIBUTION.md`. It is recorded for completeness, and

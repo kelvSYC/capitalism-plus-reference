@@ -29,19 +29,22 @@ Products are matched to archive entries by ITEM.FILENAME -- the entries are DOS
 8.3 names (APPLEJ~1, MILK-6), which is also why their numeric suffixes are not a
 frame count. See docs/DECODING.md and docs/formats/.
 
-Four crops will differ from the icons the original site shipped with
---------------------------------------------------------------------
+Crops with a growing plant get two images
+-----------------------------------------
 Six crops have a separate PLANT row carrying its own artwork -- the growing plant
 as distinct from the harvested commodity -- linked by FARMCROP.PLANT_CODE:
 
     Rubber / Rubber Plant      Sugar / Sugar Cane      Coconut / Palm
     Coffee / Coffee Plant      Flax Fiber / Flax       Tea / Tea Plant
 
-The original extraction used the PLANT artwork for the first four and the
-commodity's own for the last two, so it was not consistent. This tool always uses
-ITEM.FILENAME, which is the association the game itself makes for each product.
-Expect Rubber, Sugar, Coconut and Coffee to show the harvested commodity where
-they previously showed the plant.
+The game shows BOTH in its Farmer's Guide, side by side, and only the product in
+its Manufacturer's Guide. So this writes both -- 251 files rather than 245 -- and
+the site follows the same rule: both in the Farmer's Almanac and on the crop's own
+page, product alone everywhere else.
+
+The original extraction wrote one image per product and picked the plant for four
+of the six (Rubber, Sugar, Coconut, Coffee) but the commodity for the other two,
+which was an inconsistency rather than a rule.
 
 Requires Python 3.8+, standard library only. PNG is written directly with zlib.
 """
@@ -199,7 +202,17 @@ def main():
         filename_of = {r["NAME"]: r["FILENAME"] for r in tables["ITEM"]["rows"]}
         code_of = {r["NAME"]: r["CODE"] for r in tables["ITEM"]["rows"]}
 
+        # A crop with a distinct growing plant gets both images, because the
+        # game's own Farmer's Guide shows both side by side. The plant is not a
+        # product, so it rides along on the crop's record -- see the `plant` field.
+        wanted = []
         for card in (c for c in cards if c["gameset"] == gameset):
+            wanted.append((card["icon_file"], card["name"]))
+            if card.get("plant"):
+                wanted.append((card["plant"]["icon_file"], card["plant"]["name"]))
+
+        for icon_file, product_name in wanted:
+            card = {"name": product_name, "icon_file": icon_file}
             entry, key = entry_for(card, archive, filename_of, code_of)
             if entry is None:
                 problems.append(f"{gameset}/{card['name']}: no archive entry")
