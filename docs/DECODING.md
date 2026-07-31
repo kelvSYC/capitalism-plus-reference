@@ -5,8 +5,8 @@ Where the gameplay facts on this site come from, and how each was verified.
 This lives here rather than in `data/site_template.html` for two reasons. It is
 documentation of *research*, not of *code* — the template's job is to explain the
 code a maintainer is reading. And the template is inlined verbatim into
-`site/index.html`, so every paragraph here was previously downloaded by every
-visitor to the site.
+`site/index.html`: anything written there is downloaded by every visitor to the
+site.
 
 Everything below was derived from the game's own files using our own parsers. No
 game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
@@ -19,21 +19,18 @@ game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
 | `.SCN` (scenario/save) | Scenario goals: duration, bonus, sale restrictions, domination targets |
 | `.SCT` | The scenario's human-readable goal prose, used only as an independent check against the decoded bytes |
 
-> **How reproducible this is, precisely.** `data/index_cards.json` was originally
-> assembled by hand: the formats were reverse-engineered by inspecting `.SET` and
-> `.SCN` files directly, and no script produced the first version.
+> **How reproducible this is, precisely.** Every field in
+> `data/index_cards.json` is either **read from the game by a committed tool** or
+> **derived by a documented rule that a test asserts** — see the table below.
+> `tools/verify_against_game.py` implements the `.SET` container and checks the
+> data against a retail copy: **2,020 checks, 0 failures, no tolerated
+> divergences.** `tools/augment_from_game.py` writes five of the fields outright,
+> and `tools/extract_icons.py` reproduces the artwork.
 >
-> That is no longer where things stand. Every field is now either **read from the
-> game by a committed tool** or **derived by a documented rule that a test
-> asserts** — see the table below. `tools/verify_against_game.py` implements the
-> `.SET` container and checks the data against a retail copy: **2,020 checks, 0
-> failures, no tolerated divergences.** `tools/augment_from_game.py` writes five
-> of the fields outright, and `tools/extract_icons.py` reproduces the artwork.
->
-> What still does not exist is a single command that regenerates the whole file
-> from nothing. But that is now a mechanical gap rather than a research one: the
-> reader, the field mapping and every derivation rule are all committed and
-> exercised. Nothing about the format remains to be discovered.
+> What does not exist is a single command that regenerates the whole file from
+> nothing. That is a mechanical gap rather than a research one: the reader, the
+> field mapping and every derivation rule are committed and exercised. Nothing
+> about the format remains to be discovered.
 >
 > Run the verifier with
 > `python3 tools/verify_against_game.py --game-dir /path/to/game`, or set
@@ -116,10 +113,12 @@ Every field falls into one of two groups, and nothing falls outside them.
 fields in the file. They are reproducible only while each stays an unambiguous
 function of `raw_class`, which a test checks.
 
-The dataset used to carry a `classification_source` field repeating the same
-sentence on all 245 records. Data asserting its own provenance is a claim, not
-evidence; the claim now lives here, where it can be wrong in one place, and the
-evidence is the verifier.
+No record carries a field describing where it came from. Data asserting its own
+provenance is a claim, not evidence: the claim belongs here, where it can be
+wrong in one place, and the evidence is the verifier. `build_site.py` rejects
+`classification_source`, `icon_image_id` and `graphic_count` by name — they
+match nothing in the game's files and are read by no code, so their presence
+only invites someone to trust them.
 
 ### Enumerations
 
@@ -409,10 +408,9 @@ to prevent production rather than only sale.
 
 ## Derived fields
 
-`production_technology_pct` is computed as `100 - sum(input quality_pct)` during
-the dataset rebuild, not read from a separate field. An earlier pipeline took it
-from a prior-art dataset that had drifted for 5 of 245 products — Black Pepper
-was recorded there as 50%, while the game's own Manufacturer's Guide screen shows
-75%, i.e. `100 - 25`. Every product's bar therefore sums to 100% at the source,
-which is why the site's scale factor is a defensive no-op rather than a real
-correction.
+`production_technology_pct` is computed as `100 - sum(input quality_pct)`, not
+read from a field: the game stores no such column, and its own Manufacturer's
+Guide screen agrees with the arithmetic — Black Pepper's single 25% input leaves
+75% technology. Every product's contributions therefore sum to 100% at the
+source, which is why the site's scale factor is a defensive no-op rather than a
+real correction. `TestDerivedFields` asserts the identity across all 245.
