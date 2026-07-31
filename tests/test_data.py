@@ -262,6 +262,50 @@ class TestBuildContract(unittest.TestCase):
         self.assertNotIn("__PRODUCTS_JSON__", BUILT.read_text(encoding="utf-8"))
 
 
+class TestPalette(unittest.TestCase):
+    """Classification colours have to stay tellable apart at a 12px swatch. This
+    computes CIELAB distance rather than eyeballing hex values."""
+
+    @staticmethod
+    def _lab(hex_):
+        def lin(c):
+            c /= 255
+            return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+
+        h = hex_.lstrip("#")
+        r, g, b = (lin(int(h[i:i + 2], 16)) for i in (0, 2, 4))
+        x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047
+        y = r * 0.2126 + g * 0.7152 + b * 0.0722
+        z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883
+        f = lambda v: v ** (1 / 3) if v > 0.008856 else 7.787 * v + 16 / 116
+        fx, fy, fz = f(x), f(y), f(z)
+        return (116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz))
+
+    def _palette(self):
+        block = re.search(r"const PALETTE = \{(.*?)\n\};", TEMPLATE_TEXT, re.S)
+        self.assertIsNotNone(block, "PALETTE not found")
+        return dict(re.findall(r"(\w+):\s*'(#[0-9A-Fa-f]{6})'", block.group(1)))
+
+    def test_palette_is_the_single_source_of_colour(self):
+        """Every classification colour comes from PALETTE, not a literal. The
+        manufactured red used to be written out in four places."""
+        block = re.search(r"const CLASS_SOLID = \{(.*?)\n\};", TEMPLATE_TEXT, re.S).group(1)
+        self.assertEqual([], re.findall(r"#[0-9A-Fa-f]{6}", block))
+
+    def test_colours_are_mutually_distinguishable(self):
+        palette = self._palette()
+        self.assertGreaterEqual(len(palette), 7)
+        too_close = []
+        names = sorted(palette)
+        for i, a in enumerate(names):
+            for b in names[i + 1:]:
+                la, lb = self._lab(palette[a]), self._lab(palette[b])
+                d = sum((la[k] - lb[k]) ** 2 for k in range(3)) ** 0.5
+                if d < 15:
+                    too_close.append(f"{a}/{b}={d:.1f}")
+        self.assertEqual([], too_close)
+
+
 class TestAccessibility(unittest.TestCase):
     """Guards the accessibility properties of the built page. These are cheap
     structural checks, not a substitute for testing with an actual screen

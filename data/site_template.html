@@ -12,11 +12,7 @@
 <title>Capitalism Plus — Product Reference</title>
 <style>
   :root {
-    --retail: #0533FF;
-    --semi: #FF2600;
-    --livestock: #FF9300;
-    --raw: #FF30E5;
-    --plant: #941100;
+    --retail: #0533FF;   /* .tab.active only; the palette proper lives in PALETTE */
     --bg: #14161a;
     --panel: #1e2127;
     --panel2: #262a32;
@@ -511,18 +507,51 @@ const CLASS_DISPLAY_NAME = {
 // Emerging Dragon bans LPRODUCT but not LSEMI. Merging them into one "Livestock"
 // bucket cannot represent that, and leaves its sidebar chip unable to show a
 // clean "fully restricted" state when only the LPRODUCT half is banned.
+// ---- The palette, keyed by production lineage ----
+//
+// Hue answers "where does this come from?", which is the question the
+// dependency graph exists to answer. Consumer-vs-industrial is deliberately NOT
+// encoded here: the Goods Type badge already carries it independently (see
+// goodsType), so duplicating it in hue would be redundant AND would break the
+// lineage reading.
+//
+// Several entries below are shared on purpose -- Semi-Product, Manufacturing and
+// Industrial Goods are one red because they are the same thing seen from three
+// angles. They reference one constant rather than repeating a literal: the value
+// used to appear in four places, which left the relationship invisible and made
+// any change a four-site edit.
+const PALETTE = {
+  retail: '#0533FF',
+  // Darkened from #FF2600, which only reached 3.80:1 against white and so was
+  // forced to dark text -- legible by the numbers, muddy in practice on a
+  // saturated red. At #D92100 white text is back and clears AA at 5.04:1.
+  manufactured: '#D92100',
+  mined: '#FF30E5',
+  crop: '#941100',
+  // The livestock lineage shares a hue, differing by lightness. These two were
+  // green and teal, which made goods derived from an orange animal look
+  // unrelated to it -- the only pair in the palette that broke the lineage
+  // reading.
+  livestock: '#FF9300',
+  livestockProduct: '#C97A00',
+  livestockSemi: '#8A5024',
+};
+
 const CLASS_SOLID = {
-  "Retail Product": "#0533FF",
-  "Semi-Product": "#FF2600",
-  "Livestock": "#FF9300",
-  "Raw Material": "#FF30E5",
-  "Plant Product": "#941100",
-  "Livestock Product": "#2E9E4D",
-  "Livestock Semi-Product": "#1F9E9E",
+  "Retail Product": PALETTE.retail,
+  "Semi-Product": PALETTE.manufactured,
+  "Livestock": PALETTE.livestock,
+  "Raw Material": PALETTE.mined,
+  "Plant Product": PALETTE.crop,
+  "Livestock Product": PALETTE.livestockProduct,
+  "Livestock Semi-Product": PALETTE.livestockSemi,
 };
 const CLASS_COLORS = CLASS_SOLID;
-const CONSUMER_GOODS_COLOR = "#0533FF";
-const INDUSTRIAL_GOODS_COLOR = "#FF2600";
+// Same colours as Retail Product / Semi-Product, deliberately: a Consumer Good
+// is what a Retail Product is for, and an Industrial Good is what a Semi-Product
+// is for.
+const CONSUMER_GOODS_COLOR = PALETTE.retail;
+const INDUSTRIAL_GOODS_COLOR = PALETTE.manufactured;
 
 function usedElsewhere(p) { return (p.used_in || []).length > 0; }
 // "Consumer Goods" / "Industrial Goods" is the game's own vocabulary, from its
@@ -919,10 +948,10 @@ function relStrikeCss(rp) {
 // production origin at all, it's just whether the item is sellable, so it's
 // handled via the `sellable` flag rather than the `industry` field.
 const INDUSTRY_COLOR = {
-  'Raw Material Production': '#FF30E5',
-  'Farming': '#FF9300',
-  'Manufacturing': '#FF2600',
-  'Retailing': '#0533FF',
+  'Raw Material Production': PALETTE.mined,
+  'Farming': PALETTE.livestock,
+  'Manufacturing': PALETTE.manufactured,
+  'Retailing': PALETTE.retail,
 };
 
 let state = {

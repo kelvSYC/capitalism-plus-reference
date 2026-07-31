@@ -291,6 +291,39 @@ const gridHtml = pane('grid-view').innerHTML;
 ok('grid emits no unwrapped images',
    (gridHtml.match(/<img/g) || []).length === (gridHtml.match(/class="picon"/g) || []).length);
 
+print('--- the palette encodes production lineage ---');
+// Semi-Product, Manufacturing and Industrial Goods are one colour on purpose:
+// the same thing seen from three angles. Asserted so a future edit to one of
+// them cannot silently break the relationship.
+ok('Semi-Product, Manufacturing and Industrial Goods share one red',
+   CLASS_SOLID['Semi-Product'] === INDUSTRY_COLOR['Manufacturing'] &&
+   CLASS_SOLID['Semi-Product'] === INDUSTRIAL_GOODS_COLOR);
+ok('Retail Product, Retailing and Consumer Goods share one blue',
+   CLASS_SOLID['Retail Product'] === INDUSTRY_COLOR['Retailing'] &&
+   CLASS_SOLID['Retail Product'] === CONSUMER_GOODS_COLOR);
+ok('Livestock and Farming share one orange',
+   CLASS_SOLID['Livestock'] === INDUSTRY_COLOR['Farming']);
+
+// The livestock lineage must stay a warm family: goods derived from an orange
+// animal should not look unrelated to it. R > G > B is a crude but sufficient
+// machine-checkable proxy for "warm".
+const warm = hex => {
+  const [r, g, bl] = [0, 1, 2].map(i => parseInt(hex.replace('#', '').slice(i * 2, i * 2 + 2), 16));
+  return r > g && g > bl;
+};
+ok('the whole livestock lineage is warm',
+   [PALETTE.livestock, PALETTE.livestockProduct, PALETTE.livestockSemi].every(warm),
+   [PALETTE.livestock, PALETTE.livestockProduct, PALETTE.livestockSemi].join(' '));
+ok('the livestock lineage is ordered light to dark',
+   relLuminance(PALETTE.livestock) > relLuminance(PALETTE.livestockProduct) &&
+   relLuminance(PALETTE.livestockProduct) > relLuminance(PALETTE.livestockSemi));
+
+// The specific readability complaint: dark text on a saturated red reads worse
+// than white, even though the old red technically scored higher against ink.
+ok('the manufactured red takes white text again',
+   onColor(PALETTE.manufactured) === '#ffffff',
+   PALETTE.manufactured + ' white=' + contrastRatio(PALETTE.manufactured, '#ffffff').toFixed(2));
+
 print('--- colour contrast meets WCAG AA ---');
 // Small text needs 4.5:1. Eleven of the badge colours are light enough that the
 // hardcoded white this site used to emit failed badly (#FFAB00 was 1.90:1), so
