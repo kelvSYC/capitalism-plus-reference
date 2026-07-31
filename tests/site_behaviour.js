@@ -404,7 +404,33 @@ openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Timber').i
 d = pane('detail-view').innerHTML;
 ok('extraction site comes from the data, not a name match',
    d.includes('Lumber Mill') && d.includes('Logging Unit'));
-ok('a slower rate is described relative to typical', d.includes('slower than typical'));
+// The game records no absolute extraction rate, so the figure is stated against
+// the other materials in the same gameset rather than an invented baseline.
+ok('extraction speed is stated relative to its peers', d.includes('the slowest in this gameset'));
+ok('extraction admits there is no per-month figure',
+   d.includes('the game records no quantity per month for mining'));
+
+print('--- a scenario that kills a market qualifies the site count ---');
+// max_sites is a property of the gameset, not of the game being played. Gold
+// under Italy loses Jewelry, its only consumer, so it has no market -- and a
+// scenario has no reason to place sites for a material nothing will buy.
+reset();
+state.gameset = 'Standard';
+state.scenario = 'ITALY';
+state.showRestricted = true;
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Gold').id);
+d = pane('detail-view').innerHTML;
+ok('Gold really is restricted under Italy',
+   scenarioRestricted(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Gold')));
+ok('the site count is qualified rather than stated flat',
+   d.includes('in an unrestricted game') && d.includes('upper bound, not a promise'));
+ok('the intrinsic extraction facts still show', d.includes('Mining Unit'));
+
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Gold').id);
+d = pane('detail-view').innerHTML;
+ok('with no scenario the site count is stated plainly',
+   d.includes('up to 2') && !d.includes('upper bound, not a promise'));
 
 reset();
 openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Wool').id);

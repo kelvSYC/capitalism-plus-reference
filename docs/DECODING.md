@@ -167,8 +167,26 @@ to establish it by experiment, which is exactly why a reference should carry it.
 
 `extraction`, from `RAW`, on raw materials: which site type works it
 (`FIRM_CODE` → Mine / Lumber Mill / Oil Well), the commodity's unit, relative
-speed, resource value, and how many sites a map may hold. There is no per-batch
-quantity because extraction is continuous.
+speed, resource value, and how many sites a map may hold.
+
+**There is no units-per-month figure for extraction, and no table supplies one.**
+This is an asymmetry in the game's data rather than a gap in our reading:
+`FARMPROD` carries both `SPEED` and `MONTH_QTY`, so a livestock yield can be
+stated absolutely ("9 lb per month"), while `RAW` carries `SPEED` alone. All 16
+tables were checked. `RAW.SPEED` is also on a different scale from
+`FARMPROD.SPEED` — 1, 2 and 4 rather than percentages around 100 — so it has no
+absolute anchor at all, and the site states it against the other materials in the
+same gameset rather than against a baseline we would have had to invent.
+
+`MAX_SITE` needs similar care. It is a property of the **gameset**, not of the
+game being played. Raw materials are never excluded by class — `RAW` appears in
+no scenario's `excludedClasses` — but they are restricted *transitively* when
+every downstream consumer dies: Gold under Italy loses Jewelry, its only
+consumer, and so has no market. A scenario has no reason to place sites for a
+material nothing will buy, so the product page qualifies the figure as an upper
+bound whenever the material is restricted, rather than repeating a gameset fact
+as though it described the current game. Whether a given scenario's map actually
+contains such sites is in the `.SCN` map data, which we have not decoded.
 
 `livestock_production`, from `FARMPROD`, on livestock-derived goods. Two modes,
 never both:

@@ -1484,16 +1484,39 @@ function pctColor(i) {
 function extractionSection(p) {
   const e = p.extraction;
   if (!e) return '';
+  // The game gives no absolute rate for extraction -- RAW has SPEED but no
+  // MONTH_QTY, unlike FARMPROD -- so the figure is only meaningful next to the
+  // other materials in the same gameset. Those are computed here rather than
+  // compared against a baseline we would have had to invent.
+  const peers = byGameset(p.gameset).filter(x => x.extraction).map(x => x.extraction.speed);
+  const lo = Math.min(...peers), hi = Math.max(...peers);
+  const speedNote = e.speed === hi && hi !== lo ? ' — the fastest in this gameset'
+    : e.speed === lo && hi !== lo ? ' — the slowest in this gameset'
+    : '';
+
+  // max_sites is a property of the gameset, not of the game you are playing. A
+  // scenario that leaves a material without a market has no reason to place
+  // sites for it, so presenting the figure unqualified would overstate it.
+  const restricted = scenarioRestricted(p);
+  const sitesRow = restricted
+    ? `<div class="k">Sites per map</div><div><span style="color:var(--muted)">up to ${e.max_sites}
+       in an unrestricted game</span> — but ${esc(p.name)} has no market in this
+       scenario, and a scenario has no reason to place sites for a material
+       nothing will buy. Treat the figure as an upper bound, not a promise.</div>`
+    : `<div class="k">Sites per map</div><div>up to ${e.max_sites}</div>`;
+
   return `<div class="section"><h3>Extraction</h3><div class="kv">
     <div class="k">Site</div><div>${esc(e.site)}${e.unit ? ` — worked by a ${esc(e.unit)}` : ''}</div>
-    <div class="k">Extraction speed</div><div>${e.speed}${rateNote(e.speed, 2)}</div>
+    <div class="k">Extraction speed</div><div>${e.speed} of ${hi}${speedNote}</div>
     <div class="k">Resource value</div><div>${e.resource_value}${e.resource_value > 1 ? ' — richer than an ordinary deposit' : ''}</div>
-    <div class="k">Sites per map</div><div>up to ${e.max_sites}</div>
+    ${sitesRow}
   </div>
   <p style="font-size:12px;color:var(--muted);margin:10px 0 0">Extraction is
-  continuous rather than batched, so there is no per-run quantity: a site
-  produces ${esc(e.measured_in || p.output_unit || 'units')} at a rate set by the
-  figures above.</p>
+  continuous rather than batched, so a site produces
+  ${esc(e.measured_in || p.output_unit || 'units')} steadily rather than in
+  batches. Unlike livestock, the game records no quantity per month for mining —
+  only the relative speed above — so the absolute rate is not something this
+  reference can state.</p>
   </div>`;
 }
 
