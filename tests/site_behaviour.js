@@ -386,6 +386,63 @@ const badges = cards.match(/class="badge"[^>]*/g) || [];
 ok('every rendered badge carries an explicit colour (' + badges.length + ')',
    badges.length > 0 && badges.every(b => b.includes('color:')));
 
+print('--- production rates the game never publishes ---');
+// Extraction speeds and livestock yields appear in neither the in-game Farmer's
+// Guide nor the manuals; a player has to derive them by experiment.
+reset();
+const gold = PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Gold');
+openDetail(gold.id);
+let d = pane('detail-view').innerHTML;
+ok('a raw material shows how it is extracted',
+   d.includes('Extraction') && d.includes('Mining Unit'));
+ok('extraction states the commodity unit, not "units"',
+   d.includes('produces oz') || d.includes('produces\n  oz'), 'Gold should say oz');
+ok('a richer-than-normal deposit says so', d.includes('richer than an ordinary deposit'));
+
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Timber').id);
+d = pane('detail-view').innerHTML;
+ok('extraction site comes from the data, not a name match',
+   d.includes('Lumber Mill') && d.includes('Logging Unit'));
+ok('a slower rate is described relative to typical', d.includes('slower than typical'));
+
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Wool').id);
+d = pane('detail-view').innerHTML;
+ok('a continuous yield states quantity per month', d.includes('9 lb'));
+ok('a seasonal yield names its season', d.includes('June') && d.includes('October'));
+ok('a seasonal yield is not described as year-round', !d.includes('all year round'));
+ok('the animal is not consumed', d.includes('not consumed'));
+
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Milk').id);
+ok('a year-round yield says so', pane('detail-view').innerHTML.includes('all year round'));
+
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Leather').id);
+d = pane('detail-view').innerHTML;
+ok('a slaughter product states the proportion', d.includes("20% of the animal's weight"));
+// The percentage is useless without the weight it applies to; each source
+// animal's weight turns it into a number.
+ok('slaughter yield is worked out per source animal',
+   d.includes('Cattle (675 lb) yields 135 lb') && d.includes('Sheep (150 lb) yields 30 lb'), d.slice(0, 0));
+ok('a slaughter product does not claim a monthly yield', !d.includes('Per month'));
+
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Cattle').id);
+d = pane('detail-view').innerHTML;
+ok('an animal shows the weight its yields are based on',
+   d.includes('675 lb') && d.includes('basis for any slaughter yield'));
+ok('an animal shows growth and reproduction rates',
+   d.includes('Growth rate') && d.includes('Reproduction rate'));
+
+// Nothing should sprout these sections that has no such data.
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Car').id);
+d = pane('detail-view').innerHTML;
+ok('a manufactured good has no extraction or yield section',
+   !d.includes('<h3>Extraction</h3>') && !d.includes('<h3>Yield</h3>'));
+
 print('--- the dependency graph has a real text equivalent ---');
 // The diagram is an SVG with no text alternative and no focusable nodes, so the
 // whole view was unreadable by a screen reader and unusable without a mouse.

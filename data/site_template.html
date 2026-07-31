@@ -785,7 +785,12 @@ function isRawMaterial(p) {
 // Well site via an Oil-Extracting Unit, and every other raw material (Coal,
 // Gold, Iron Ore, Copper, Silver, Aluminum, Chemical Materials, Silica, etc.)
 // from a Mine site via a Mining Unit.
+// Prefers the game's own RAW.FIRM_CODE, carried on the product as `extraction`.
+// The name matches below are the fallback for a product with no RAW row; they
+// were the only mechanism before the field existed, and they would quietly give
+// the wrong answer for a gameset that named things differently.
 function extractionInfo(p) {
+  if (p.extraction) return { site: p.extraction.site, unit: p.extraction.unit };
   if (p.name === 'Timber') return { site: 'Lumber Mill', unit: 'Logging Unit' };
   if (p.name === 'Oil') return { site: 'Oil Well', unit: 'Oil-Extracting Unit' };
   return { site: 'Mine', unit: 'Mining Unit' };
@@ -1467,12 +1472,88 @@ function pctColor(i) {
 
 // Livestock are not made or bought, so their detail page shows what a Raising
 // Unit yields instead of a recipe.
+// The game's own Farmer's Guide and manuals publish none of the rates below --
+// a player has to establish them by experiment. They come from the .SET tables
+// RAW, FARMPROD and FARMLIVE; see docs/DECODING.md.
+
+// How fast a site works a raw material, and how much of it a map will hold.
+function extractionSection(p) {
+  const e = p.extraction;
+  if (!e) return '';
+  return `<div class="section"><h3>Extraction</h3><div class="kv">
+    <div class="k">Site</div><div>${esc(e.site)}${e.unit ? ` — worked by a ${esc(e.unit)}` : ''}</div>
+    <div class="k">Extraction speed</div><div>${e.speed}${rateNote(e.speed, 2)}</div>
+    <div class="k">Resource value</div><div>${e.resource_value}${e.resource_value > 1 ? ' — richer than an ordinary deposit' : ''}</div>
+    <div class="k">Sites per map</div><div>up to ${e.max_sites}</div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin:10px 0 0">Extraction is
+  continuous rather than batched, so there is no per-run quantity: a site
+  produces ${esc(e.measured_in || p.output_unit || 'units')} at a rate set by the
+  figures above.</p>
+  </div>`;
+}
+
+// Relative-rate figures are only meaningful against their own baseline, so say
+// what the baseline is rather than printing a bare number.
+function rateNote(value, baseline) {
+  if (value === baseline) return ' (typical)';
+  return value > baseline ? ' (faster than typical)' : ' (slower than typical)';
+}
+
+// A livestock-derived good arrives one of two ways, never both: month after
+// month while the animal lives, or all at once when it is slaughtered.
+function livestockProductionSection(p) {
+  const lp = p.livestock_production;
+  if (!lp) return '';
+  const source = (p.derived_from_livestock || []).join(', ');
+  if (lp.mode === 'continuous') {
+    const season = lp.all_year
+      ? 'all year round'
+      : `only from ${esc(lp.from_month)} to ${esc(lp.to_month)}`;
+    return `<div class="section"><h3>Yield</h3><div class="kv">
+      <div class="k">Per month</div><div>${lp.monthly_quantity} ${esc(lp.unit || '')}</div>
+      <div class="k">Season</div><div>${season}</div>
+      <div class="k">Processing rate</div><div>${lp.rate_percent}%${rateNote(lp.rate_percent, 100)}</div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin:10px 0 0">Harvested from a
+    living animal${source ? ` (${esc(source)})` : ''}, so the animal is not consumed.</p>
+    </div>`;
+  }
+  return `<div class="section"><h3>Yield</h3><div class="kv">
+    <div class="k">Obtained by</div><div>slaughtering the animal</div>
+    <div class="k">Proportion</div><div>${lp.slaughter_percent}% of the animal's weight</div>
+    <div class="k">Processing rate</div><div>${lp.rate_percent}%${rateNote(lp.rate_percent, 100)}</div>
+  </div>${slaughterExamples(p)}</div>`;
+}
+
+// A percentage means little without the weight it applies to, and the weights
+// are on the animal's own record.
+function slaughterExamples(p) {
+  const pct = p.livestock_production.slaughter_percent;
+  const rows = (p.derived_from_livestock || []).map(animalName => {
+    const a = PRODUCTS.find(x => x.gameset === p.gameset && x.name === animalName);
+    if (!a || !a.livestock_stats) return null;
+    const qty = Math.round(a.livestock_stats.weight * pct) / 100;
+    return `${esc(animalName)} (${a.livestock_stats.weight} ${esc(a.livestock_stats.unit)}) yields ${qty} ${esc(p.output_unit || a.livestock_stats.unit)}`;
+  }).filter(Boolean);
+  if (!rows.length) return '';
+  return `<p style="font-size:12px;color:var(--muted);margin:10px 0 0">${rows.join('; ')}.</p>`;
+}
+
 function livestockYieldSection(p) {
   const yieldOf = yName => PRODUCTS.find(x => x.gameset === p.gameset && x.name === yName);
   const visibleYields = (p.livestock_yields || []).filter(yName => relVisible(yieldOf(yName)));
+  const st = p.livestock_stats;
   let html = `<div class="section"><h3>Raising Unit</h3>
-      <p style="font-size:13px;color:var(--muted);margin-top:0">Livestock aren't bought or sold as products — they populate a Livestock unit on a farm and are processed there to continuously yield the goods below.</p>
-      <ul class="yield-list">`;
+      <p style="font-size:13px;color:var(--muted);margin-top:0">Livestock aren't bought or sold as products — they populate a Livestock unit on a farm and are processed there to continuously yield the goods below.</p>`;
+  if (st) {
+    html += `<div class="kv" style="margin-bottom:12px">
+      <div class="k">Weight</div><div>${st.weight} ${esc(st.unit)} — the basis for any slaughter yield</div>
+      <div class="k">Growth rate</div><div>${st.grow_rate}%${rateNote(st.grow_rate, 100)}</div>
+      <div class="k">Reproduction rate</div><div>${st.reproduce_rate}%${rateNote(st.reproduce_rate, 100)}</div>
+    </div>`;
+  }
+  html += `<ul class="yield-list">`;
   if (visibleYields.length) {
     visibleYields.forEach(yName => {
       const yp = yieldOf(yName);
@@ -1547,6 +1628,9 @@ function openDetail(id) {
     if (p.output_quantity) {
       html += `<div class="section"><h3>Output</h3><div class="kv"><div class="k">Yield</div><div>${p.output_quantity} ${p.output_unit || ''} per production run</div></div></div>`;
     }
+
+    html += extractionSection(p);
+    html += livestockProductionSection(p);
 
     if (p.growing_conditions) {
       const g = p.growing_conditions;

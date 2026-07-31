@@ -33,7 +33,9 @@ data/
   index_cards.csv       the scalar columns of the above, for spreadsheets
                         (a hand-maintained projection, not a build output)
 tools/
-  build_site.py   regenerates site/index.html from the template + dataset
+  build_site.py            regenerates site/index.html from the template + dataset
+  verify_against_game.py   checks the data against a real copy of the game
+  augment_from_game.py     one-shot: adds production-rate fields from the game
 docs/
   DECODING.md     the .SET / .SCN file formats and how each fact was verified
 ```

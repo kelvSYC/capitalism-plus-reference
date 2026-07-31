@@ -29,6 +29,8 @@ CARDS_DATA = json.loads(CARDS.read_text(encoding="utf-8"))
 TEMPLATE_TEXT = TEMPLATE.read_text(encoding="utf-8")
 
 GAMESETS = {"Standard", "Alternative", "Food & Beverage"}
+MONTHS_FULL = ["January", "February", "March", "April", "May", "June",
+               "July", "August", "September", "October", "November", "December"]
 
 
 def slug(text):
@@ -172,6 +174,66 @@ class TestTaxonomy(unittest.TestCase):
                     set(gc),
                     c["id"],
                 )
+
+
+class TestProductionRates(unittest.TestCase):
+    """Fields added from RAW / FARMPROD / FARMLIVE. None of this appears in the
+    game's own Farmer's Guide, so nothing outside this project would catch it
+    going wrong."""
+
+    def test_extraction_only_on_raw_materials(self):
+        for c in CARDS_DATA:
+            if "extraction" in c:
+                self.assertEqual("Raw Material", c["classification"], c["id"])
+
+    def test_extraction_is_complete(self):
+        want = {"site", "unit", "measured_in", "speed", "resource_value", "max_sites"}
+        for c in CARDS_DATA:
+            if "extraction" in c:
+                self.assertEqual(want, set(c["extraction"]), c["id"])
+                self.assertIn(c["extraction"]["site"], {"Mine", "Lumber Mill", "Oil Well"})
+
+    def test_livestock_production_modes_are_exclusive(self):
+        """A product is harvested from a living animal or taken from a dead one,
+        never both -- the shape of the record enforces which fields exist."""
+        for c in CARDS_DATA:
+            lp = c.get("livestock_production")
+            if not lp:
+                continue
+            self.assertIn(lp["mode"], {"continuous", "slaughter"}, c["id"])
+            if lp["mode"] == "slaughter":
+                self.assertIn("slaughter_percent", lp, c["id"])
+                self.assertNotIn("monthly_quantity", lp, c["id"])
+            else:
+                self.assertIn("monthly_quantity", lp, c["id"])
+                self.assertNotIn("slaughter_percent", lp, c["id"])
+                self.assertGreater(lp["monthly_quantity"], 0, c["id"])
+                self.assertIn(lp["from_month"], MONTHS_FULL, c["id"])
+                self.assertIn(lp["to_month"], MONTHS_FULL, c["id"])
+
+    def test_livestock_production_only_on_derived_goods(self):
+        for c in CARDS_DATA:
+            if "livestock_production" in c:
+                self.assertIn(c["raw_class"], {"LPRODUCT", "LSEMI"}, c["id"])
+
+    def test_livestock_stats_only_on_animals(self):
+        for c in CARDS_DATA:
+            if "livestock_stats" in c:
+                self.assertEqual("LSTOCK", c["raw_class"], c["id"])
+                self.assertGreater(c["livestock_stats"]["weight"], 0, c["id"])
+
+    def test_every_slaughter_product_can_be_quantified(self):
+        """A percentage is meaningless without the weight it applies to, so every
+        slaughter product must have at least one source animal carrying one."""
+        by_key = {(c["gameset"], c["name"]): c for c in CARDS_DATA}
+        for c in CARDS_DATA:
+            lp = c.get("livestock_production")
+            if not lp or lp["mode"] != "slaughter":
+                continue
+            sources = c.get("derived_from_livestock") or []
+            self.assertTrue(sources, c["id"])
+            weights = [by_key[(c["gameset"], a)].get("livestock_stats") for a in sources]
+            self.assertTrue(all(weights), f"{c['id']}: a source animal has no weight")
 
 
 class TestCsvMirror(unittest.TestCase):

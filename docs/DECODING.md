@@ -144,15 +144,47 @@ Where the rate lives instead, none of it a per-batch yield:
 | Livestock products | `FARMPROD` | `MONTH_QTY` with a `SMONTH`–`EMONTH` window |
 | Crops | `FARMCROP` | the sow/harvest window only |
 
-`FARMPROD` is worth calling out because the site currently surfaces none of it:
-Milk is 555 quart/month year-round, Wool 9 lb/month but **only in months 6–10**,
-Eggs 1.7 dozen/month. The slaughter products (Frozen Beef, Pork, Lamb, Chicken,
-and Leather) carry `MONTH_QTY` of 0 with `KILLFLAG` set — they come from killing
-the animal rather than from a continuous yield, which is what that flag marks.
+`FARMPROD` distinguishes two ways a livestock good arrives, and the site now
+surfaces both (see [Production rates](#production-rates)).
+
+> **Correction.** An earlier version of this document said `KILLFLAG` marks the
+> slaughter products, having observed it set on every row. That observation was
+> an artefact of a bug in our own reader: logical columns store ASCII `'T'`/`'F'`,
+> and testing for a non-zero byte decodes `'F'` as true, so *every* boolean in
+> every table read as set. With that fixed, `KILLFLAG` does exactly what the name
+> suggests, and the conclusion happens to be the one originally stated — but it
+> was not supported by the evidence at the time.
 
 The verifier declares and counts this divergence rather than tolerating it, so a
 new disagreement cannot hide inside it, and it separately asserts the
 one-unit-per-commodity property that makes the above true.
+
+### Production rates
+
+Added to the dataset by `tools/augment_from_game.py` and checked by the verifier.
+The game's own Farmer's Guide and manuals publish **none** of this — a player has
+to establish it by experiment, which is exactly why a reference should carry it.
+
+`extraction`, from `RAW`, on raw materials: which site type works it
+(`FIRM_CODE` → Mine / Lumber Mill / Oil Well), the commodity's unit, relative
+speed, resource value, and how many sites a map may hold. There is no per-batch
+quantity because extraction is continuous.
+
+`livestock_production`, from `FARMPROD`, on livestock-derived goods. Two modes,
+never both:
+
+- **continuous** — a monthly quantity within a season. Milk 555 quart/month all
+  year, Wool 9 lb/month but only June–October, Eggs 1.7 dozen/month.
+- **slaughter** — a percentage of the animal's weight. Meat is 100%, Leather 20%,
+  Tallow 100%.
+
+`KILLFLAG`, `P_PERCENT > 0` and `MONTH_QTY == 0` agree on all 25 rows across all
+three gamesets, so the mode is unambiguous. The verifier asserts that agreement
+as well as the values.
+
+`livestock_stats`, from `FARMLIVE`, on the animals: weight, growth and
+reproduction rates. Weight is what makes the slaughter percentages concrete —
+Cattle at 675 lb gives 675 lb of Frozen Beef and 135 lb of Leather.
 
 ### Still unresolved
 

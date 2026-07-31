@@ -1142,7 +1142,16 @@
     "derived_from_livestock": [
       "Chicken"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 300,
+      "mode": "continuous",
+      "monthly_quantity": 1.7,
+      "unit": "dozen",
+      "from_month": "January",
+      "to_month": "December",
+      "all_year": true
+    }
   },
   {
     "id": "S - Frozen Beef",
@@ -1165,7 +1174,12 @@
     "derived_from_livestock": [
       "Cattle"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "S - Frozen Chicken",
@@ -1188,7 +1202,12 @@
     "derived_from_livestock": [
       "Chicken"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "S - Frozen Pork",
@@ -1211,7 +1230,12 @@
     "derived_from_livestock": [
       "Pig"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "S - Frozen Lamb",
@@ -1234,7 +1258,12 @@
     "derived_from_livestock": [
       "Sheep"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "S - Leather",
@@ -1295,7 +1324,12 @@
         "unit": "lb",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 20.0
+    }
   },
   {
     "id": "S - Milk",
@@ -1340,7 +1374,16 @@
         "unit": "quart",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "continuous",
+      "monthly_quantity": 555.0,
+      "unit": "quart",
+      "from_month": "January",
+      "to_month": "December",
+      "all_year": true
+    }
   },
   {
     "id": "S - Wool",
@@ -1378,7 +1421,16 @@
         "unit": "lb",
         "quality_pct": 50.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 150,
+      "mode": "continuous",
+      "monthly_quantity": 9.0,
+      "unit": "lb",
+      "from_month": "June",
+      "to_month": "October",
+      "all_year": false
+    }
   },
   {
     "id": "S - Cattle",
@@ -1403,7 +1455,13 @@
       "Milk",
       "Leather"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 675.0,
+      "unit": "lb",
+      "grow_rate": 150,
+      "reproduce_rate": 150
+    }
   },
   {
     "id": "S - Chicken",
@@ -1427,7 +1485,13 @@
       "Frozen Chicken",
       "Eggs"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 5.0,
+      "unit": "lb",
+      "grow_rate": 800,
+      "reproduce_rate": 10000
+    }
   },
   {
     "id": "S - Pig",
@@ -1451,7 +1515,13 @@
       "Frozen Pork",
       "Leather"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 250.0,
+      "unit": "lb",
+      "grow_rate": 400,
+      "reproduce_rate": 200
+    }
   },
   {
     "id": "S - Sheep",
@@ -1476,7 +1546,13 @@
       "Wool",
       "Leather"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 150.0,
+      "unit": "lb",
+      "grow_rate": 800,
+      "reproduce_rate": 200
+    }
   },
   {
     "id": "S - Barley",
@@ -1839,7 +1915,15 @@
         "unit": "lb",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 2
+    }
   },
   {
     "id": "S - Chemical Minerals",
@@ -1902,7 +1986,15 @@
         "unit": "lb",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 2
+    }
   },
   {
     "id": "S - Coal",
@@ -1930,7 +2022,15 @@
         "unit": "lb",
         "quality_pct": 20.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 3
+    }
   },
   {
     "id": "S - Gold",
@@ -1958,7 +2058,15 @@
         "unit": "oz",
         "quality_pct": 70.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "oz",
+      "speed": 2,
+      "resource_value": 5,
+      "max_sites": 2
+    }
   },
   {
     "id": "S - Iron Ore",
@@ -1986,7 +2094,15 @@
         "unit": "lb",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 3
+    }
   },
   {
     "id": "S - Oil",
@@ -2014,7 +2130,15 @@
         "unit": "barrel",
         "quality_pct": 35.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Oil Well",
+      "unit": "Oil-Extracting Unit",
+      "measured_in": "barrel",
+      "speed": 4,
+      "resource_value": 2,
+      "max_sites": 2
+    }
   },
   {
     "id": "S - Silica",
@@ -2049,7 +2173,15 @@
         "unit": "lb",
         "quality_pct": 40.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 2
+    }
   },
   {
     "id": "S - Timber",
@@ -2091,7 +2223,15 @@
         "unit": "lb",
         "quality_pct": 50.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Lumber Mill",
+      "unit": "Logging Unit",
+      "measured_in": "lb",
+      "speed": 1,
+      "resource_value": 1,
+      "max_sites": 3
+    }
   },
   {
     "id": "S - Car Body",
@@ -4144,7 +4284,12 @@
     "derived_from_livestock": [
       "Cattle"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "A - Frozen Goat Meat",
@@ -4167,7 +4312,12 @@
     "derived_from_livestock": [
       "Goat"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 70,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "A - Frozen Goose",
@@ -4190,7 +4340,12 @@
     "derived_from_livestock": [
       "Goose"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "A - Frozen Ostrich Meat",
@@ -4213,7 +4368,12 @@
     "derived_from_livestock": [
       "Ostrich"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_production": {
+      "rate_percent": 70,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "A - Cashmere",
@@ -4244,7 +4404,16 @@
         "unit": "lb",
         "quality_pct": 60.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 80,
+      "mode": "continuous",
+      "monthly_quantity": 9.0,
+      "unit": "lb",
+      "from_month": "June",
+      "to_month": "October",
+      "all_year": false
+    }
   },
   {
     "id": "A - Feather",
@@ -4275,7 +4444,12 @@
         "unit": "lb",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 200,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "A - Leather",
@@ -4306,7 +4480,12 @@
         "unit": "lb",
         "quality_pct": 50.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 80,
+      "mode": "slaughter",
+      "slaughter_percent": 20.0
+    }
   },
   {
     "id": "A - Milk",
@@ -4344,7 +4523,16 @@
         "unit": "quart",
         "quality_pct": 25.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 300,
+      "mode": "continuous",
+      "monthly_quantity": 555.0,
+      "unit": "quart",
+      "from_month": "January",
+      "to_month": "December",
+      "all_year": true
+    }
   },
   {
     "id": "A - Ostrich Oil",
@@ -4375,7 +4563,12 @@
         "unit": "quart",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 200,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "A - Tallow",
@@ -4406,7 +4599,12 @@
         "unit": "lb",
         "quality_pct": 15.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 50,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "A - Cattle",
@@ -4431,7 +4629,13 @@
       "Milk",
       "Tallow"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 675.0,
+      "unit": "lb",
+      "grow_rate": 150,
+      "reproduce_rate": 150
+    }
   },
   {
     "id": "A - Goat",
@@ -4455,7 +4659,13 @@
       "Frozen Goat Meat",
       "Cashmere"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 300.0,
+      "unit": "lb",
+      "grow_rate": 100,
+      "reproduce_rate": 400
+    }
   },
   {
     "id": "A - Goose",
@@ -4479,7 +4689,13 @@
       "Frozen Goose",
       "Feather"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 7.0,
+      "unit": "lb",
+      "grow_rate": 400,
+      "reproduce_rate": 1000
+    }
   },
   {
     "id": "A - Ostrich",
@@ -4504,7 +4720,13 @@
       "Leather",
       "Ostrich Oil"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 88.0,
+      "unit": "lb",
+      "grow_rate": 200,
+      "reproduce_rate": 900
+    }
   },
   {
     "id": "A - Camera Film",
@@ -5146,7 +5368,15 @@
         "unit": "lb",
         "quality_pct": 25.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 2
+    }
   },
   {
     "id": "A - Chemical Materials",
@@ -5251,7 +5481,15 @@
         "unit": "lb",
         "quality_pct": 35.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 3
+    }
   },
   {
     "id": "A - Copper",
@@ -5293,7 +5531,15 @@
         "unit": "lb",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 2
+    }
   },
   {
     "id": "A - Iron",
@@ -5321,7 +5567,15 @@
         "unit": "lb",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 3
+    }
   },
   {
     "id": "A - Oil",
@@ -5356,7 +5610,15 @@
         "unit": "barrel",
         "quality_pct": 15.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Oil Well",
+      "unit": "Oil-Extracting Unit",
+      "measured_in": "barrel",
+      "speed": 4,
+      "resource_value": 2,
+      "max_sites": 3
+    }
   },
   {
     "id": "A - Silica",
@@ -5384,7 +5646,15 @@
         "unit": "lb",
         "quality_pct": 40.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "lb",
+      "speed": 2,
+      "resource_value": 1,
+      "max_sites": 2
+    }
   },
   {
     "id": "A - Silver",
@@ -5419,7 +5689,15 @@
         "unit": "oz",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Mine",
+      "unit": "Mining Unit",
+      "measured_in": "oz",
+      "speed": 2,
+      "resource_value": 3,
+      "max_sites": 2
+    }
   },
   {
     "id": "A - Timber",
@@ -5461,7 +5739,15 @@
         "unit": "lb",
         "quality_pct": 15.0
       }
-    ]
+    ],
+    "extraction": {
+      "site": "Lumber Mill",
+      "unit": "Logging Unit",
+      "measured_in": "lb",
+      "speed": 1,
+      "resource_value": 1,
+      "max_sites": 3
+    }
   },
   {
     "id": "A - Citric Acid",
@@ -7481,7 +7767,12 @@
         "unit": "lb",
         "quality_pct": 15.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "F - Frozen Chicken",
@@ -7519,7 +7810,12 @@
         "unit": "lb",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "F - Frozen Pork",
@@ -7564,7 +7860,12 @@
         "unit": "lb",
         "quality_pct": 15.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "F - Frozen Turkey",
@@ -7602,7 +7903,12 @@
         "unit": "lb",
         "quality_pct": 30.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "F - Veal",
@@ -7633,7 +7939,12 @@
         "unit": "lb",
         "quality_pct": 20.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "slaughter",
+      "slaughter_percent": 100.0
+    }
   },
   {
     "id": "F - Egg",
@@ -7706,7 +8017,16 @@
         "unit": "dozen",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 300,
+      "mode": "continuous",
+      "monthly_quantity": 1.7,
+      "unit": "dozen",
+      "from_month": "January",
+      "to_month": "December",
+      "all_year": true
+    }
   },
   {
     "id": "F - Milk",
@@ -7779,7 +8099,16 @@
         "unit": "quart",
         "quality_pct": 10.0
       }
-    ]
+    ],
+    "livestock_production": {
+      "rate_percent": 100,
+      "mode": "continuous",
+      "monthly_quantity": 555.0,
+      "unit": "quart",
+      "from_month": "January",
+      "to_month": "December",
+      "all_year": true
+    }
   },
   {
     "id": "F - Cattle",
@@ -7804,7 +8133,13 @@
       "Milk",
       "Veal"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 675.0,
+      "unit": "lb",
+      "grow_rate": 150,
+      "reproduce_rate": 150
+    }
   },
   {
     "id": "F - Chicken",
@@ -7828,7 +8163,13 @@
       "Frozen Chicken",
       "Egg"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 5.0,
+      "unit": "lb",
+      "grow_rate": 800,
+      "reproduce_rate": 10000
+    }
   },
   {
     "id": "F - Pig",
@@ -7851,7 +8192,13 @@
     "livestock_yields": [
       "Frozen Pork"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 250.0,
+      "unit": "lb",
+      "grow_rate": 400,
+      "reproduce_rate": 200
+    }
   },
   {
     "id": "F - Turkey",
@@ -7874,7 +8221,13 @@
     "livestock_yields": [
       "Frozen Turkey"
     ],
-    "used_in": []
+    "used_in": [],
+    "livestock_stats": {
+      "weight": 150.0,
+      "unit": "lb",
+      "grow_rate": 800,
+      "reproduce_rate": 200
+    }
   },
   {
     "id": "F - Macaroni",

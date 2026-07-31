@@ -69,6 +69,15 @@ SCN_DOMINATE_CLASSES = 415           # same layout, 1 = must dominate
 # everywhere else on the site.
 INDUSTRY_AT_305 = ["Retailing", "Manufacturing", "Farming", "Raw Material Production"]
 
+# RAW.FIRM_CODE names the site type that works a raw material. The site used to
+# infer this from the product's name, which happened to be right but would not
+# survive a gameset that named things differently.
+SITE_FOR_FIRM = {
+    "MINE": {"site": "Mine", "unit": "Mining Unit"},
+    "FORE": {"site": "Lumber Mill", "unit": "Logging Unit"},
+    "OIL": {"site": "Oil Well", "unit": "Oil-Extracting Unit"},
+}
+
 
 # --------------------------------------------------------------- .SET reader ---
 # The container is a self-describing table format: a descriptor block naming each
@@ -115,7 +124,9 @@ def read_set(path):
                 if c["type"] == "C":
                     rec[c["name"]] = raw.split(b"\0")[0].decode("latin-1").strip()
                 elif c["type"] == "L":
-                    rec[c["name"]] = raw != b"\0" * len(raw)
+                    # dBASE-style logical: ASCII 'T'/'F', not a zero/non-zero
+                    # byte. Testing for non-zero decodes every value as true.
+                    rec[c["name"]] = raw[:1].upper() == b"T"
                 else:
                     text = raw.decode("latin-1").strip()
                     try:
@@ -342,6 +353,56 @@ def verify_products(gameset_dir, cards, report):
                       for k in (1, 2, 3) if row[f"PRODUCT{k}"]]
             report.check(f"{gameset}/{animal}", "livestock_yields",
                          yields, card.get("livestock_yields"))
+
+        # Production rates -- the fields augment_from_game.py adds. None of this
+        # appears in the game's own Farmer's Guide, so it is exactly the sort of
+        # thing that would rot unnoticed if it were not checked.
+        for row in tables.get("RAW", {}).get("rows", []):
+            card = ours.get(name_of.get(row["ITEM_CODE"], ""))
+            if card is None or "extraction" not in card:
+                continue
+            item = next((r for r in tables["ITEM"]["rows"]
+                         if r["CODE"] == row["ITEM_CODE"]), None)
+            got = {"site": SITE_FOR_FIRM[row["FIRM_CODE"]]["site"],
+                   "unit": SITE_FOR_FIRM[row["FIRM_CODE"]]["unit"],
+                   "measured_in": (item["UNIT"] or None) if item else None,
+                   "speed": row["SPEED"], "resource_value": row["RES_VALUE"],
+                   "max_sites": row["MAX_SITE"]}
+            report.check(f"{gameset}/{card['name']}", "extraction", got, card["extraction"])
+
+        for row in tables.get("FARMPROD", {}).get("rows", []):
+            card = ours.get(name_of.get(row["ITEM_CODE"], ""))
+            if card is None or "livestock_production" not in card:
+                continue
+            who = f"{gameset}/{card['name']}"
+            lp = card["livestock_production"]
+            # The three fields agree on every row, so the mode is unambiguous --
+            # asserted here so a future dataset cannot record a product as both.
+            report.check(who, "production mode is consistent in the file",
+                         row["KILLFLAG"] == (row["P_PERCENT"] > 0) == (row["MONTH_QTY"] == 0),
+                         True)
+            report.check(who, "production mode",
+                         "slaughter" if row["KILLFLAG"] else "continuous", lp["mode"])
+            report.check(who, "rate_percent", row["SPEED"], lp["rate_percent"])
+            if row["KILLFLAG"]:
+                report.check(who, "slaughter_percent",
+                             float(row["P_PERCENT"]), lp["slaughter_percent"])
+            else:
+                report.check(who, "monthly_quantity",
+                             float(row["MONTH_QTY"]), lp["monthly_quantity"])
+                report.check(who, "season",
+                             (MONTHS[row["SMONTH"] - 1], MONTHS[row["EMONTH"] - 1]),
+                             (lp["from_month"], lp["to_month"]))
+
+        for row in tables.get("FARMLIVE", {}).get("rows", []):
+            card = ours.get(name_of.get(row["LSTOCK"], ""))
+            if card is None or "livestock_stats" not in card:
+                continue
+            got = {"weight": float(row["WEIGHT"]),
+                   "unit": card["livestock_stats"]["unit"],   # from ITEM.UNIT, checked above
+                   "grow_rate": row["GROW"], "reproduce_rate": row["REPRODUCE"]}
+            report.check(f"{gameset}/{card['name']}", "livestock_stats",
+                         got, card["livestock_stats"])
 
         for row in tables["FARMCROP"]["rows"]:
             crop = name_of.get(row["ITEM_CODE"], row["ITEM_CODE"])

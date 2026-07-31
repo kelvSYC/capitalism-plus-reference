@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""
+augment_from_game.py — add production-rate fields to data/index_cards.json.
+
+Unlike tools/verify_against_game.py, this one WRITES. It is a one-shot data tool,
+re-runnable and idempotent: it reads the game's FARMPROD, RAW and FARMLIVE tables
+and fills in fields the dataset never carried, leaving everything else alone.
+
+    python3 tools/augment_from_game.py --game-dir "/path/to/game" [--dry-run]
+
+Why these fields are worth having: none of this appears in the game's own
+Farmer's Guide or its manuals. A player has to establish it by experiment. That
+is precisely the sort of thing a reference should carry.
+
+Fields added
+------------
+extraction            on raw materials, from RAW
+                      which site type works it, relative speed, resource value,
+                      and how many sites a map may hold
+livestock_production  on livestock-derived goods, from FARMPROD
+                      either a continuous monthly yield with a season, or a
+                      slaughter percentage -- never both
+livestock_stats       on the animals themselves, from FARMLIVE
+                      weight, growth and reproduction rates. Weight is the base
+                      the slaughter percentages apply to.
+
+Requires Python 3.8+, standard library only.
+"""
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+from verify_against_game import (  # noqa: E402  (path set above)
+    MONTHS, SET_FOR_GAMESET, SITE_FOR_FIRM, find_game_dir, read_set,
+)
+
+CARDS = ROOT / "data" / "index_cards.json"
+
+
+def livestock_production(row, unit):
+    """FARMPROD row -> one of two shapes, never both.
+
+    KILLFLAG, P_PERCENT > 0 and MONTH_QTY == 0 agree on every row in every
+    gameset, so the mode is unambiguous: an animal either yields something month
+    after month (Milk, Wool, Eggs) or gives it up when slaughtered (meat,
+    Leather, Tallow).
+    """
+    common = {"rate_percent": row["SPEED"]}
+    if row["KILLFLAG"]:
+        return {**common, "mode": "slaughter",
+                "slaughter_percent": float(row["P_PERCENT"])}
+    return {**common, "mode": "continuous",
+            "monthly_quantity": float(row["MONTH_QTY"]),
+            "unit": unit or None,
+            "from_month": MONTHS[row["SMONTH"] - 1],
+            "to_month": MONTHS[row["EMONTH"] - 1],
+            "all_year": row["SMONTH"] == 1 and row["EMONTH"] == 12}
+
+
+def build_additions(game_dir):
+    """(gameset, product name) -> dict of new fields."""
+    additions = {}
+    for gameset, filename in SET_FOR_GAMESET.items():
+        path = game_dir / "GAMESET" / filename
+        if not path.exists():
+            raise SystemExit(f"error: {path} not found")
+        tables = read_set(path)
+        name_of = {r["CODE"]: r["NAME"] for r in tables["ITEM"]["rows"]}
+        unit_of = {r["CODE"]: r["UNIT"] for r in tables["ITEM"]["rows"]}
+
+        for row in tables.get("RAW", {}).get("rows", []):
+            product = name_of.get(row["ITEM_CODE"])
+            if product is None:
+                continue
+            site = SITE_FOR_FIRM.get(row["FIRM_CODE"], {"site": row["FIRM_CODE"], "unit": None})
+            additions.setdefault((gameset, product), {})["extraction"] = {
+                "site": site["site"],
+                "unit": site["unit"],
+                # The commodity's own unit, from ITEM.UNIT. The dataset's
+                # output_unit is null for these (see the known divergence in
+                # docs/DECODING.md) but a page still has to say what a mine
+                # produces, and this unit is verified unambiguous.
+                "measured_in": unit_of.get(row["ITEM_CODE"]) or None,
+                "speed": row["SPEED"],
+                "resource_value": row["RES_VALUE"],
+                "max_sites": row["MAX_SITE"],
+            }
+
+        for row in tables.get("FARMPROD", {}).get("rows", []):
+            product = name_of.get(row["ITEM_CODE"])
+            if product is None:
+                continue
+            additions.setdefault((gameset, product), {})["livestock_production"] = \
+                livestock_production(row, unit_of.get(row["ITEM_CODE"]))
+
+        for row in tables.get("FARMLIVE", {}).get("rows", []):
+            animal = name_of.get(row["LSTOCK"])
+            if animal is None:
+                continue
+            additions.setdefault((gameset, animal), {})["livestock_stats"] = {
+                "weight": float(row["WEIGHT"]),
+                "unit": unit_of.get(row["LSTOCK"]) or "lb",
+                "grow_rate": row["GROW"],
+                "reproduce_rate": row["REPRODUCE"],
+            }
+    return additions
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--game-dir", help="directory containing GAMESET/")
+    ap.add_argument("--dry-run", action="store_true", help="report changes, write nothing")
+    args = ap.parse_args()
+
+    game = find_game_dir(args.game_dir)
+    if game is None:
+        print("No game directory given. Pass --game-dir or set CAPITALISM_GAME_DIR.")
+        return 2
+
+    cards = json.loads(CARDS.read_text(encoding="utf-8"))
+    additions = build_additions(game)
+
+    added = changed = 0
+    unmatched = set(additions)
+    for card in cards:
+        key = (card["gameset"], card["name"])
+        new = additions.get(key)
+        if not new:
+            continue
+        unmatched.discard(key)
+        for field, value in new.items():
+            if field not in card:
+                added += 1
+            elif card[field] != value:
+                changed += 1
+            card[field] = value
+
+    if unmatched:
+        print(f"warning: {len(unmatched)} game rows matched no product: "
+              f"{sorted(unmatched)[:5]}")
+
+    print(f"{added} fields added, {changed} updated, across {len(cards)} products")
+    if args.dry_run:
+        print("--dry-run: nothing written")
+        return 0
+
+    # Match the committed file's shape exactly -- 2-space indent, no trailing
+    # newline -- so the diff shows only the new fields and not a reformat of all
+    # 245 records.
+    CARDS.write_text(json.dumps(cards, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(f"wrote {CARDS.relative_to(ROOT)}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
