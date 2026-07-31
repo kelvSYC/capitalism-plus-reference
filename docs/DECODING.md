@@ -46,26 +46,28 @@ file, or the game's own behaviour under DOSBox. Where a hypothesis survived ever
 check it is recorded below; where one failed, the counterexample that killed it
 is recorded too (see [Falsified hypotheses](#falsified-hypotheses)).
 
-Five binary grammars now live in [`formats/`](formats/), in
-[Synalyze It! / Hexinator](https://www.synalysis.net/) format — four written
-during the original work and one added since. They are the closest thing to a
-specification this project has; see [`formats/README.md`](formats/README.md) for
-what each covers and how far each is verified:
+Five binary grammars live in [`formats/`](formats/), in
+[Synalyze It! / Hexinator](https://www.synalysis.net/) format. They are the
+closest thing to a specification this project has; each is named here by its
+filename, and [`formats/README.md`](formats/README.md) records how far each is
+verified:
 
 | Grammar | Describes |
 |---|---|
-| Capitalism Plus SET | The `.SET` table format: file descriptors, table headers, column headers, per-column types (number vs non-number, with decimal places), and row data |
-| Capitalism Database | The generic container the games use for bundled data files |
-| Capitalism Palette | The colour palette format |
-| Capitalism Icon Image | The raster format the product icons are stored in |
+| `Capitalism Plus SET Grammar` | The `.SET` table format: file descriptors, table headers, column headers, per-column types (number vs non-number, with decimal places), and row data |
+| `Capitalism Database File` | `GAMESET/*.II2` — the named archive holding the 120×120 icons |
+| `Capitalism Palette File` | `RESOURCE/PAL_STD.RES` — the 256-colour palette |
+| `Capitalism Raster File` | One `GAMESET/*.II` record — a 60×60 icon |
+| `Capitalism Plus SCN Goal Header` | The goal fields of `SCENARIO/*.SCN` on the disc image |
 
 The `.SET` grammar is the important one for reproducing `index_cards.json`: it
 describes a self-describing table structure, so an extractor reads the column
 definitions rather than hard-coding offsets. `ITEM`, `ITEMCLAS`, `METHOD` and
 `FARMCROP` are tables in that format.
 
-The `.SCN` offsets in the next section were found separately and by hand; they
-are not covered by a grammar.
+The `.SCN` offsets in the next section were established by hand rather than read
+off a grammar. `Capitalism Plus SCN Goal Header` records them, and is the one
+grammar here that has never been opened in Synalyze It! itself.
 
 ## The product dataset
 

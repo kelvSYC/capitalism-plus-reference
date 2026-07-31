@@ -642,10 +642,29 @@ class TestGrammars(unittest.TestCase):
             with self.subTest(path.name):
                 ET.parse(path)      # raises on malformed XML
 
-    def test_every_grammar_is_listed_in_the_readme(self):
-        readme = (ROOT / "docs" / "formats" / "README.md").read_text(encoding="utf-8")
-        for path in self.GRAMMARS:
-            self.assertIn(path.stem, readme, f"{path.name} is not described in the README")
+    # Both docs table the grammars, so both can fall behind the directory: a
+    # grammar added without a row reads as a complete list that is quietly one
+    # short. Naming them by filename in backticks makes each table checkable
+    # against the directory in both directions.
+    DOCS = ("docs/formats/README.md", "docs/DECODING.md")
+
+    def test_both_doc_tables_list_every_grammar(self):
+        # Deliberately the table rows, not the whole document: a grammar named
+        # once in prose satisfies a substring search while its table row is
+        # still missing, which is how DECODING.md came to introduce five and
+        # then table four.
+        stems = {p.stem for p in self.GRAMMARS}
+        for rel in self.DOCS:
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            rows = set(re.findall(r"(?m)^\| `(Capitalism [^`]+)` \|", text))
+            self.assertEqual(stems, rows, f"{rel}'s table does not match docs/formats/")
+
+    def test_neither_doc_names_a_grammar_that_does_not_exist(self):
+        stems = {p.stem for p in self.GRAMMARS}
+        for rel in self.DOCS:
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            for named in re.findall(r"`(Capitalism [^`]+)`", text):
+                self.assertIn(named, stems, f"{rel} names a grammar with no file")
 
     def test_scn_grammar_offsets_match_the_documented_ones(self):
         """The SCN grammar is hand-written and has not been opened in Synalyze
