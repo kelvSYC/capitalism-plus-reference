@@ -1035,6 +1035,7 @@ function renderTabs() {
     d.setAttribute('aria-selected', String(state.gameset === gs));
     d.className = 'tab' + (state.gameset === gs ? ' active' : '');
     d.textContent = gs;
+    registerFocusable(d, 'gamesetTabs|' + gs);
     d.onclick = () => {
       state.gameset = gs; state.scenario = null;
       _scenarioMarketMemo = null; _scenarioMarketMemoKey = null;
@@ -1127,10 +1128,10 @@ function filteredProducts() {
 function renderSellableChips() {
   const el = document.getElementById('sellableChips');
   el.innerHTML = '';
-  el.appendChild(makeChip('Consumer Goods', CONSUMER_GOODS_COLOR, state.goodsFilter === 'Consumer Goods', () => {
+  appendChip(el, makeChip('Consumer Goods', CONSUMER_GOODS_COLOR, state.goodsFilter === 'Consumer Goods', () => {
     state.goodsFilter = state.goodsFilter === 'Consumer Goods' ? null : 'Consumer Goods'; renderAll();
   }));
-  el.appendChild(makeChip('Industrial Goods', INDUSTRIAL_GOODS_COLOR, state.goodsFilter === 'Industrial Goods', () => {
+  appendChip(el, makeChip('Industrial Goods', INDUSTRIAL_GOODS_COLOR, state.goodsFilter === 'Industrial Goods', () => {
     state.goodsFilter = state.goodsFilter === 'Industrial Goods' ? null : 'Industrial Goods'; renderAll();
   }));
   // One checkbox driving all three views (see state.showRestricted). A checkbox
@@ -1143,6 +1144,9 @@ function renderSellableChips() {
     const input = document.createElement('input');
     input.type = 'checkbox';
     input.checked = state.showRestricted;
+    // This checkbox triggers the render that destroys it, so it would lose focus
+    // precisely when used. Keyed like the chips so focus comes back to it.
+    registerFocusable(input, 'sidebar|showRestricted');
     input.onchange = e => { state.showRestricted = e.target.checked; renderAll(); };
     label.appendChild(input);
     label.appendChild(document.createTextNode(' Show Restricted'));
@@ -1168,11 +1172,10 @@ function renderCategoryChips() {
   el.innerHTML = '';
   const base = byGameset(state.gameset);
   const cats = [...new Set(base.map(p => p.category).filter(Boolean))].sort();
-  const allChip = makeChip('All categories', null, state.category === null, () => { state.category = null; renderAll(); });
-  el.appendChild(allChip);
+  appendChip(el, makeChip('All categories', null, state.category === null, () => { state.category = null; renderAll(); }));
   cats.forEach(c => {
     const inCat = base.filter(p => p.category === c);
-    el.appendChild(makeChip(c, null, !!state.category && state.category.includes(c), () => { toggleArrayFilter('category', c); renderAll(); }, restrictionLevel(inCat)));
+    appendChip(el, makeChip(c, null, !!state.category && state.category.includes(c), () => { toggleArrayFilter('category', c); renderAll(); }, restrictionLevel(inCat)));
   });
 }
 
@@ -1181,10 +1184,10 @@ function renderIndustryChips() {
   el.innerHTML = '';
   const base = byGameset(state.gameset);
   const industries = ['Raw Material Production', 'Farming', 'Manufacturing', 'Retailing'];
-  el.appendChild(makeChip('All', null, state.industry === null, () => { state.industry = null; renderAll(); }));
+  appendChip(el, makeChip('All', null, state.industry === null, () => { state.industry = null; renderAll(); }));
   industries.forEach(ind => {
     const inInd = base.filter(p => ind === 'Retailing' ? p.sellable : p.industry === ind);
-    el.appendChild(makeChip(ind, INDUSTRY_COLOR[ind], !!state.industry && state.industry.includes(ind), () => { toggleArrayFilter('industry', ind); renderAll(); }, restrictionLevel(inInd)));
+    appendChip(el, makeChip(ind, INDUSTRY_COLOR[ind], !!state.industry && state.industry.includes(ind), () => { toggleArrayFilter('industry', ind); renderAll(); }, restrictionLevel(inInd)));
   });
 }
 
@@ -1193,10 +1196,10 @@ function renderClassChips() {
   el.innerHTML = '';
   const base = byGameset(state.gameset);
   const classes = [...new Set(base.map(p => p.classification))];
-  el.appendChild(makeChip('All', null, state.classification === null, () => { state.classification = null; renderAll(); }));
+  appendChip(el, makeChip('All', null, state.classification === null, () => { state.classification = null; renderAll(); }));
   classes.forEach(c => {
     const inClass = base.filter(p => p.classification === c);
-    el.appendChild(makeChip(c, CLASS_SOLID[c], state.classification === c, () => { state.classification = c; renderAll(); }, restrictionLevel(inClass)));
+    appendChip(el, makeChip(c, CLASS_SOLID[c], state.classification === c, () => { state.classification = c; renderAll(); }, restrictionLevel(inClass)));
   });
 }
 
@@ -1281,6 +1284,7 @@ const CHIP_RESTRICTION_TEXT = {
 function makeChip(label, color, active, onclick, level) {
   const d = document.createElement('button');
   d.type = 'button';
+  d.setAttribute('data-chip-label', label);
   // Only 'full' changes the chip's appearance. 'partial' is carried by the
   // marker glyph and the visually-hidden note alone -- see .chip-flag.
   const cls = level === 'full' ? ' chip-restricted' : '';
@@ -1331,6 +1335,11 @@ function restrictionLevel(list) {
 function setGridLayout(v) {
   state.gridLayout = v;
   renderGrid();
+  // renderGrid replaces the toolbar containing this very button, so focus has to
+  // be put back on its replacement -- found by id, since the toolbar is emitted
+  // as markup and never enters the focus registry.
+  const btn = document.getElementById(v === 'list' ? 'layoutList' : 'layoutCards');
+  if (btn && btn.focus) btn.focus();
 }
 
 // Update the polite live region. Callers pass a complete sentence, because a
@@ -1345,8 +1354,8 @@ function renderGrid() {
   announce(`${list.length} product${list.length === 1 ? '' : 's'} match the current filters.`);
   const el = document.getElementById('grid-view');
   const toggle = `<span class="layout-toggle">
-    <button type="button" class="chip${state.gridLayout === 'cards' ? ' active' : ''}" aria-pressed="${state.gridLayout === 'cards'}" onclick="setGridLayout('cards')">Cards</button>
-    <button type="button" class="chip${state.gridLayout === 'list' ? ' active' : ''}" aria-pressed="${state.gridLayout === 'list'}" onclick="setGridLayout('list')">List</button>
+    <button type="button" id="layoutCards" class="chip${state.gridLayout === 'cards' ? ' active' : ''}" aria-pressed="${state.gridLayout === 'cards'}" onclick="setGridLayout('cards')">Cards</button>
+    <button type="button" id="layoutList" class="chip${state.gridLayout === 'list' ? ' active' : ''}" aria-pressed="${state.gridLayout === 'list'}" onclick="setGridLayout('list')">List</button>
   </span>`;
   if (list.length === 0) {
     el.innerHTML = `<div class="count">0 products${toggle}</div><div class="empty">No products match the current filters.</div>`;
@@ -1418,6 +1427,10 @@ function livestockYieldSection(p) {
 
 function openDetail(id) {
   const p = byId(id);
+  // Distinguishes navigating to a product from re-rendering the one already
+  // open. A filter change re-runs this to refresh the badges, and moving focus
+  // then would snatch it from the chip the user just pressed.
+  const isNavigation = state.detailId !== id;
   state.view = 'detail';
   state.detailId = id;
   showPane('detail');
@@ -1433,7 +1446,7 @@ function openDetail(id) {
   html += `<div class="detail-head">
     ${productIcon(p)}
     <div>
-      <h2>${p.name}</h2>
+      <h2 id="detailHeading" tabindex="-1">${p.name}</h2>
       <div class="cat">${p.category || ''}${p.category ? ' · ' : ''}${p.industry} · ${p.gameset} gameset</div>
       <div class="badge-lg" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</div>${goodsTypeBadge(p, 'lg')}${restrictionBadge(p, 'lg')}
     </div>
@@ -1561,6 +1574,16 @@ function openDetail(id) {
   el.innerHTML = html;
   window.scrollTo(0,0);
 
+  // Scrolling moves the page but not the user's position in it: without this a
+  // keyboard user is still focused on the card they activated, which no longer
+  // exists, and a screen reader announces nothing. Focusing the heading names
+  // the product that just opened. tabindex="-1" makes it focusable without
+  // adding a Tab stop.
+  if (isNavigation) {
+    const heading = document.getElementById('detailHeading');
+    if (heading && heading.focus) heading.focus();
+  }
+
   // Must match the condition that emitted #spider-svg above: absent that
   // element there is nothing to draw into, and computing a layout for a diagram
   // nobody sees is pure waste.
@@ -1581,6 +1604,55 @@ function backToGrid() {
   // second render call -- and going through it is what keeps the nav tab
   // highlighting consistent with what is actually on screen.
   setView('grid');
+  // Leaving focus on a Back button that no longer exists would drop the user at
+  // the top of the document. The grid pane is focusable but not tabbable, so
+  // this lands them in the results they came back to.
+  const grid = document.getElementById('grid-view');
+  if (grid && grid.focus) grid.focus();
+}
+
+// ---- Focus preservation across re-renders ----
+//
+// renderAll() rebuilds the sidebar by clearing containers and appending fresh
+// elements, so whichever control had focus is destroyed and focus falls back to
+// <body>. For a keyboard user that means every filter click throws them to the
+// top of the document -- the most disruptive thing about operating this site
+// without a mouse.
+//
+// Controls that survive a rebuild in spirit (the same chip, made again) carry a
+// key identifying them across generations. The registry is rebuilt each render
+// alongside the elements it points at, so it cannot hold stale nodes.
+let _focusRegistry = new Map();
+
+function registerFocusable(el, key) {
+  el.setAttribute('data-focus-key', key);
+  _focusRegistry.set(key, el);
+  return el;
+}
+
+function activeFocusKey() {
+  const el = document.activeElement;
+  return el && el.getAttribute ? el.getAttribute('data-focus-key') : null;
+}
+
+// Restore focus to whatever replaced `key`. Falls back to the visible pane,
+// which is focusable but not tabbable (tabindex="-1"), so a user whose control
+// genuinely disappeared -- a chip filtered away by a gameset switch -- lands in
+// the content rather than back at the top of the document.
+function restoreFocus(key) {
+  const replacement = key && _focusRegistry.get(key);
+  if (replacement && replacement.focus) { replacement.focus(); return true; }
+  const pane = document.getElementById(VIEW_PANES[state.view] || 'grid-view');
+  if (pane && pane.focus) pane.focus();
+  return false;
+}
+
+// Append a chip and key it so the same chip is findable after the next rebuild.
+// Group id plus label, because "All" appears in more than one group.
+function appendChip(container, chip) {
+  registerFocusable(chip, container.id + '|' + chip.getAttribute('data-chip-label'));
+  container.appendChild(chip);
+  return chip;
 }
 
 const VIEW_PANES = { grid: 'grid-view', detail: 'detail-view', graph: 'graph-view', almanac: 'almanac-view' };
@@ -2313,6 +2385,8 @@ function renderAlmanac() {
 }
 
 function renderAll() {
+  const focusKey = activeFocusKey();
+  _focusRegistry = new Map();
   renderTabs();
   renderScenarioSelect();
   renderCategoryChips();
@@ -2320,6 +2394,9 @@ function renderAll() {
   renderIndustryChips();
   renderSellableChips();
   renderActiveView();
+  // Only reclaim focus if we had it: restoring unconditionally would yank focus
+  // into the sidebar on the first render and on any programmatic re-render.
+  if (focusKey) restoreFocus(focusKey);
 }
 
 // Div and li elements carrying an onclick are not focusable and do not respond

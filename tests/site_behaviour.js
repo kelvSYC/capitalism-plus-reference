@@ -33,7 +33,8 @@ function mkEl(id) {
     // only needs to exist, not resolve.
     closest() { return null; },
     querySelectorAll() { return []; },
-    focus() { this._focused = true; },
+    focus() { document.activeElement = this; },
+    blur() { if (document.activeElement === this) document.activeElement = null; },
     classList: {
       _s: null,
       add(c) { this._s.add(c); },
@@ -49,6 +50,8 @@ function mkEl(id) {
   return el;
 }
 const document = {
+  // Focus restoration reads this; mkEl's focus() keeps it current.
+  activeElement: null,
   addEventListener(ev, fn) { (this._ls = this._ls || {})[ev] = fn; },
   // The graph builds real SVG nodes now that d3 is gone; nothing asserts on the
   // resulting tree, so these only need to accept the calls without throwing.
@@ -462,6 +465,84 @@ const detailMarkup = pane('detail-view').innerHTML;
 ok('Back is a real button', detailMarkup.includes('<button type="button" class="back"'));
 ok('relation-list entries are keyboard activatable',
    detailMarkup.includes('tabindex="0" role="button"'));
+
+print('--- focus survives a re-render ---');
+// The complaint this fixes: renderAll() destroys and rebuilds every chip, so a
+// keyboard user was thrown back to <body> -- the top of the document -- on
+// every single filter click.
+reset();
+renderAll();
+const catGroup = document.getElementById('categoryChips');
+const aChip = catGroup.children.find(c => c.getAttribute('data-chip-label') === 'Automobile');
+ok('chips carry a key that survives rebuilding',
+   !!aChip && aChip.getAttribute('data-focus-key') === 'categoryChips|Automobile',
+   aChip && aChip.getAttribute('data-focus-key'));
+
+aChip.focus();
+ok('the chip has focus before the re-render', document.activeElement === aChip);
+const keyBefore = activeFocusKey();
+aChip.onclick();                       // toggles the filter and calls renderAll()
+ok('focus is not lost to the document body', document.activeElement !== null);
+ok('focus landed on the chip that replaced it',
+   document.activeElement !== aChip &&
+   activeFocusKey() === keyBefore,
+   'now on: ' + activeFocusKey());
+ok('the replacement really is a new element', document.activeElement !== aChip);
+
+// A gameset switch legitimately removes chips. Focus must still land somewhere
+// useful rather than at the top of the page.
+reset();
+renderAll();
+const gone = document.getElementById('categoryChips').children
+  .find(c => c.getAttribute('data-chip-label') === 'Automobile');
+gone.focus();
+state.gameset = 'Food & Beverage';
+renderAll();
+ok('a chip that no longer exists falls back to the visible pane',
+   document.activeElement === document.getElementById('grid-view'),
+   'landed on ' + (document.activeElement && document.activeElement.id));
+
+// Nothing should steal focus when the user has not got it.
+reset();
+document.activeElement = null;
+renderAll();
+ok('a render with no prior focus does not grab it', document.activeElement === null);
+
+// The Show Restricted checkbox triggers the render that destroys it.
+reset();
+state.scenario = 'DRAGON';
+renderAll();
+const toggle = _focusRegistry.get('sidebar|showRestricted');
+ok('the Show Restricted checkbox is keyed', !!toggle);
+toggle.focus();
+toggle.onchange({ target: { checked: true } });
+ok('toggling Show Restricted keeps focus on the checkbox',
+   activeFocusKey() === 'sidebar|showRestricted',
+   'landed on ' + activeFocusKey());
+
+print('--- focus follows navigation ---');
+reset();
+setView('grid');
+const target = PRODUCTS.find(p => p.gameset === 'Standard');
+openDetail(target.id);
+ok('opening a product moves focus to its heading',
+   document.activeElement === document.getElementById('detailHeading'),
+   'landed on ' + (document.activeElement && document.activeElement.id));
+
+// A filter change while the detail page is open re-runs openDetail to refresh
+// badges. That must not snatch focus from the control the user just used.
+const chip2 = document.getElementById('classChips').children[0];
+chip2.focus();
+renderAll();
+ok('re-rendering the open product does not steal focus back',
+   document.activeElement !== document.getElementById('detailHeading'));
+
+reset();
+openDetail(target.id);
+backToGrid();
+ok('Back lands the user in the grid, not at the top of the document',
+   document.activeElement === document.getElementById('grid-view'),
+   'landed on ' + (document.activeElement && document.activeElement.id));
 
 print('--- assistive-tech state matches visual state ---');
 reset();
