@@ -32,6 +32,8 @@ function mkEl(id) {
     // tiles for absent icons; nothing here dispatches events, so closest()
     // only needs to exist, not resolve.
     closest() { return null; },
+    querySelectorAll() { return []; },
+    focus() { this._focused = true; },
     classList: {
       _s: null,
       add(c) { this._s.add(c); },
@@ -261,7 +263,11 @@ ok('single-word product gets one initial',
 ok('icon is tinted by classification', productIcon(wheel).includes('--picon-bg:'));
 ok('icon marks itself decorative (alt="")', productIcon(wheel).includes('alt=""'));
 ok('icon defers loading', productIcon(wheel).includes('loading="lazy"'));
-ok('restricted icons are dimmed', productIcon(wheel, true).includes('opacity:0.4'));
+// 0.55, not lower: --text dimmed to 0.4 composites to 3.30:1 against the panel,
+// under the 4.5:1 AA floor. Pinned because the exact value is a contrast
+// guarantee, not a taste call.
+ok('restricted icons are dimmed to the AA-safe floor',
+   productIcon(wheel, true).includes('opacity:0.55'));
 ok('unrestricted icons are not dimmed', !productIcon(wheel, false).includes('opacity'));
 let noAlt = 0, noInitial = 0;
 for (const p of PRODUCTS) {
@@ -277,6 +283,113 @@ setView('grid');
 const gridHtml = pane('grid-view').innerHTML;
 ok('grid emits no unwrapped images',
    (gridHtml.match(/<img/g) || []).length === (gridHtml.match(/class="picon"/g) || []).length);
+
+print('--- colour contrast meets WCAG AA ---');
+// Small text needs 4.5:1. Eleven of the badge colours are light enough that the
+// hardcoded white this site used to emit failed badly (#FFAB00 was 1.90:1), so
+// the foreground is computed per background by onColor(). These assertions use
+// the site's OWN contrastRatio(), so a palette change that breaks AA fails here.
+const AA = 4.5;
+const swatches = [
+  ...Object.values(CLASS_SOLID),
+  CONSUMER_GOODS_COLOR, INDUSTRIAL_GOODS_COLOR,
+  EXCLUDED_COLOR, NO_MARKET_COLOR, MFG_BLOCKED_COLOR, CROP_BLOCKED_COLOR,
+  '#555b66',
+];
+for (let i = 0; i < 8; i++) swatches.push(pctColor(i));
+const lowContrast = swatches
+  .map(bg => ({ bg, r: contrastRatio(bg, onColor(bg)) }))
+  .filter(x => x.r < AA);
+ok('every badge/bar colour clears AA with its computed foreground (' + swatches.length + ' colours)',
+   lowContrast.length === 0,
+   lowContrast.map(x => x.bg + '=' + x.r.toFixed(2)).join(', '));
+
+// The specific regression: white on the light end of the palette.
+ok('onColor picks dark text on light amber', onColor('#FFAB00') === INK);
+ok('onColor picks dark text on light green', onColor('#57D9A3') === INK);
+ok('onColor picks white on dark blue', onColor('#0533FF') === '#ffffff');
+ok('onColor picks white on dark red', onColor(EXCLUDED_COLOR) === '#ffffff');
+ok('NO_MARKET_COLOR clears AA (was #B36B00: 4.18 white / 4.33 ink, failing both)',
+   contrastRatio(NO_MARKET_COLOR, onColor(NO_MARKET_COLOR)) >= AA,
+   contrastRatio(NO_MARKET_COLOR, onColor(NO_MARKET_COLOR)).toFixed(2));
+
+// Rendered markup must actually carry the computed colour, not just have the
+// helper available.
+reset();
+setView('grid');
+const cards = pane('grid-view').innerHTML;
+const badges = cards.match(/class="badge"[^>]*/g) || [];
+ok('every rendered badge carries an explicit colour (' + badges.length + ')',
+   badges.length > 0 && badges.every(b => b.includes('color:')));
+
+print('--- keyboard operability ---');
+// The site was mouse-only: zero tabindex/role/aria/key handlers anywhere, so a
+// keyboard user could reach exactly three controls.
+reset();
+setView('grid');
+const gridMarkup = pane('grid-view').innerHTML;
+const cardCount = (gridMarkup.match(/class="card/g) || []).length;
+ok('grid cards are focusable and expose a button role (' + cardCount + ')',
+   cardCount > 0 &&
+   (gridMarkup.match(/tabindex="0" role="button"/g) || []).length >= cardCount);
+
+state.gridLayout = 'list';
+renderGrid();
+const listMarkup = pane('grid-view').innerHTML;
+ok('list rows carry a real activation control',
+   listMarkup.includes('class="cell-activate"'));
+ok('row buttons stop the click reaching the row handler',
+   listMarkup.includes('event.stopPropagation()'));
+state.gridLayout = 'cards';
+
+reset();
+openDetail(PRODUCTS.find(p => p.used_in.length && p.inputs.length).id);
+const detailMarkup = pane('detail-view').innerHTML;
+ok('Back is a real button', detailMarkup.includes('<button type="button" class="back"'));
+ok('relation-list entries are keyboard activatable',
+   detailMarkup.includes('tabindex="0" role="button"'));
+
+print('--- assistive-tech state matches visual state ---');
+reset();
+setView('graph');
+ok('selected view tab reports aria-selected=true',
+   document.getElementById('viewGraph').getAttribute('aria-selected') === 'true');
+ok('unselected view tab reports aria-selected=false',
+   document.getElementById('viewGrid').getAttribute('aria-selected') === 'false');
+setView('grid');
+ok('aria-selected follows the view change',
+   document.getElementById('viewGrid').getAttribute('aria-selected') === 'true' &&
+   document.getElementById('viewGraph').getAttribute('aria-selected') === 'false');
+
+// Chips are toggle buttons; pressed state must be exposed, not just styled.
+reset();
+const chip = makeChip('Automobile', '#0533FF', true, () => {}, null);
+ok('an active chip is a pressed button',
+   chip.tag === 'button' && chip.getAttribute('aria-pressed') === 'true');
+const chipOff = makeChip('Automobile', '#0533FF', false, () => {}, null);
+ok('an inactive chip reports aria-pressed=false',
+   chipOff.getAttribute('aria-pressed') === 'false');
+
+// Restriction level reached the user only via opacity, a glyph and a title --
+// none of which assistive tech or a touch device gets.
+const restrictedChip = makeChip('Cigarettes', '#FF2600', false, () => {}, 'full');
+const srText = restrictedChip.children.filter(c => c.className === 'sr-only');
+ok('a fully-restricted chip carries readable restriction text',
+   srText.length === 1 && srText[0].textContent.includes('restricted'));
+ok('the decorative glyph is hidden from assistive tech',
+   restrictedChip.children.some(c =>
+     (c.children || []).some(g => g.getAttribute && g.getAttribute('aria-hidden') === 'true')));
+
+print('--- filtering is announced ---');
+reset();
+setView('grid');
+const announced = document.getElementById('resultStatus').textContent;
+ok('result count is announced as a sentence, not a bare number',
+   /\d+ products? match the current filters\./.test(announced), announced);
+state.category = ['Automobile'];
+renderGrid();
+ok('the announcement updates when the filter changes',
+   document.getElementById('resultStatus').textContent !== announced);
 
 print('--- every product page renders without throwing ---');
 // Cheap but broad: the detail page is the most reference-heavy view, so a

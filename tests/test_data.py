@@ -262,6 +262,75 @@ class TestBuildContract(unittest.TestCase):
         self.assertNotIn("__PRODUCTS_JSON__", BUILT.read_text(encoding="utf-8"))
 
 
+class TestAccessibility(unittest.TestCase):
+    """Guards the accessibility properties of the built page. These are cheap
+    structural checks, not a substitute for testing with an actual screen
+    reader -- but they stop the specific regressions that made the site
+    mouse-only in the first place."""
+
+    HTML = BUILT.read_text(encoding="utf-8")
+
+    def test_has_viewport_meta(self):
+        # Without it, mobile browsers scale a 980px layout down to ~38%.
+        self.assertIn('name="viewport"', self.HTML)
+
+    def test_has_responsive_and_print_styles(self):
+        self.assertIn("@media (max-width: 760px)", self.HTML)
+        self.assertIn("@media print", self.HTML)
+
+    def test_document_language_and_title(self):
+        self.assertIn('<html lang="en">', self.HTML)
+        self.assertIn("<title>", self.HTML)
+        self.assertIn('name="description"', self.HTML)
+
+    def test_view_tabs_are_buttons_in_a_tablist(self):
+        self.assertIn('role="tablist"', self.HTML)
+        for tab in ("viewGrid", "viewGraph", "viewAlmanac"):
+            m = re.search(rf'<button[^>]*id="{tab}"[^>]*>', self.HTML)
+            self.assertIsNotNone(m, f"{tab} is not a <button>")
+            self.assertIn('role="tab"', m.group(0))
+            self.assertIn("aria-controls=", m.group(0))
+
+    def test_panes_are_labelled_tabpanels(self):
+        for pane in ("grid-view", "graph-view", "almanac-view"):
+            m = re.search(rf'<div id="{pane}"[^>]*>', self.HTML)
+            self.assertIsNotNone(m, pane)
+            self.assertIn('role="tabpanel"', m.group(0))
+            self.assertIn("aria-labelledby=", m.group(0))
+
+    def test_form_controls_have_labels(self):
+        # A placeholder is not an accessible name.
+        self.assertIn('<label class="sr-only" for="searchBox">', self.HTML)
+        self.assertIn('<label for="scenarioSelect">', self.HTML)
+
+    def test_chip_groups_are_named(self):
+        for group in ("categoryChips", "classChips", "industryChips", "sellableChips"):
+            m = re.search(rf'<div id="{group}"[^>]*>', self.HTML)
+            self.assertIsNotNone(m, group)
+            self.assertIn('role="group"', m.group(0))
+            self.assertIn("aria-labelledby=", m.group(0))
+
+    def test_has_live_region_for_result_count(self):
+        self.assertIn('id="resultStatus"', self.HTML)
+        self.assertIn('aria-live="polite"', self.HTML)
+
+    def test_has_visible_focus_indicator(self):
+        # There was no focus style at all, so even reachable controls gave no
+        # indication of keyboard position.
+        self.assertIn(":focus-visible", self.HTML)
+
+    def test_has_noscript_fallback(self):
+        self.assertIn("<noscript>", self.HTML)
+
+    def test_no_hardcoded_white_on_coloured_badges(self):
+        """Badge foregrounds are computed by onColor(); a literal `color: white`
+        on .badge/.badge-lg/.bar-seg is what produced 1.90:1 text."""
+        for rule in (".badge {", ".badge-lg {", ".bar-seg {"):
+            i = self.HTML.index(rule)
+            decl = self.HTML[i:self.HTML.index("}", i)]
+            self.assertNotIn("color: white", decl, rule)
+
+
 class TestIconLicensingHold(unittest.TestCase):
     """The icons are withheld from version control pending a licensing
     determination (ATTRIBUTION.md), enforced today only by .gitignore. This

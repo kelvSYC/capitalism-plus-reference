@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Without this, mobile browsers render into a 980px layout viewport and scale
+     the page down -- roughly 38% on a 375pt phone, which puts the 10px badge
+     text at about 4px. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Unofficial searchable reference for Capitalism Plus (1996): products, production chains, farming data and scenario goals across all three gamesets.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#14161a">
 <title>Capitalism Plus — Product Reference</title>
 <style>
   :root {
@@ -18,6 +25,24 @@
     --muted: #9aa0ab;
   }
   * { box-sizing: border-box; }
+
+  /* Controls are real <button>s so they are focusable and operable by keyboard
+     for free; these strip the UA chrome so they still look like the tabs and
+     chips they replaced. */
+  button { font: inherit; color: inherit; background: none; border: 0; margin: 0; text-align: inherit; }
+
+  /* Every interactive element needs a visible focus ring -- there was none at
+     all, so even the three controls that WERE reachable by keyboard gave no
+     indication of where you are. :focus-visible keeps it off for mouse users. */
+  :focus-visible { outline: 2px solid #4C9AFF; outline-offset: 2px; border-radius: 3px; }
+
+  /* Available to assistive tech, invisible on screen. Used where a control's
+     meaning is carried by colour, an icon glyph or a title attribute -- none of
+     which a screen reader user gets. */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
   body {
     margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Verdana, sans-serif;
     background: var(--bg); color: var(--text);
@@ -52,7 +77,10 @@
   }
   .chip:hover { background: var(--panel2); }
   .chip.active { background: var(--panel2); font-weight: 600; }
-  .chip.chip-restricted { opacity: 0.4; }
+  /* 0.55, not 0.4: --text at 0.4 over --panel composites to 3.30:1, below the
+     4.5:1 AA floor, which made restricted entries the hardest text on the site
+     to read. 0.55 lands at 4.98:1 while still reading as clearly de-emphasised. */
+  .chip.chip-restricted { opacity: 0.55; }
   .chip.chip-restricted .label { text-decoration: line-through; }
   .chip.chip-partial { opacity: 0.75; border: 1px dashed var(--muted); }
   .swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
@@ -81,7 +109,7 @@
   .picon-empty::after {
     content: attr(data-initial);
     position: absolute; inset: 0; display: flex; align-items: center;
-    justify-content: center; color: #fff; font-weight: 700;
+    justify-content: center; color: var(--picon-fg, #fff); font-weight: 700;
     font-size: var(--picon-font, 14px); letter-spacing: .02em;
   }
   .card .picon { width: 64px; height: 64px; margin-bottom: 6px; border-radius: 6px; padding: 4px; --picon-font: 24px; }
@@ -94,9 +122,11 @@
      its rounded pill shape/padding/color and rendered as plain inline text
      with only its background color intact -- the same badge markup should
      look identical everywhere it appears. */
-  .badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 10px; color: white; }
+  /* Foreground is set inline per badge by onColor(); ink is the safe default
+     for the light end of the palette if one is ever emitted without it. */
+  .badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 10px; color: #14161a; }
   .card .badge { margin-top: 6px; }
-  .card.restricted { opacity: 0.4; }
+  .card.restricted { opacity: 0.55; }
   .card.restricted .name { text-decoration: line-through; }
   .count { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
   .layout-toggle { display: inline-flex; gap: 6px; margin-left: 14px; vertical-align: middle; }
@@ -106,23 +136,27 @@
   .grid-table th { color: var(--muted); font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
   .grid-table tbody tr { cursor: pointer; }
   .grid-table tbody tr:hover { background: var(--panel2); }
-  .grid-table tr.restricted-row { opacity: 0.45; }
+  .grid-table tr.restricted-row { opacity: 0.55; }
   .grid-table tr.restricted-row .grid-name-cell { text-decoration: line-through; }
   .grid-name-cell { display: flex; align-items: center; gap: 8px; }
   .grid-name-cell .picon { width: 30px; height: 30px; border-radius: 5px; padding: 2px; --picon-font: 12px; }
 
   .detail { max-width: 900px; }
-  .back { display: inline-block; margin-bottom: 14px; cursor: pointer; color: var(--muted); font-size: 13px; }
+  .back { display: inline-block; margin-bottom: 14px; cursor: pointer; color: var(--muted); font-size: 13px; padding: 0; }
+  /* A table row cannot be a button without losing its row semantics, so the
+     keyboard target lives in the name cell and looks like the text it replaced. */
+  .cell-activate { cursor: pointer; padding: 0; text-align: left; }
+  .cell-activate:hover { text-decoration: underline; }
   .back:hover { color: var(--text); }
   .detail-head { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
   .detail-head .picon { width: 110px; height: 110px; border-radius: 10px; padding: 6px; --picon-font: 40px; }
   .detail-head h2 { margin: 0 0 4px; font-size: 24px; }
   .detail-head .cat { color: var(--muted); font-size: 14px; }
-  .badge-lg { display: inline-block; margin-top: 8px; font-size: 12px; padding: 4px 10px; border-radius: 12px; color: white; }
+  .badge-lg { display: inline-block; margin-top: 8px; font-size: 12px; padding: 4px 10px; border-radius: 12px; color: #14161a; }
 
   .bar-wrap { margin: 18px 0; }
   .bar { display: flex; height: 34px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
-  .bar-seg { display: flex; align-items: center; justify-content: center; font-size: 11px; color: white; white-space: nowrap; overflow: hidden; }
+  .bar-seg { display: flex; align-items: center; justify-content: center; font-size: 11px; color: #14161a; white-space: nowrap; overflow: hidden; }
   .bar-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; font-size: 12px; color: var(--muted); }
   .bar-legend .sw { width: 10px; height: 10px; display: inline-block; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
 
@@ -178,7 +212,7 @@
   .scenario-info .clear { color: #4C9AFF; cursor: pointer; margin-top: 6px; display: inline-block; }
   .almanac-legend .item { display: flex; align-items: center; gap: 6px; }
   .almanac-disclaimer { font-size: 12px; color: var(--muted); line-height: 1.45; margin-bottom: 14px; padding: 8px 10px; background: var(--panel2); border-radius: 6px; border-left: 3px solid #FFAB00; }
-  .almanac-table tr.restricted-row { opacity: 0.45; }
+  .almanac-table tr.restricted-row { opacity: 0.55; }
   .almanac-table tr.restricted-row .almanac-crop { text-decoration: line-through; }
   .restriction-note { font-size: 11px; font-weight: 600; white-space: nowrap; }
   .restriction-explain { font-size: 13px; line-height: 1.5; margin: 10px 0 16px; padding: 10px 12px; background: var(--panel2); border-radius: 6px; }
@@ -199,40 +233,91 @@
   footer.attribution p { margin: 0 0 4px; max-width: 90ch; }
   footer.attribution a { color: #4C9AFF; }
   footer.attribution strong { color: var(--text); font-weight: 600; }
+
+  /* The desktop layout is a fixed 220px sidebar beside the content. On a 375pt
+     phone that leaves ~115px for a grid whose columns have a 150px minimum, so
+     the sidebar has to stop being a sidebar. The header is un-stuck at the same
+     time: it wraps to three or four rows on a narrow screen, and a sticky
+     element that tall eats half the viewport. */
+  @media (max-width: 760px) {
+    .layout { flex-direction: column; }
+    aside {
+      width: auto; min-height: 0; border-right: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    header { position: static; padding: 10px 14px; gap: 10px; }
+    header h1 { font-size: 16px; }
+    main { padding: 14px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    .rel-cols { grid-template-columns: 1fr; }
+    .detail-head { flex-wrap: wrap; gap: 12px; }
+    .graph-scroll { max-height: none; }
+    /* Tables stay wide; scroll them rather than the whole document. */
+    .grid-table, .almanac-table { display: block; overflow-x: auto; }
+  }
+
+  /* Browsers drop backgrounds when printing, which would leave --text on white
+     at 1.21:1 -- a blank-looking page. Invert to ink on paper and drop the
+     chrome that only makes sense on screen. */
+  @media print {
+    body { background: #fff; color: #000; }
+    header, aside, .layout-toggle, .tabs { display: none !important; }
+    main { padding: 0; }
+    .section, .card { border-color: #999; break-inside: avoid; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 10px; }
+  }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Capitalism Plus <span>Product Reference</span></h1>
-  <div class="tabs" id="gamesetTabs"></div>
+  <div class="tabs" id="gamesetTabs" role="tablist" aria-label="Gameset"></div>
+  <!-- A placeholder is not a label: it disappears on input and is not reliably
+       announced. -->
+  <label class="sr-only" for="searchBox">Search products</label>
   <input type="search" id="searchBox" placeholder="Search products…">
-  <div class="tabs">
-    <div class="tab" id="viewGrid" onclick="setView('grid')">Grid</div>
-    <div class="tab" id="viewGraph" onclick="setView('graph')">Dependency Graph</div>
-    <div class="tab" id="viewAlmanac" onclick="setView('almanac')">Farmer's Almanac</div>
+  <div class="tabs" role="tablist" aria-label="View">
+    <button type="button" class="tab" id="viewGrid" role="tab" aria-controls="grid-view" onclick="setView('grid')">Grid</button>
+    <button type="button" class="tab" id="viewGraph" role="tab" aria-controls="graph-view" onclick="setView('graph')">Dependency Graph</button>
+    <button type="button" class="tab" id="viewAlmanac" role="tab" aria-controls="almanac-view" onclick="setView('almanac')">Farmer's Almanac</button>
   </div>
 </header>
 
+<noscript>
+  <p style="padding:20px;color:#e8e9ec;background:#1e2127;border-bottom:1px solid #383d47;margin:0">
+    This reference needs JavaScript: the product data is filtered and rendered in
+    the browser. Nothing is loaded from a network, so it will work offline once
+    the page itself has loaded.
+  </p>
+</noscript>
+
 <div class="layout">
-  <aside>
-    <h3>Scenario Preset</h3>
+  <aside aria-label="Filters">
+    <h3><label for="scenarioSelect">Scenario Preset</label></h3>
     <select id="scenarioSelect"></select>
     <div id="scenarioInfo"></div>
-    <h3>Category</h3>
-    <div id="categoryChips"></div>
-    <h3>Classification</h3>
-    <div id="classChips"></div>
-    <h3>Industry</h3>
-    <div id="industryChips"></div>
-    <h3>Goods Type</h3>
-    <div id="sellableChips"></div>
+    <!-- Each chip group is a labelled group so its heading is announced with
+         the buttons inside it, rather than the buttons arriving unexplained. -->
+    <h3 id="lbl-category">Category</h3>
+    <div id="categoryChips" role="group" aria-labelledby="lbl-category"></div>
+    <h3 id="lbl-class">Classification</h3>
+    <div id="classChips" role="group" aria-labelledby="lbl-class"></div>
+    <h3 id="lbl-industry">Industry</h3>
+    <div id="industryChips" role="group" aria-labelledby="lbl-industry"></div>
+    <h3 id="lbl-goods">Goods Type</h3>
+    <div id="sellableChips" role="group" aria-labelledby="lbl-goods"></div>
   </aside>
   <main>
-    <div id="grid-view"></div>
-    <div id="detail-view" style="display:none"></div>
-    <div id="graph-view" style="display:none"></div>
-    <div id="almanac-view" style="display:none"></div>
+    <!-- Filtering changes the result count with no other visible feedback. This
+         region is announced on change; it sits outside the panes because a live
+         region that is destroyed and recreated by innerHTML is not reliably
+         announced. -->
+    <div id="resultStatus" class="sr-only" role="status" aria-live="polite"></div>
+    <div id="grid-view" role="tabpanel" aria-labelledby="viewGrid" tabindex="-1"></div>
+    <div id="detail-view" style="display:none" tabindex="-1"></div>
+    <div id="graph-view" role="tabpanel" aria-labelledby="viewGraph" tabindex="-1" style="display:none"></div>
+    <div id="almanac-view" role="tabpanel" aria-labelledby="viewAlmanac" tabindex="-1" style="display:none"></div>
   </main>
 </div>
 
@@ -434,8 +519,33 @@ function goodsType(p) {
 // that IS directly sellable, and saying so is the informative surprise.
 const ALWAYS_CONSUMER_CLASSES = new Set(['Retail Product', 'Livestock Product']);
 const ALWAYS_INDUSTRIAL_CLASSES = new Set(['Semi-Product', 'Raw Material', 'Plant Product', 'Livestock Semi-Product']);
+// Pick the foreground that actually meets WCAG AA on a given background, rather
+// than hardcoding white. Eleven of this palette's badge colours are light enough
+// that white text on them fails badly -- #FFAB00 was 1.90:1 and #57D9A3 1.77:1,
+// against a 4.5:1 requirement for small text. Computing it means the palette can
+// change without silently reintroducing unreadable badges.
+const INK = '#14161a';
+function relLuminance(hex) {
+  const h = hex.replace('#', '');
+  const chan = i => {
+    const c = parseInt(h.slice(i * 2, i * 2 + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * chan(0) + 0.7152 * chan(1) + 0.0722 * chan(2);
+}
+function contrastRatio(a, b) {
+  const la = relLuminance(a), lb = relLuminance(b);
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+// Whichever of ink/white scores higher against `bg`.
+function onColor(bg) {
+  return contrastRatio(bg, INK) >= contrastRatio(bg, '#ffffff') ? INK : '#ffffff';
+}
+
 const EXCLUDED_COLOR = "#B00020";
-const NO_MARKET_COLOR = "#B36B00";
+// Amber, lightened from #B36B00 so it clears WCAG AA against SOMETHING: the old
+// value managed only 4.18:1 on white and 4.33:1 on ink, failing both.
+const NO_MARKET_COLOR = "#D98E00";
 const MFG_BLOCKED_COLOR = "#6B4FBB";
 const CROP_BLOCKED_COLOR = "#2E7D32";
 
@@ -446,7 +556,7 @@ function goodsTypeBadge(p, size) {
   if (gt === 'Industrial Goods' && ALWAYS_INDUSTRIAL_CLASSES.has(p.classification)) return '';
   const cls = size === 'lg' ? 'badge-lg' : 'badge';
   const color = gt === 'Consumer Goods' ? CONSUMER_GOODS_COLOR : INDUSTRIAL_GOODS_COLOR;
-  return ` <span class="${cls}" style="background:${color}">${gt}</span>`;
+  return ` <span class="${cls}" style="background:${color};color:${onColor(color)}">${gt}</span>`;
 }
 // Always names the value, unlike goodsTypeBadge above. In a dedicated table
 // column (the Almanac's Goods Type) an empty cell reads as missing data rather
@@ -455,7 +565,7 @@ function goodsTypeLabel(p) {
   const gt = goodsType(p);
   if (!gt) return '<span style="color:var(--muted)">—</span>';
   const color = gt === 'Consumer Goods' ? CONSUMER_GOODS_COLOR : INDUSTRIAL_GOODS_COLOR;
-  return `<span class="badge" style="background:${color}">${gt}</span>`;
+  return `<span class="badge" style="background:${color};color:${onColor(color)}">${gt}</span>`;
 }
 
 // ---- Scenario sale restrictions ----
@@ -649,7 +759,7 @@ function restrictionBadge(p, size) {
   if (!kind) return '';
   const cls = size === 'lg' ? 'badge-lg' : 'badge';
   const info = restrictionKindInfo(p, kind);
-  return ` <span class="${cls}" style="background:${info.color}" title="${info.title}">${info.label}</span>`;
+  return ` <span class="${cls}" style="background:${info.color};color:${onColor(info.color)}" title="${info.title}">${info.label}</span>`;
 }
 // A pill-shaped badge (background box) reads fine as a standalone tag next to
 // a product name on a card or the detail-page header, where it has its own
@@ -740,7 +850,8 @@ function chainBlockedNote(p) {
 function productIcon(p, dim) {
   const initial = p.name.replace(/[^A-Za-z0-9 ]/g, ' ').trim().split(/\s+/)
     .slice(0, 2).map(w => w[0]).join('').toUpperCase();
-  const style = `--picon-bg:${CLASS_COLORS[p.classification]}` + (dim ? ';opacity:0.4' : '');
+  const bg = CLASS_COLORS[p.classification];
+  const style = `--picon-bg:${bg};--picon-fg:${onColor(bg)}` + (dim ? ';opacity:0.55' : '');
   return `<span class="picon" data-initial="${initial}" style="${style}">` +
     `<img src="images/${p.icon_file}" alt="" loading="lazy" decoding="async"></span>`;
 }
@@ -825,7 +936,10 @@ function renderTabs() {
   const el = document.getElementById('gamesetTabs');
   el.innerHTML = '';
   gamesets().forEach(gs => {
-    const d = document.createElement('div');
+    const d = document.createElement('button');
+    d.type = 'button';
+    d.setAttribute('role', 'tab');
+    d.setAttribute('aria-selected', String(state.gameset === gs));
     d.className = 'tab' + (state.gameset === gs ? ' active' : '');
     d.textContent = gs;
     d.onclick = () => {
@@ -1059,21 +1173,48 @@ function toggleDominateFilter(key) {
   renderAll();
 }
 
+// A chip is a toggle button, so it is announced as pressed or not rather than
+// relying on the `active` class alone.
+//
+// Restriction level previously reached the user through three channels a screen
+// reader or a touch device gets nothing from: reduced opacity, a bare "✕"/"±"
+// glyph, and a title attribute. The glyph stays as the visual shorthand but is
+// hidden from assistive tech, and the same sentence the title carries is added
+// as visually-hidden text so it is actually announced.
+const CHIP_RESTRICTION_TEXT = {
+  full: 'Every product here is restricted in the current scenario',
+  partial: 'Some products here are restricted in the current scenario -- check individual items',
+};
 function makeChip(label, color, active, onclick, level) {
-  const d = document.createElement('div');
+  const d = document.createElement('button');
+  d.type = 'button';
   const cls = level === 'full' ? ' chip-restricted' : level === 'partial' ? ' chip-partial' : '';
   d.className = 'chip' + (active ? ' active' : '') + cls;
+  d.setAttribute('aria-pressed', String(!!active));
   if (color) {
     const sw = document.createElement('span');
     sw.className = 'swatch'; sw.style.background = color;
+    sw.setAttribute('aria-hidden', 'true');
     d.appendChild(sw);
   }
   const span = document.createElement('span');
   span.className = 'label';
-  span.textContent = level === 'full' ? '✕ ' + label : level === 'partial' ? '± ' + label : label;
+  if (level === 'full' || level === 'partial') {
+    const glyph = document.createElement('span');
+    glyph.setAttribute('aria-hidden', 'true');
+    glyph.textContent = level === 'full' ? '✕ ' : '± ';
+    span.appendChild(glyph);
+  }
+  span.appendChild(document.createTextNode(label));
   d.appendChild(span);
-  if (level === 'full') d.title = 'Every product here is restricted in the current scenario';
-  else if (level === 'partial') d.title = 'Some products here are restricted in the current scenario -- check individual items';
+  const note = CHIP_RESTRICTION_TEXT[level];
+  if (note) {
+    d.title = note;
+    const sr = document.createElement('span');
+    sr.className = 'sr-only';
+    sr.textContent = '. ' + note;
+    d.appendChild(sr);
+  }
   d.onclick = onclick;
   return d;
 }
@@ -1096,12 +1237,20 @@ function setGridLayout(v) {
   renderGrid();
 }
 
+// Update the polite live region. Callers pass a complete sentence, because a
+// bare number ("82") is meaningless read aloud on its own.
+function announce(message) {
+  const el = document.getElementById('resultStatus');
+  if (el) el.textContent = message;
+}
+
 function renderGrid() {
   const list = filteredProducts();
+  announce(`${list.length} product${list.length === 1 ? '' : 's'} match the current filters.`);
   const el = document.getElementById('grid-view');
   const toggle = `<span class="layout-toggle">
-    <span class="chip${state.gridLayout === 'cards' ? ' active' : ''}" onclick="setGridLayout('cards')">Cards</span>
-    <span class="chip${state.gridLayout === 'list' ? ' active' : ''}" onclick="setGridLayout('list')">List</span>
+    <button type="button" class="chip${state.gridLayout === 'cards' ? ' active' : ''}" aria-pressed="${state.gridLayout === 'cards'}" onclick="setGridLayout('cards')">Cards</button>
+    <button type="button" class="chip${state.gridLayout === 'list' ? ' active' : ''}" aria-pressed="${state.gridLayout === 'list'}" onclick="setGridLayout('list')">List</button>
   </span>`;
   if (list.length === 0) {
     el.innerHTML = `<div class="count">0 products${toggle}</div><div class="empty">No products match the current filters.</div>`;
@@ -1118,9 +1267,9 @@ function renderGrid() {
     list.forEach(p => {
       const restricted = scenarioRestricted(p);
       html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-        <td><div class="grid-name-cell">${productIcon(p)}${p.name}</div></td>
+        <td><div class="grid-name-cell">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></td>
         <td>${p.category || p.classification}</td>
-        <td><span class="badge" style="background:${CLASS_COLORS[p.classification]}">${p.classification}</span></td>
+        <td><span class="badge" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</span></td>
         <td>${goodsTypeLabel(p)}</td>
         <td>${restrictionBadge(p)}</td>
       </tr>`;
@@ -1130,11 +1279,11 @@ function renderGrid() {
     html += '<div class="grid">';
     list.forEach(p => {
       const restricted = scenarioRestricted(p);
-      html += `<div class="card${restricted ? ' restricted' : ''}" onclick="openDetail('${p.id.replace(/'/g,"\\'")}')">
+      html += `<div class="card${restricted ? ' restricted' : ''}" ${ACTIVATABLE} onclick="openDetail('${p.id.replace(/'/g,"\\'")}')">
         ${productIcon(p)}
         <div class="name">${p.name}</div>
         <div class="cat">${p.category || p.classification}</div>
-        <div class="badge" style="background:${CLASS_COLORS[p.classification]}">${p.classification}</div>${goodsTypeBadge(p)}${restrictionBadge(p)}
+        <div class="badge" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</div>${goodsTypeBadge(p)}${restrictionBadge(p)}
       </div>`;
     });
     html += '</div>';
@@ -1158,7 +1307,7 @@ function livestockYieldSection(p) {
   if (visibleYields.length) {
     visibleYields.forEach(yName => {
       const yp = yieldOf(yName);
-      html += `<li onclick="${yp ? `openDetail('${yp.id.replace(/'/g,"\\'")}')` : ''}">
+      html += `<li ${ACTIVATABLE} onclick="${yp ? `openDetail('${yp.id.replace(/'/g,"\\'")}')` : ''}">
           ${yp ? productIcon(yp, scenarioRestricted(yp)) : ''}
           <span><span${relNameStyle(yp)}>${yName}${yp ? ` <span style="color:var(--muted)">(${yp.classification})</span>` : ''}</span>${yp ? restrictionNote(yp) : ''}</span>
         </li>`;
@@ -1181,14 +1330,14 @@ function openDetail(id) {
   // say why instead (see chainBlockedNote / relVisible).
   const chainBlocked = scenarioRestricted(p) && !state.showRestricted;
 
-  let html = `<div class="back" onclick="backToGrid()">&larr; Back</div>`;
+  let html = `<button type="button" class="back" onclick="backToGrid()">&larr; Back</button>`;
   html += `<div class="detail">`;
   html += `<div class="detail-head">
     ${productIcon(p)}
     <div>
       <h2>${p.name}</h2>
       <div class="cat">${p.category || ''}${p.category ? ' · ' : ''}${p.industry} · ${p.gameset} gameset</div>
-      <div class="badge-lg" style="background:${CLASS_COLORS[p.classification]}">${p.classification}</div>${goodsTypeBadge(p, 'lg')}${restrictionBadge(p, 'lg')}
+      <div class="badge-lg" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</div>${goodsTypeBadge(p, 'lg')}${restrictionBadge(p, 'lg')}
     </div>
   </div>`;
   html += restrictionExplanation(p);
@@ -1207,10 +1356,10 @@ function openDetail(id) {
       const scale = rawTotal > 0 ? 100 / rawTotal : 1;
       html += `<div class="bar-wrap"><div class="bar">`;
       p.inputs.forEach((inp, i) => {
-        html += `<div class="bar-seg" style="width:${(inp.quality_pct || 0) * scale}%;background:${pctColor(i)}">${inp.quality_pct}%</div>`;
+        html += `<div class="bar-seg" style="width:${(inp.quality_pct || 0) * scale}%;background:${pctColor(i)};color:${onColor(pctColor(i))}">${inp.quality_pct}%</div>`;
       });
       if (p.production_technology_pct) {
-        html += `<div class="bar-seg" style="width:${p.production_technology_pct * scale}%;background:#555b66">${p.production_technology_pct}%</div>`;
+        html += `<div class="bar-seg" style="width:${p.production_technology_pct * scale}%;background:#555b66;color:${onColor('#555b66')}">${p.production_technology_pct}%</div>`;
       }
       html += `</div><div class="bar-legend">`;
       p.inputs.forEach((inp, i) => {
@@ -1255,7 +1404,7 @@ function openDetail(id) {
       if (visibleSources.length) {
         visibleSources.forEach(animalName => {
           const ap = PRODUCTS.find(x => x.gameset === p.gameset && x.name === animalName);
-          html += `<li onclick="${ap ? `openDetail('${ap.id.replace(/'/g,"\\'")}')` : ''}">
+          html += `<li ${ACTIVATABLE} onclick="${ap ? `openDetail('${ap.id.replace(/'/g,"\\'")}')` : ''}">
             ${ap ? productIcon(ap, scenarioRestricted(ap)) : ''}<span><span${relNameStyle(ap)}>${animalName}</span>${ap ? restrictionNote(ap) : ''}</span>
           </li>`;
         });
@@ -1275,7 +1424,7 @@ function openDetail(id) {
       if (hasInputs && visibleInputs.length) {
         visibleInputs.forEach(inp => {
           const ip = PRODUCTS.find(x => x.gameset === p.gameset && x.name === inp.material);
-          html += `<li onclick="${ip ? `openDetail('${ip.id.replace(/'/g,"\\'")}')` : ''}">
+          html += `<li ${ACTIVATABLE} onclick="${ip ? `openDetail('${ip.id.replace(/'/g,"\\'")}')` : ''}">
             ${ip ? productIcon(ip, scenarioRestricted(ip)) : ''}
             <span><span${relNameStyle(ip)}>${inp.material}</span>${ip ? restrictionNote(ip) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(ip)}">${inp.amount} ${inp.unit || ''} · Q:${inp.quality_pct}%</span></span>
           </li>`;
@@ -1289,7 +1438,7 @@ function openDetail(id) {
       if (hasUsedIn && visibleUsedIn.length) {
         visibleUsedIn.forEach(u => {
           const up = byId(u.id);
-          html += `<li onclick="openDetail('${u.id.replace(/'/g,"\\'")}')">
+          html += `<li ${ACTIVATABLE} onclick="openDetail('${u.id.replace(/'/g,"\\'")}')">
             ${up ? productIcon(up, scenarioRestricted(up)) : ''}
             <span><span${relNameStyle(up)}>${u.product}</span>${up ? restrictionNote(up) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(up)}">${u.amount} ${u.unit || ''} · Q:${u.quality_pct}%</span></span>
           </li>`;
@@ -1352,7 +1501,11 @@ function showPane(view) {
     document.getElementById(id).style.display = v === view ? 'block' : 'none';
   });
   Object.entries(VIEW_TABS).forEach(([v, id]) => {
-    document.getElementById(id).classList.toggle('active', v === view);
+    const tab = document.getElementById(id);
+    tab.classList.toggle('active', v === view);
+    // The `active` class is styling; aria-selected is what a screen reader
+    // reads. Both, always, from the same place.
+    tab.setAttribute('aria-selected', String(v === view));
   });
 }
 
@@ -1990,6 +2143,7 @@ function almanacCrops() {
 function renderAlmanac() {
   const el = document.getElementById('almanac-view');
   const crops = almanacCrops();
+  announce(`${crops.length} crop${crops.length === 1 ? '' : 's'} in the Farmer's Almanac.`);
   if (crops.length === 0) {
     el.innerHTML = '<div class="empty">No crops with growing conditions in this gameset.</div>';
     return;
@@ -2020,7 +2174,7 @@ function renderAlmanac() {
     const harvestIdx = MONTHS_FULL.indexOf(gc.harvesting_month);
     const restricted = scenarioRestricted(p);
     html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-      <td><div class="almanac-crop">${productIcon(p)}${p.name}</div></td>
+      <td><div class="almanac-crop">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></td>
       <td>${climateBar(gc.climate)}${gc.climate}</td>
       <td>${rainBar(gc.rainfall)}${gc.rainfall}</td>
       <td>${goodsTypeLabel(p)}${restrictionNote(p)}</td>`;
@@ -2046,6 +2200,47 @@ function renderAll() {
   renderSellableChips();
   renderActiveView();
 }
+
+// Div and li elements carrying an onclick are not focusable and do not respond
+// to Enter or Space, so the whole grid, the relation lists and the detail-page
+// Back control were unreachable without a mouse. They now carry role="button"
+// and tabindex="0" (see ACTIVATABLE); this supplies the key handling a real
+// <button> would have given for free.
+//
+// One delegated listener rather than per-element handlers: every render replaces
+// its container's innerHTML wholesale, so per-element handlers would have to be
+// re-attached each time and would leak if they ever weren't.
+const ACTIVATABLE = 'tabindex="0" role="button"';
+
+// Arrow-key navigation within each tablist. Declaring role="tablist" tells
+// assistive tech that arrow keys move between tabs, so the markup would be
+// lying without this -- a claimed pattern that isn't implemented is worse than
+// no pattern at all.
+document.addEventListener('keydown', e => {
+  const keys = { ArrowLeft: -1, ArrowRight: 1, Home: 'first', End: 'last' };
+  if (!(e.key in keys)) return;
+  const tab = e.target;
+  if (!tab || !tab.getAttribute || tab.getAttribute('role') !== 'tab') return;
+  const list = tab.closest && tab.closest('[role="tablist"]');
+  if (!list) return;
+  const tabs = Array.from(list.querySelectorAll('[role="tab"]'));
+  const i = tabs.indexOf(tab);
+  if (i === -1) return;
+  const move = keys[e.key];
+  const next = move === 'first' ? 0
+    : move === 'last' ? tabs.length - 1
+    : (i + move + tabs.length) % tabs.length;
+  e.preventDefault();
+  if (tabs[next] && tabs[next].focus) tabs[next].focus();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+  const el = e.target;
+  if (!el || !el.getAttribute || el.getAttribute('role') !== 'button') return;
+  if (el.tagName === 'BUTTON') return;   // native buttons already do this
+  e.preventDefault();                     // Space would otherwise scroll
+  if (el.click) el.click();
+});
 
 // Marks icon tiles whose image failed to load so CSS can show the monogram
 // instead (see .picon-empty). One document-level listener in the CAPTURE phase,
