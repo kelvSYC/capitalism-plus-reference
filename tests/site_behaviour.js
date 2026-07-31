@@ -520,7 +520,7 @@ for (const gs of ['Standard', 'Alternative', 'Food & Beverage']) {
     if (visual && !textual) statelessCells.push(gs + ': ' + cell.slice(0, 60));
   }
   for (const p of byGameset(gs).filter(x => x.growing_conditions)) {
-    if (!html.includes(p.name)) missingRows.push(gs + '/' + p.name);
+    if (!html.includes(esc(p.name))) missingRows.push(gs + '/' + p.name);
   }
 }
 ok('no month cell conveys its state by colour alone',
@@ -580,6 +580,44 @@ const detailMarkup = pane('detail-view').innerHTML;
 ok('Back is a real button', detailMarkup.includes('<button type="button" class="back"'));
 ok('relation-list entries are keyboard activatable',
    detailMarkup.includes('tabindex="0" role="button"'));
+
+print('--- the page says where you are ---');
+// document.title never changed, so every view and every product looked
+// identical from the tab strip, browser history and a screen reader's
+// navigation announcement.
+reset();
+setView('grid');
+ok('the title names the view', /Products · Standard/.test(document.title), document.title);
+setView('almanac');
+ok('the title follows the view', /Almanac/.test(document.title), document.title);
+reset();
+const titled = PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Car');
+openDetail(titled.id);
+ok('the title names the open product', /^Car · Standard/.test(document.title), document.title);
+ok('the site name is still in the title', /Capitalism Plus/.test(document.title));
+
+print('--- roving tabindex ---');
+reset();
+setView('graph');
+ok('the selected tab is the tablist\'s single Tab stop',
+   document.getElementById('viewGraph').getAttribute('tabindex') === '0');
+ok('unselected tabs are skipped by Tab',
+   document.getElementById('viewGrid').getAttribute('tabindex') === '-1' &&
+   document.getElementById('viewAlmanac').getAttribute('tabindex') === '-1');
+
+print('--- product names are escaped wherever they reach markup ---');
+// "Wheel & Tire" is the only name in the dataset containing a markup character,
+// which is exactly why unescaped interpolation went unnoticed for so long.
+reset();
+const amp = PRODUCTS.find(p => p.name === 'Wheel & Tire');
+ok('the dataset still has the awkward name', !!amp);
+openDetail(amp.id);
+const ampHtml = pane('detail-view').innerHTML;
+ok('the detail heading escapes it', ampHtml.includes('>Wheel &amp; Tire</h2>'));
+ok('no raw ampersand leaks into the markup',
+   !/Wheel & Tire/.test(ampHtml.replace(/Wheel &amp; Tire/g, '')));
+setView('grid');
+ok('the card escapes it', pane('grid-view').innerHTML.includes('Wheel &amp; Tire'));
 
 print('--- focus survives a re-render ---');
 // The complaint this fixes: renderAll() destroys and rebuilds every chip, so a
@@ -722,7 +760,9 @@ let rendered = 0;
 for (const p of PRODUCTS) {
   state.gameset = p.gameset;
   openDetail(p.id);
-  if (pane('detail-view').innerHTML.includes(p.name)) rendered++;
+  // esc(): product names reach the markup escaped, so "Wheel & Tire" appears as
+  // "Wheel &amp; Tire".
+  if (pane('detail-view').innerHTML.includes(esc(p.name))) rendered++;
 }
 ok('all ' + PRODUCTS.length + ' product pages render', rendered === PRODUCTS.length, 'rendered=' + rendered);
 

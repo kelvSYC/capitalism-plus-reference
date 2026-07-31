@@ -32,6 +32,15 @@
      indication of where you are. :focus-visible keeps it off for mouse users. */
   :focus-visible { outline: 2px solid #4C9AFF; outline-offset: 2px; border-radius: 3px; }
 
+  /* Off-screen until focused, then the first thing a keyboard user reaches. */
+  .skip-link {
+    position: absolute; left: 8px; top: -120px; z-index: 100;
+    background: var(--panel2); color: var(--text); padding: 8px 14px;
+    border: 1px solid var(--border); border-radius: 6px; font-size: 13px;
+    text-decoration: none;
+  }
+  .skip-link:focus { top: 8px; }
+
   /* Available to assistive tech, invisible on screen. Used where a control's
      meaning is carried by colour, an icon glyph or a title attribute -- none of
      which a screen reader user gets. */
@@ -80,8 +89,11 @@
     width: 220px; padding: 16px; border-right: 1px solid var(--border); min-height: calc(100vh - 60px);
     flex-shrink: 0;
   }
-  aside h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 16px 0 8px; }
-  aside h3:first-child { margin-top: 0; }
+  /* h2, not h3: these are top-level sections of the page. The document went
+     h1 -> h3 with no h2 outside the detail view, so heading navigation skipped
+     a level. Styling is unchanged. */
+  aside h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 16px 0 8px; font-weight: 600; }
+  aside h2:first-child { margin-top: 0; }
   .chip {
     display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 5px; cursor: pointer;
     font-size: 13px; margin-bottom: 2px;
@@ -150,7 +162,8 @@
   .card.restricted .name { text-decoration: line-through; }
   .count { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
   .layout-toggle { display: inline-flex; gap: 6px; margin-left: 14px; vertical-align: middle; }
-  .layout-toggle .chip { padding: 3px 10px; font-size: 12px; }
+  /* 24px floor: WCAG 2.2 target size (2.5.8). The 3px padding gave ~20px. */
+  .layout-toggle .chip { padding: 5px 10px; font-size: 12px; min-height: 24px; }
   .grid-table { border-collapse: collapse; width: 100%; font-size: 12px; }
   .grid-table th, .grid-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
   .grid-table thead th { color: var(--muted); font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
@@ -294,6 +307,12 @@
     .grid-table, .almanac-table { display: block; overflow-x: auto; }
   }
 
+  /* One transition in the whole file, but honouring the preference costs a
+     rule and covers anything added later. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  }
+
   /* Browsers drop backgrounds when printing, which would leave --text on white
      at 1.21:1 -- a blank-looking page. Invert to ink on paper and drop the
      chrome that only makes sense on screen. */
@@ -322,6 +341,9 @@
   </div>
 </header>
 
+<!-- ~40 sidebar controls sit before the content on every view. WCAG 2.4.1. -->
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 <noscript>
   <p style="padding:20px;color:#e8e9ec;background:#1e2127;border-bottom:1px solid #383d47;margin:0">
     This reference needs JavaScript: the product data is filtered and rendered in
@@ -332,28 +354,28 @@
 
 <div class="layout">
   <aside aria-label="Filters">
-    <h3><label for="scenarioSelect">Scenario Preset</label></h3>
+    <h2><label for="scenarioSelect">Scenario Preset</label></h2>
     <select id="scenarioSelect"></select>
     <div id="scenarioInfo"></div>
     <!-- Each chip group is a labelled group so its heading is announced with
          the buttons inside it, rather than the buttons arriving unexplained. -->
-    <h3 id="lbl-category">Category</h3>
+    <h2 id="lbl-category">Category</h2>
     <div id="categoryChips" role="group" aria-labelledby="lbl-category"></div>
-    <h3 id="lbl-class">Classification</h3>
+    <h2 id="lbl-class">Classification</h2>
     <div id="classChips" role="group" aria-labelledby="lbl-class"></div>
-    <h3 id="lbl-industry">Industry</h3>
+    <h2 id="lbl-industry">Industry</h2>
     <div id="industryChips" role="group" aria-labelledby="lbl-industry"></div>
-    <h3 id="lbl-goods">Goods Type</h3>
+    <h2 id="lbl-goods">Goods Type</h2>
     <div id="sellableChips" role="group" aria-labelledby="lbl-goods"></div>
   </aside>
-  <main>
+  <main id="main-content" tabindex="-1">
     <!-- Filtering changes the result count with no other visible feedback. This
          region is announced on change; it sits outside the panes because a live
          region that is destroyed and recreated by innerHTML is not reliably
          announced. -->
     <div id="resultStatus" class="sr-only" role="status" aria-live="polite"></div>
     <div id="grid-view" role="tabpanel" aria-labelledby="viewGrid" tabindex="-1"></div>
-    <div id="detail-view" style="display:none" tabindex="-1"></div>
+    <div id="detail-view" style="display:none" tabindex="-1" role="region" aria-labelledby="detailHeading"></div>
     <div id="graph-view" role="tabpanel" aria-labelledby="viewGraph" tabindex="-1" style="display:none"></div>
     <div id="almanac-view" role="tabpanel" aria-labelledby="viewAlmanac" tabindex="-1" style="display:none"></div>
   </main>
@@ -949,7 +971,7 @@ function chainBlockedNote(p) {
   const info = kind ? restrictionKindInfo(p, kind) : null;
   const color = info ? info.color : NO_MARKET_COLOR;
   return `<div class="chain-blocked" style="border-left:3px solid ${color}">
-    <strong>Production chain not shown.</strong> ${p.name} is restricted in this
+    <strong>Production chain not shown.</strong> ${esc(p.name)} is restricted in this
     scenario, so there is no chain here you could actually build or sell into --
     unlike the game's own Manufacturer's Guide, this reference accounts for the
     active scenario's restrictions. Check
@@ -1065,6 +1087,7 @@ function renderTabs() {
     d.type = 'button';
     d.setAttribute('role', 'tab');
     d.setAttribute('aria-selected', String(state.gameset === gs));
+    d.setAttribute('tabindex', state.gameset === gs ? '0' : '-1');
     d.className = 'tab' + (state.gameset === gs ? ' active' : '');
     d.textContent = gs;
     registerFocusable(d, 'gamesetTabs|' + gs);
@@ -1413,7 +1436,7 @@ function renderGrid() {
     list.forEach(p => {
       const restricted = scenarioRestricted(p);
       html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-        <th scope="row"><div class="grid-name-cell">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></th>
+        <th scope="row"><div class="grid-name-cell">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div></th>
         <td>${p.category || p.classification}</td>
         <td><span class="badge" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</span></td>
         <td>${goodsTypeLabel(p)}</td>
@@ -1427,7 +1450,7 @@ function renderGrid() {
       const restricted = scenarioRestricted(p);
       html += `<div class="card${restricted ? ' restricted' : ''}" ${ACTIVATABLE} onclick="openDetail('${p.id.replace(/'/g,"\\'")}')">
         ${productIcon(p)}
-        <div class="name">${p.name}</div>
+        <div class="name">${esc(p.name)}</div>
         <div class="cat">${p.category || p.classification}</div>
         <div class="badge" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</div>${goodsTypeBadge(p)}${restrictionBadge(p)}
       </div>`;
@@ -1455,7 +1478,7 @@ function livestockYieldSection(p) {
       const yp = yieldOf(yName);
       html += `<li ${ACTIVATABLE} onclick="${yp ? `openDetail('${yp.id.replace(/'/g,"\\'")}')` : ''}">
           ${yp ? productIcon(yp, scenarioRestricted(yp)) : ''}
-          <span><span${relNameStyle(yp)}>${yName}${yp ? ` <span style="color:var(--muted)">(${yp.classification})</span>` : ''}</span>${yp ? restrictionNote(yp) : ''}</span>
+          <span><span${relNameStyle(yp)}>${esc(yName)}${yp ? ` <span style="color:var(--muted)">(${yp.classification})</span>` : ''}</span>${yp ? restrictionNote(yp) : ''}</span>
         </li>`;
     });
   } else if ((p.livestock_yields || []).length) {
@@ -1485,7 +1508,7 @@ function openDetail(id) {
   html += `<div class="detail-head">
     ${productIcon(p)}
     <div>
-      <h2 id="detailHeading" tabindex="-1">${p.name}</h2>
+      <h2 id="detailHeading" tabindex="-1">${esc(p.name)}</h2>
       <div class="cat">${p.category || ''}${p.category ? ' · ' : ''}${p.industry} · ${p.gameset} gameset</div>
       <div class="badge-lg" style="background:${CLASS_COLORS[p.classification]};color:${onColor(CLASS_COLORS[p.classification])}">${p.classification}</div>${goodsTypeBadge(p, 'lg')}${restrictionBadge(p, 'lg')}
     </div>
@@ -1513,7 +1536,7 @@ function openDetail(id) {
       }
       html += `</div><div class="bar-legend">`;
       p.inputs.forEach((inp, i) => {
-        html += `<span><span class="sw" style="background:${pctColor(i)}"></span>${inp.material} — ${inp.amount} ${inp.unit || ''}</span>`;
+        html += `<span><span class="sw" style="background:${pctColor(i)}"></span>${esc(inp.material)} — ${inp.amount} ${inp.unit || ''}</span>`;
       });
       if (p.production_technology_pct) {
         html += `<span><span class="sw" style="background:#555b66"></span>Production Technology</span>`;
@@ -1561,7 +1584,7 @@ function openDetail(id) {
         visibleSources.forEach(animalName => {
           const ap = PRODUCTS.find(x => x.gameset === p.gameset && x.name === animalName);
           html += `<li ${ACTIVATABLE} onclick="${ap ? `openDetail('${ap.id.replace(/'/g,"\\'")}')` : ''}">
-            ${ap ? productIcon(ap, scenarioRestricted(ap)) : ''}<span><span${relNameStyle(ap)}>${animalName}</span>${ap ? restrictionNote(ap) : ''}</span>
+            ${ap ? productIcon(ap, scenarioRestricted(ap)) : ''}<span><span${relNameStyle(ap)}>${esc(animalName)}</span>${ap ? restrictionNote(ap) : ''}</span>
           </li>`;
         });
       } else {
@@ -1582,7 +1605,7 @@ function openDetail(id) {
           const ip = PRODUCTS.find(x => x.gameset === p.gameset && x.name === inp.material);
           html += `<li ${ACTIVATABLE} onclick="${ip ? `openDetail('${ip.id.replace(/'/g,"\\'")}')` : ''}">
             ${ip ? productIcon(ip, scenarioRestricted(ip)) : ''}
-            <span><span${relNameStyle(ip)}>${inp.material}</span>${ip ? restrictionNote(ip) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(ip)}">${inp.amount} ${inp.unit || ''} · Q:${inp.quality_pct}%</span></span>
+            <span><span${relNameStyle(ip)}>${esc(inp.material)}</span>${ip ? restrictionNote(ip) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(ip)}">${inp.amount} ${inp.unit || ''} · Q:${inp.quality_pct}%</span></span>
           </li>`;
         });
       } else if (!hasInputs) {
@@ -1596,7 +1619,7 @@ function openDetail(id) {
           const up = byId(u.id);
           html += `<li ${ACTIVATABLE} onclick="openDetail('${u.id.replace(/'/g,"\\'")}')">
             ${up ? productIcon(up, scenarioRestricted(up)) : ''}
-            <span><span${relNameStyle(up)}>${u.product}</span>${up ? restrictionNote(up) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(up)}">${u.amount} ${u.unit || ''} · Q:${u.quality_pct}%</span></span>
+            <span><span${relNameStyle(up)}>${esc(u.product)}</span>${up ? restrictionNote(up) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(up)}">${u.amount} ${u.unit || ''} · Q:${u.quality_pct}%</span></span>
           </li>`;
         });
       } else if (!hasUsedIn) {
@@ -1610,8 +1633,8 @@ function openDetail(id) {
     if (!chainBlocked) {
       html += `<div class="section"><h3>Dependency Diagram (transitive)</h3>
       <p style="font-size:12px;color:var(--muted);margin-top:0">Everything this product is transitively made from (left) through everything it transitively ends up in (right). Click any node to jump to it.</p>
-      <div class="spider-wrap" tabindex="0" role="region" aria-label="Dependency diagram for ${p.name}, scrollable">
-        <svg id="spider-svg" role="img" aria-label="Everything ${p.name} is transitively made from and ends up in. The same relationships are listed under Immediate Dependencies above."></svg>
+      <div class="spider-wrap" tabindex="0" role="region" aria-label="Dependency diagram for ${esc(p.name)}, scrollable">
+        <svg id="spider-svg" role="img" aria-label="Everything ${esc(p.name)} is transitively made from and ends up in. The same relationships are listed under Immediate Dependencies above."></svg>
       </div>
     </div>`;
     }
@@ -1626,6 +1649,7 @@ function openDetail(id) {
   // exists, and a screen reader announces nothing. Focusing the heading names
   // the product that just opened. tabindex="-1" makes it focusable without
   // adding a Tab stop.
+  setDocumentTitle(`${p.name} · ${p.gameset}`);
   if (isNavigation) {
     const heading = document.getElementById('detailHeading');
     if (heading && heading.focus) heading.focus();
@@ -1713,6 +1737,16 @@ const VIEW_TABS = { grid: 'viewGrid', graph: 'viewGraph', almanac: 'viewAlmanac'
 // on screen underneath the new one, which is invisible in code review and
 // obvious to a user. Adding a pane means adding it to VIEW_PANES, nowhere
 // else.
+const SITE_TITLE = 'Capitalism Plus — Product Reference';
+const VIEW_TITLES = { grid: 'Products', graph: 'Dependency Graph', almanac: "Farmer's Almanac" };
+
+// The title bar is an orientation cue -- in the tab strip, in browser history,
+// and announced by screen readers on navigation. It never changed, so every
+// view and every product looked identical from outside the page.
+function setDocumentTitle(label) {
+  document.title = label ? `${label} — ${SITE_TITLE}` : SITE_TITLE;
+}
+
 function showPane(view) {
   Object.entries(VIEW_PANES).forEach(([v, id]) => {
     document.getElementById(id).style.display = v === view ? 'block' : 'none';
@@ -1723,6 +1757,11 @@ function showPane(view) {
     // The `active` class is styling; aria-selected is what a screen reader
     // reads. Both, always, from the same place.
     tab.setAttribute('aria-selected', String(v === view));
+    // Roving tabindex: one Tab stop for the whole tablist, arrow keys to move
+    // within it. Without this, Tab walks through every tab before reaching the
+    // content -- and a tablist that is all tab stops contradicts the pattern
+    // its own role advertises.
+    tab.setAttribute('tabindex', v === view ? '0' : '-1');
   });
 }
 
@@ -1744,6 +1783,7 @@ function setView(v) {
   state.view = v;
   state.detailId = null;
   showPane(v);
+  setDocumentTitle(`${VIEW_TITLES[v] || ''} · ${state.gameset}`);
   renderActiveView();
 }
 
@@ -2489,7 +2529,7 @@ function renderAlmanac() {
     const harvestIdx = MONTHS_FULL.indexOf(gc.harvesting_month);
     const restricted = scenarioRestricted(p);
     html += `<tr onclick="openDetail('${p.id.replace(/'/g,"\\'")}')" class="${restricted ? 'restricted-row' : ''}">
-      <th scope="row"><div class="almanac-crop">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${p.name}</button></div></th>
+      <th scope="row"><div class="almanac-crop">${productIcon(p)}<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div></th>
       <td>${climateBar(gc.climate)}${gc.climate}</td>
       <td>${rainBar(gc.rainfall)}${gc.rainfall}</td>
       <td>${goodsTypeLabel(p)}${restrictionNote(p)}</td>`;
@@ -2556,7 +2596,13 @@ document.addEventListener('keydown', e => {
     : move === 'last' ? tabs.length - 1
     : (i + move + tabs.length) % tabs.length;
   e.preventDefault();
-  if (tabs[next] && tabs[next].focus) tabs[next].focus();
+  // Move the single Tab stop along with focus, or Tab would return to whichever
+  // tab was selected rather than the one the user arrowed to.
+  tabs.forEach(x => x.setAttribute && x.setAttribute('tabindex', '-1'));
+  if (tabs[next]) {
+    if (tabs[next].setAttribute) tabs[next].setAttribute('tabindex', '0');
+    if (tabs[next].focus) tabs[next].focus();
+  }
 });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;

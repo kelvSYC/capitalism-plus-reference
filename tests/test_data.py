@@ -363,6 +363,32 @@ class TestAccessibility(unittest.TestCase):
         # indication of keyboard position.
         self.assertIn(":focus-visible", self.HTML)
 
+    def test_has_skip_link_to_content(self):
+        """~40 sidebar controls precede the content on every view (WCAG 2.4.1)."""
+        self.assertIn('class="skip-link" href="#main-content"', self.HTML)
+        self.assertIn('id="main-content"', self.HTML)
+
+    def test_heading_levels_do_not_skip(self):
+        """The document went h1 -> h3, with no h2 outside the detail view."""
+        levels = sorted({int(m) for m in re.findall(r"<h([1-6])[ >]", self.HTML)})
+        self.assertEqual(list(range(1, len(levels) + 1)), levels, f"levels present: {levels}")
+
+    def test_only_one_h1(self):
+        self.assertEqual(1, len(re.findall(r"<h1[ >]", self.HTML)))
+
+    def test_honours_reduced_motion(self):
+        self.assertIn("prefers-reduced-motion", self.HTML)
+
+    def test_tablists_use_a_roving_tabindex(self):
+        """A tablist that is entirely Tab stops contradicts its own role: Tab
+        should reach the strip once, arrows should move within it."""
+        self.assertIn("""tab.setAttribute('tabindex', v === view ? '0' : '-1')""", self.HTML)
+
+    def test_detail_view_has_an_accessible_name(self):
+        m = re.search(r'<div id="detail-view"[^>]*>', self.HTML)
+        self.assertIsNotNone(m)
+        self.assertIn('aria-labelledby="detailHeading"', m.group(0))
+
     def test_has_noscript_fallback(self):
         self.assertIn("<noscript>", self.HTML)
 
