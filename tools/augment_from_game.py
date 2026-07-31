@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
 """
-augment_from_game.py — add production-rate fields to data/index_cards.json.
+augment_from_game.py — rewrite the production-rate fields of data/index_cards.json
+from the game's own tables.
 
-Unlike tools/verify_against_game.py, this one WRITES. It is a one-shot data tool,
-re-runnable and idempotent: it reads the game's FARMPROD, RAW and FARMLIVE tables
-and fills in fields the dataset never carried, leaving everything else alone.
+**The committed dataset is not waiting on this.** index_cards.json holds every
+field this writes; the site builds and the verifier passes with no game present,
+and `--dry-run` against a retail copy reports nothing to do. tests/
+test_against_game.py asserts exactly that, so the day this tool finds work is the
+day the dataset has drifted.
+
+What it is for, then: the five fields below are read out of FARMPROD, RAW,
+FARMLIVE and FARMCROP by rules that live in code here rather than in a paragraph
+someone has to trust. verify_against_game.py holds the same knowledge as a reader
+and checks the committed values against a real copy; this holds it as a writer and
+can reproduce them. Neither is a build step -- the game is not a dependency and
+cannot be one.
 
     python3 tools/augment_from_game.py --game-dir "/path/to/game" [--dry-run]
 
@@ -31,13 +41,9 @@ output_unit           filled in from ITEM.UNIT wherever it was null -- see below
 
 Fields removed
 --------------
-icon_image_id, graphic_count
-                      Neither corresponds to anything in the game's files, and no
-                      code reads either. ICONPTR indexes .II with a 3608-byte
-                      stride; the recorded icon_image_id matches neither that nor
-                      .II2's ordering, so both came out of a since-lost extraction
-                      tool. Carrying unverifiable data nobody uses invites someone
-                      to trust it later.
+The keys in UNVERIFIABLE_FIELDS below, each with its reason beside it. build_site.py
+rejects the same set, so a rebuild fails rather than quietly shipping one. Listing
+them twice is how this section came to name two of the three.
 
 Why output_unit is filled rather than left null
 -----------------------------------------------

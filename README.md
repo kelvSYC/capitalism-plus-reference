@@ -36,7 +36,8 @@ data/
 tools/
   build_site.py            regenerates site/index.html from the template + dataset
   verify_against_game.py   checks the data against a real copy of the game
-  augment_from_game.py     one-shot: adds production-rate fields from the game
+  augment_from_game.py     reproduces the production-rate fields from the game;
+                           a no-op against the committed data, which is complete
   extract_icons.py         builds site/images/ from your own copy of the game
 docs/
   DECODING.md     the .SET / .SCN file formats and how each fact was verified

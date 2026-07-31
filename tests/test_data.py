@@ -293,6 +293,25 @@ class TestDerivedFields(unittest.TestCase):
                            for c in CARDS_DATA for a in (c.get("derived_from_livestock") or []))
         self.assertEqual(forward, backward)
 
+    def test_livestock_production_unit_restates_the_products_own_unit(self):
+        """Both come from ITEM.UNIT, so the copy inside livestock_production is
+        the product's output_unit under another name. The verifier checks
+        output_unit against the game; this is what ties the copy to it."""
+        for c in CARDS_DATA:
+            lp = c.get("livestock_production") or {}
+            if "unit" in lp:
+                self.assertEqual(c["output_unit"], lp["unit"], c["id"])
+
+    def test_all_year_is_the_season_spanning_january_to_december(self):
+        """A restatement of from_month/to_month, which the verifier does check.
+        The site branches on it, so a stale value would caption a seasonal yield
+        as year-round."""
+        for c in CARDS_DATA:
+            lp = c.get("livestock_production") or {}
+            if "all_year" in lp:
+                want = lp["from_month"] == "January" and lp["to_month"] == "December"
+                self.assertEqual(want, lp["all_year"], c["id"])
+
     def test_id_follows_its_convention(self):
         initial = {"Standard": "S", "Alternative": "A", "Food & Beverage": "F"}
         for c in CARDS_DATA:
