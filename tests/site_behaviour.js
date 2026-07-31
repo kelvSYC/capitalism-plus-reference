@@ -53,8 +53,8 @@ const document = {
   // Focus restoration reads this; mkEl's focus() keeps it current.
   activeElement: null,
   addEventListener(ev, fn) { (this._ls = this._ls || {})[ev] = fn; },
-  // The graph builds real SVG nodes now that d3 is gone; nothing asserts on the
-  // resulting tree, so these only need to accept the calls without throwing.
+  // The graph builds real SVG nodes; nothing asserts on the resulting tree, so
+  // these only need to accept the calls without throwing.
   createElementNS(ns, tag) { const e = mkEl('<' + tag + '>'); e.tag = tag; return e; },
   getElementById(id) { return _els[id] || (_els[id] = mkEl(id)); },
   createElement(tag) { const e = mkEl('<' + tag + '>'); e.tag = tag; return e; },

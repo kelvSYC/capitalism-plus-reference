@@ -44,7 +44,13 @@ def find_engine():
 
 
 def extract_inline_script(html: str) -> str:
-    """The one inline <script> block (the d3 tag is a src= include, not inline)."""
+    """The site's single inline <script> block -- it vendors nothing, so there is only one."""
+    # Splicing takes the FIRST block. If a second one ever appears, the tests
+    # would keep passing while silently exercising only part of the site, so
+    # make that a failure rather than a quiet gap in coverage.
+    found = html.count("<script")
+    if found != 1:
+        sys.exit(f"error: expected exactly one <script> in site/index.html, found {found}")
     try:
         after = html.split("\n<script>\n", 1)[1]
     except IndexError:

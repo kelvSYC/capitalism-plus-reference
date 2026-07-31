@@ -114,16 +114,10 @@ advice and none of it resolves the question.
 
 **None.** The site is a single self-contained HTML file: all CSS and JavaScript
 is inlined, nothing is fetched from a CDN, and no third-party library is
-redistributed. There is therefore no third-party license obligation to discharge
-and nothing here to attribute.
+redistributed. Even the dependency graph is drawn with plain DOM calls. There is
+therefore no third-party license obligation to discharge and nothing here to
+attribute.
 
-The dependency graph was previously drawn with a bundled copy of D3.js. It used
-about a dozen functions from it — element creation, attribute setting, and an
-average — none of which required a library, and the graph is fully redrawn on
-every render so there was no data-join or reconciliation to do. Removing it cut
-the site's payload roughly in half and eliminated the redistribution obligation
-outright.
-
-If a third-party library is ever added back, its full license text must ship
-beside it; the `pages` workflow fails closed on any vendored file under `site/`
-to enforce that.
+If a third-party library is ever added, its full license text must ship beside
+it; the `pages` workflow fails closed on any vendored file under `site/` to
+enforce that.
