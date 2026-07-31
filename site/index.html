@@ -200,7 +200,7 @@
   /* The table alternative to the diagram. Unlike the other tables this one has
      genuinely long cells (a product can feed a dozen others), so it wraps. */
   .graph-table td, .graph-table th { white-space: normal; vertical-align: top; }
-  .graph-table td:first-child { text-align: right; color: var(--muted); width: 3em; }
+  .alt-note { color: var(--muted); font-style: italic; }
   .graph-table .cell-activate { display: inline; }
   .graph-scroll { overflow: auto; background: var(--panel); border-radius: 8px; border: 1px solid var(--border); max-height: calc(100vh - 170px); }
   .node text { fill: var(--text); font-size: 11px; pointer-events: none; }
@@ -568,6 +568,28 @@ const CLASS_COLORS = CLASS_SOLID;
 // is for.
 const CONSUMER_GOODS_COLOR = PALETTE.retail;
 const INDUSTRIAL_GOODS_COLOR = PALETTE.manufactured;
+
+// The dataset holds two kinds of incoming relationship and the site had been
+// drawing both as plain edges:
+//
+//   inputs                  -- a recipe. ALL of them are required (AND).
+//   derived_from_livestock  -- an animal that yields this. ANY ONE of them
+//                              produces it (OR).
+//
+// Only one product in the whole dataset actually has a choice -- Standard
+// Leather, from Cattle, Pig or Sheep -- which is exactly why it was easy to
+// miss and worth stating explicitly wherever sources are listed. A list of
+// three animals rendered as "Cattle, Pig, Sheep" reads as though you need all
+// three.
+function sourcesAreAlternatives(p) {
+  return (p.derived_from_livestock || []).length > 1;
+}
+
+// "a", "a or b", "a, b or c"
+function joinAlternatives(parts) {
+  if (parts.length <= 1) return parts.join('');
+  return parts.slice(0, -1).join(', ') + ' or ' + parts[parts.length - 1];
+}
 
 function usedElsewhere(p) { return (p.used_in || []).length > 0; }
 // "Consumer Goods" / "Industrial Goods" is the game's own vocabulary, from its
@@ -1528,7 +1550,13 @@ function openDetail(id) {
         const ap = PRODUCTS.find(x => x.gameset === p.gameset && x.name === animalName);
         return relVisible(ap);
       });
-      html += `<div class="section"><h3>Source</h3><ul class="yield-list">`;
+      const alternatives = sourcesAreAlternatives(p);
+      html += `<div class="section"><h3>Source</h3>`;
+      if (alternatives) {
+        html += `<p style="font-size:13px;color:var(--muted);margin-top:0">Any one of these
+          yields ${esc(p.name)} — you do not need all of them.</p>`;
+      }
+      html += `<ul class="yield-list">`;
       if (visibleSources.length) {
         visibleSources.forEach(animalName => {
           const ap = PRODUCTS.find(x => x.gameset === p.gameset && x.name === animalName);
@@ -2226,37 +2254,44 @@ function graphTableHtml(nodes) {
     if (!usedIn.has(l.source)) usedIn.set(l.source, []);
     usedIn.get(l.source).push(l);
   });
-  const qty = l => l.amount != null ? ` (${l.amount}${l.unit ? ' ' + l.unit : ''})` : '';
   const byName = new Map(nodes.map(n => [n.name, n]));
-  const cell = (links, pick) => {
+  // Quantities are deliberately absent. An input amount belongs to one direction
+  // of an edge -- "1 lb of Coal per batch of Steel" -- and printing it in the
+  // other direction, beside Steel in Coal's "Used in" cell, reads as Steel's own
+  // yield. The diagram does not label edges either (showEdgeLabels is false at
+  // both call sites); the detail page is where quantities belong.
+  const cell = (links, pick, alternatives) => {
     if (!links || !links.length) return '<span style="color:var(--muted)">—</span>';
-    return links.map(l => {
+    const parts = links.map(l => {
       const other = byName.get(pick(l));
-      const label = esc(pick(l)) + qty(l);
       return other
-        ? `<button type="button" class="cell-activate" onclick="openDetail('${other.id.replace(/'/g,"\\'")}')">${label}</button>`
-        : label;
-    }).join(', ');
+        ? `<button type="button" class="cell-activate" onclick="openDetail('${other.id.replace(/'/g,"\\'")}')">${esc(pick(l))}</button>`
+        : esc(pick(l));
+    });
+    return alternatives
+      ? `<span class="alt-note">any one of</span> ${joinAlternatives(parts)}`
+      : parts.join(', ');
   };
 
   const ordered = nodes.slice().sort((a, b) =>
     (tier.get(a.name) - tier.get(b.name)) || a.name.localeCompare(b.name));
 
+  // Rows run raw materials first through to finished goods, the same order the
+  // diagram lays out left to right. The tier number itself is not shown: it is
+  // an artefact of the topological sort with no meaning in the game.
   let html = `<table class="grid-table graph-table">
     <caption class="sr-only">Production chain for ${esc(state.gameset)}: ${ordered.length} products,
-    ordered from raw materials through to finished goods. Stage 1 is extracted or
-    raised rather than made from anything else in view.</caption>
+    ordered from raw materials and livestock through to finished goods.</caption>
     <thead><tr>
-      <th scope="col">Stage</th><th scope="col">Product</th>
+      <th scope="col">Product</th>
       <th scope="col">Made from</th><th scope="col">Used in</th>
     </tr></thead><tbody>`;
   ordered.forEach(p => {
     const restricted = scenarioRestricted(p);
     html += `<tr class="${restricted ? 'restricted-row' : ''}">
-      <td>${(tier.get(p.name) || 0) + 1}</td>
       <th scope="row"><div class="grid-name-cell">${productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div>${restrictionNote(p)}</th>
-      <td>${cell(madeFrom.get(p.name), l => l.source)}</td>
-      <td>${cell(usedIn.get(p.name), l => l.target)}</td>
+      <td>${cell(madeFrom.get(p.name), l => l.source, sourcesAreAlternatives(p))}</td>
+      <td>${cell(usedIn.get(p.name), l => l.target, false)}</td>
     </tr>`;
   });
   return html + '</tbody></table>';

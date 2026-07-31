@@ -411,10 +411,14 @@ const edges = buildLinks(scope);
 // cells. Names go through the site's own esc(), so "Wheel & Tire" is compared as
 // the markup actually writes it.
 const rows = tableHtml.split('<tr').slice(1);
-const rowFor = name => rows.find(r => {
+// Match on the ROW HEADER only. A product's name also appears in other rows'
+// "Made from" and "Used in" cells, so any search over the whole table finds the
+// wrong row -- which is exactly the mistake this helper exists to prevent.
+const rowIndexOf = name => rows.findIndex(r => {
   const head = r.slice(r.indexOf('<th scope="row"'), r.indexOf('</th>'));
   return head.includes('>' + esc(name) + '</button>');
 });
+const rowFor = name => rows[rowIndexOf(name)];
 const missingEdges = edges.filter(l => {
   const row = rowFor(l.target);
   if (!row) return true;
@@ -424,12 +428,54 @@ const missingEdges = edges.filter(l => {
 ok('every diagram edge appears in the table (' + edges.length + ' edges)',
    missingEdges.length === 0,
    missingEdges.slice(0, 3).map(l => l.source + '->' + l.target).join(', '));
-ok('edge quantities are carried too', /\(\d+(\.\d+)? [a-z]+\)/.test(tableHtml));
+// Quantities are deliberately absent: an input amount is directional, and
+// printing it in the "Used in" direction reads as the neighbour's own yield.
+ok('quantities are left to the detail page',
+   !/\(\d+(\.\d+)? (lb|unit|quart|barrel|can)\)/.test(tableHtml));
 ok('the table is captioned and scoped',
    tableHtml.includes('<caption') && tableHtml.includes('<th scope="col"') &&
    tableHtml.includes('<th scope="row"'));
-ok('stage ordering starts at the raw materials',
-   tableHtml.indexOf('<td>1</td>') < tableHtml.indexOf('<td>2</td>'));
+// The tier number is an artefact of the topological sort with no meaning in the
+// game, so it is not shown -- but it still orders the rows.
+ok('the stage number is not displayed', !/<td>\d+<\/td>/.test(tableHtml));
+ok('rows still run raw materials before the things made from them',
+   rowIndexOf('Iron Ore') < rowIndexOf('Steel') && rowIndexOf('Steel') < rowIndexOf('Car'),
+   `IronOre=${rowIndexOf('Iron Ore')} Steel=${rowIndexOf('Steel')} Car=${rowIndexOf('Car')}`);
+
+print('--- alternatives are distinguished from requirements ---');
+// inputs are AND (a recipe needs all of them); derived_from_livestock is OR
+// (any one animal yields the product). Standard Leather is the only product in
+// the dataset with a genuine choice, which is why it was easy to miss.
+const leather = PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Leather');
+ok('Leather really does have three possible sources',
+   sourcesAreAlternatives(leather) && leather.derived_from_livestock.length === 3);
+const leatherRow = rowFor('Leather');
+ok('the table marks Leather\'s sources as a choice',
+   !!leatherRow && leatherRow.includes('any one of'));
+ok('the choice reads as "or", not a comma list',
+   !!leatherRow && / or <button/.test(leatherRow), leatherRow && leatherRow.slice(0, 0));
+
+// A single-source product must NOT claim a choice.
+const beefRow = rowFor('Frozen Beef');
+ok('a single-source product is not described as a choice',
+   !!beefRow && !beefRow.includes('any one of'));
+// And a recipe with several inputs must not be either -- those are all required.
+const steelRow = rowFor('Steel');
+ok('a multi-input recipe is not described as a choice',
+   !!steelRow && !steelRow.includes('any one of'));
+
+reset();
+openDetail(leather.id);
+const leatherDetail = pane('detail-view').innerHTML;
+ok('the detail page states the choice in words',
+   leatherDetail.includes('Any one of these') && leatherDetail.includes('do not need all'));
+reset();
+openDetail(PRODUCTS.find(p => p.gameset === 'Standard' && p.name === 'Frozen Beef').id);
+ok('a single-source detail page does not claim a choice',
+   !pane('detail-view').innerHTML.includes('Any one of these'));
+
+reset();
+state.gameset = 'Standard'; state.graphLayout = 'table'; setView('graph');
 ok('switching to the table announces the change',
    document.getElementById('resultStatus').textContent.includes('production chain'));
 
