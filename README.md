@@ -94,9 +94,10 @@ here grants any right in Enlight Software's game, artwork, or trademarks.
 ## Status
 
 **Not ready to publish.** Functionally complete for personal use — Grid/List/Cards
-views, a Farmer's Almanac, an interactive dependency graph, and scenario-goal
-filtering (including domination targets, byte-decoded from real save files)
-across all three gamesets — but several things stand between here and go-live:
+views, a Farmer's Almanac covering both crops and livestock, an interactive
+dependency graph with a table equivalent, and scenario-goal filtering (including
+domination targets, byte-decoded from real save files) across all three
+gamesets — but several things stand between here and go-live:
 
 - **Accessibility.** The site is effectively mouse-only: no `tabindex`, `role`,
   `aria-*` or key handlers anywhere, so a keyboard user can reach three controls.

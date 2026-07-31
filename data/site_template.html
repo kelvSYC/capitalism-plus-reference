@@ -246,6 +246,10 @@
   .climate-bar .climate-seg { width: 8px; height: 10px; border-radius: 1px; background: var(--border); }
   .month-cell { width: 20px; text-align: center; padding: 6px 2px; }
   .month-cell.grow { background: #2E9E4D55; }
+  /* Deliberately not the growing green: "you may slaughter in any month" is a
+     different fact from "this yields in these months", and showing them the same
+     way would equate a season with the absence of one. */
+  .month-cell.anytime { background: #9aa0ab26; }
   .month-cell.sow { border-left: 2px solid #57D9A3; }
   .month-cell.harvest { border-right: 2px solid #FFAB00; }
   .almanac-legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: var(--muted); margin-bottom: 14px; }
@@ -2557,6 +2561,44 @@ function growingMonths(sowMonth, harvestMonth) {
   return months;
 }
 
+// The Almanac's second half: goods that come from animals rather than the
+// ground. Continuous yields sort first, by the month they start, so the seasonal
+// ones read alongside the crops above; slaughter yields have no season and go
+// after, alphabetically.
+function almanacLivestock() {
+  let list = byGameset(state.gameset).filter(p => p.livestock_production);
+  if (state.scenario && !state.showRestricted) list = list.filter(p => !scenarioRestricted(p));
+  return list.sort((a, b) => {
+    const am = a.livestock_production.mode === 'continuous';
+    const bm = b.livestock_production.mode === 'continuous';
+    if (am !== bm) return am ? -1 : 1;
+    if (am && bm) {
+      const d = MONTHS_FULL.indexOf(a.livestock_production.from_month)
+              - MONTHS_FULL.indexOf(b.livestock_production.from_month);
+      if (d) return d;
+    }
+    return a.name.localeCompare(b.name);
+  });
+}
+
+// "Sheep (150 lb)" -- the weight is what turns a slaughter percentage into a
+// quantity, so it belongs next to the animal's name.
+function livestockSourceCell(p) {
+  const names = p.derived_from_livestock || [];
+  const parts = names.map(n => {
+    const a = PRODUCTS.find(x => x.gameset === p.gameset && x.name === n);
+    const weight = a && a.livestock_stats
+      ? ` <span style="color:var(--muted)">(${a.livestock_stats.weight} ${esc(a.livestock_stats.unit)})</span>`
+      : '';
+    return a
+      ? `<button type="button" class="cell-activate" onclick="event.stopPropagation();openDetail('${a.id.replace(/'/g,"\\'")}')">${esc(n)}</button>${weight}`
+      : esc(n) + weight;
+  });
+  return sourcesAreAlternatives(p)
+    ? `<span class="alt-note">any one of</span> ${joinAlternatives(parts)}`
+    : parts.join(', ') || '<span style="color:var(--muted)">—</span>';
+}
+
 function almanacCrops() {
   let list = byGameset(state.gameset)
     .filter(p => p.classification === 'Plant Product' && p.growing_conditions);
@@ -2579,9 +2621,14 @@ function almanacCrops() {
 function renderAlmanac() {
   const el = document.getElementById('almanac-view');
   const crops = almanacCrops();
-  announce(`${crops.length} crop${crops.length === 1 ? '' : 's'} in the Farmer's Almanac.`);
+  const stockCount = almanacLivestock().length;
+  announce(`${crops.length} crop${crops.length === 1 ? '' : 's'} and ${stockCount} livestock product${stockCount === 1 ? '' : 's'} in the Farmer's Almanac.`);
+  if (crops.length === 0 && stockCount === 0) {
+    el.innerHTML = '<div class="empty">No crops or livestock in this gameset.</div>';
+    return;
+  }
   if (crops.length === 0) {
-    el.innerHTML = '<div class="empty">No crops with growing conditions in this gameset.</div>';
+    el.innerHTML = livestockAlmanacHtml();
     return;
   }
   let html = `<div class="count">${crops.length} crop${crops.length === 1 ? '' : 's'} — ${state.gameset} gameset</div>`;
@@ -2599,7 +2646,8 @@ function renderAlmanac() {
   if (state.scenario) {
     html += `<div class="almanac-disclaimer">Crossed-out crops can still be sown and harvested -- the game won't stop you -- but the Sales Unit will never connect: neither the crop itself nor anything made from it, however many stages downstream, can be sold -- it's restricted in this scenario. Uncheck "Show Restricted" above if you'd rather filter them out of the list entirely.</div>`;
   }
-  html += `<table class="almanac-table">
+  html += `<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 10px">Crops</h2>
+    <table class="almanac-table">
     <caption class="sr-only">Growing calendar: climate, rainfall and the sowing,
     growing and harvesting months for every crop in the ${state.gameset} gameset.</caption>
     <thead><tr>
@@ -2632,7 +2680,59 @@ function renderAlmanac() {
     html += '</tr>';
   });
   html += '</tbody></table>';
+
+  html += livestockAlmanacHtml();
   el.innerHTML = html;
+}
+
+// Same shape as the crop table so the two read as one document: a month grid,
+// scoped headers, and the state of every cell available as text rather than as
+// colour alone.
+function livestockAlmanacHtml() {
+  const stock = almanacLivestock();
+  if (!stock.length) return '';
+  let html = `<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:28px 0 10px">
+    Livestock — ${stock.length} product${stock.length === 1 ? '' : 's'}</h2>
+    <div class="almanac-legend">
+      <span class="item"><span class="month-cell grow" style="display:inline-block;width:14px;height:10px"></span> Yielding month</span>
+      <span class="item"><span class="month-cell anytime" style="display:inline-block;width:14px;height:10px"></span> Available any month, by slaughtering</span>
+    </div>
+    <table class="almanac-table">
+    <caption class="sr-only">Livestock yields for the ${esc(state.gameset)} gameset:
+    what each animal produces, how much, and when.</caption>
+    <thead><tr>
+      <th scope="col">Product</th><th scope="col">From</th><th scope="col">Yield</th>
+      ${MONTHS_SHORT.map((m, i) => `<th scope="col" class="month-cell"><span aria-hidden="true">${m}</span><span class="sr-only">${MONTHS_FULL[i]}</span></th>`).join('')}
+    </tr></thead><tbody>`;
+
+  stock.forEach(p => {
+    const lp = p.livestock_production;
+    const restricted = scenarioRestricted(p);
+    const continuous = lp.mode === 'continuous';
+    const months = continuous ? growingMonths(lp.from_month, lp.to_month) : null;
+    const yieldText = continuous
+      ? `${lp.monthly_quantity} ${esc(lp.unit || '')} per month`
+      : `${lp.slaughter_percent}% of the animal's weight, at slaughter`;
+
+    html += `<tr class="${restricted ? 'restricted-row' : ''}">
+      <th scope="row"><div class="almanac-crop">${productIcon(p, restricted)}<button type="button" class="cell-activate" onclick="openDetail('${p.id.replace(/'/g,"\\'")}')">${esc(p.name)}</button></div>${restrictionNote(p)}</th>
+      <td>${livestockSourceCell(p)}</td>
+      <td>${yieldText}</td>`;
+    for (let m = 0; m < 12; m++) {
+      // A slaughter product is available in any month -- you decide when -- so
+      // the row is filled, but with a different treatment from a seasonal yield,
+      // because they are not the same fact.
+      if (!continuous) {
+        html += `<td class="month-cell anytime"><span class="sr-only">Available</span></td>`;
+      } else if (months.has(m)) {
+        html += `<td class="month-cell grow"><span class="sr-only">Yielding</span></td>`;
+      } else {
+        html += `<td class="month-cell"></td>`;
+      }
+    }
+    html += '</tr>';
+  });
+  return html + '</tbody></table>';
 }
 
 function renderAll() {

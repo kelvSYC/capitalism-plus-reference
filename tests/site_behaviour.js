@@ -562,7 +562,10 @@ print('--- the growing calendar exists in text, not just in colour ---');
 // The calendar was 12 empty <td>s per crop whose entire content was a background
 // colour and two border edges -- invisible to a screen reader, in the one view
 // that exists to show it.
-const MONTH_STATE = /<span class="sr-only">(Sown|Harvested|Growing|Sown and harvested)<\/span>/;
+// Every state a month cell can be in, across both the crop and livestock
+// tables. Extending this list is the point: a new cell type that conveys its
+// state only by colour fails the check below rather than slipping through.
+const MONTH_STATE = /<span class="sr-only">(Sown|Harvested|Growing|Sown and harvested|Yielding|Available)<\/span>/;
 let statelessCells = [], missingRows = [];
 for (const gs of ['Standard', 'Alternative', 'Food & Beverage']) {
   reset();
@@ -572,7 +575,7 @@ for (const gs of ['Standard', 'Alternative', 'Food & Beverage']) {
   // Every cell carrying a visual state class must also carry text.
   const cells = html.match(/<td class="month-cell[^"]*">[^<]*(<span[^>]*>[^<]*<\/span>)?/g) || [];
   for (const cell of cells) {
-    const visual = /grow|sow|harvest/.test(cell.slice(0, cell.indexOf('>')));
+    const visual = /grow|sow|harvest|anytime/.test(cell.slice(0, cell.indexOf('>')));
     const textual = MONTH_STATE.test(cell + '</span>');
     if (visual && !textual) statelessCells.push(gs + ': ' + cell.slice(0, 60));
   }
@@ -610,6 +613,56 @@ ok('the product list table is captioned and scoped',
    listView.includes('<th scope="row"'));
 ok('the restriction column has a header name', listView.includes('Scenario restriction'));
 state.gridLayout = 'cards';
+
+print('--- the Almanac covers livestock as well as crops ---');
+// Seasonal livestock data (Wool is June-October) is exactly what an almanac is
+// for, and the game publishes it nowhere.
+for (const gs of ['Standard', 'Alternative', 'Food & Beverage']) {
+  reset();
+  state.gameset = gs;
+  setView('almanac');
+  const html = pane('almanac-view').innerHTML;
+  const expected = byGameset(gs).filter(p => p.livestock_production);
+  ok(gs + ': every livestock product has a row (' + expected.length + ')',
+     expected.every(p => html.includes('>' + esc(p.name) + '</button>')),
+     expected.filter(p => !html.includes('>' + esc(p.name) + '</button>')).map(p => p.name).join(', '));
+  ok(gs + ': the crop and livestock tables are both present',
+     (html.match(/<table class="almanac-table"/g) || []).length === 2);
+}
+
+reset();
+state.gameset = 'Standard';
+setView('almanac');
+const alm = pane('almanac-view').innerHTML;
+ok('a seasonal yield is banded only in its months',
+   (alm.match(/month-cell grow"><span class="sr-only">Yielding/g) || []).length > 0);
+ok('a slaughter product is marked available in any month',
+   alm.includes('month-cell anytime'));
+ok('the two treatments are visually distinct',
+   alm.includes('month-cell grow') && alm.includes('month-cell anytime'));
+ok('yields state their quantity and period', alm.includes('9 lb per month'));
+ok('slaughter yields state the proportion', alm.includes("of the animal's weight, at slaughter"));
+ok('source animals carry the weight the percentage applies to', alm.includes('(150 lb)'));
+ok("Leather's three possible sources are shown as a choice",
+   alm.includes('any one of') && / or <button/.test(alm));
+ok('the livestock table is captioned and scoped',
+   alm.includes('Livestock yields for the') && alm.includes('<th scope="row"'));
+ok('the announcement covers both halves',
+   /\d+ crops? and \d+ livestock products? in the Farmer's Almanac/.test(
+     document.getElementById('resultStatus').textContent),
+   document.getElementById('resultStatus').textContent);
+
+// Restriction filtering must apply to livestock exactly as it does to crops.
+reset();
+state.gameset = 'Alternative';
+state.scenario = 'UK';
+setView('almanac');
+const shown = almanacLivestock();
+ok('restricted livestock products are hidden by default',
+   shown.every(p => !scenarioRestricted(p)),
+   shown.filter(p => scenarioRestricted(p)).map(p => p.name).join(', '));
+state.showRestricted = true;
+ok('Show Restricted brings them back', almanacLivestock().length >= shown.length);
 
 print('--- keyboard operability ---');
 // The site was mouse-only: zero tabindex/role/aria/key handlers anywhere, so a
