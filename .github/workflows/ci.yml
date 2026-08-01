@@ -11,9 +11,7 @@ name: ci
 
 on:
   push:
-    # No remote is configured yet and the local default is `master`; GitHub's
-    # default for new repos is `main`. Watch both so this works either way.
-    branches: [master, main]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
