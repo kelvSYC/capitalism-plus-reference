@@ -217,10 +217,17 @@
   .kv dd { margin: 0; }
 
   .yield-list, .rel-list { list-style: none; margin: 0; padding: 0; }
-  .yield-list li, .rel-list li {
+  /* The row control is a span INSIDE the <li>, not the <li> itself: role="button"
+     on a list item replaces its listitem role, so the list stops being a list to
+     a screen reader and "3 items" is never announced. axe reports it as
+     "<ul> must only directly contain <li>". */
+  .yield-list li, .rel-list li { border-radius: 6px; }
+  .yield-list .rel-item, .rel-list .rel-item {
     display: flex; align-items: center; gap: 10px; padding: 6px 4px; border-radius: 6px; cursor: pointer;
   }
-  .yield-list li:hover, .rel-list li:hover { background: var(--panel2); }
+  .yield-list .rel-item:hover, .rel-list .rel-item:hover { background: var(--panel2); }
+  /* Empty-state rows are bare text in a plain <li>; same inset, no control. */
+  .yield-list .rel-empty, .rel-list .rel-empty { padding: 6px 4px; }
   .yield-list .picon, .rel-list .picon { width: 32px; height: 32px; border-radius: 5px; padding: 2px; --picon-font: 13px; }
   .rel-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .rel-cols h4 { font-size: 12px; color: var(--muted); margin: 0 0 8px; font-weight: normal; }
@@ -370,6 +377,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 <header>
   <h1>Capitalism Plus <span>Product Reference</span></h1>
   <div class="tabs segmented" id="gamesetTabs" role="tablist" aria-label="Gameset"></div>
@@ -385,7 +394,6 @@
 </header>
 
 <!-- ~40 sidebar controls sit before the content on every view. WCAG 2.4.1. -->
-<a class="skip-link" href="#main-content">Skip to content</a>
 
 <noscript>
   <p style="padding:20px;color:#e8e9ec;background:#1e2127;border-bottom:1px solid #383d47;margin:0">
@@ -1639,13 +1647,13 @@ function livestockYieldSection(p) {
   if (visibleYields.length) {
     visibleYields.forEach(yName => {
       const yp = yieldOf(yName);
-      html += `<li ${ACTIVATABLE} onclick="${yp ? `openDetail('${yp.id.replace(/'/g,"\\'")}')` : ''}">
+      html += `<li><span class="rel-item" ${ACTIVATABLE} onclick="${yp ? `openDetail('${yp.id.replace(/'/g,"\\'")}')` : ''}">
           ${yp ? productIcon(yp, scenarioRestricted(yp)) : ''}
           <span><span${relNameStyle(yp)}>${esc(yName)}${yp ? ` <span style="color:var(--muted)">(${yp.classification})</span>` : ''}</span>${yp ? restrictionNote(yp) : ''}</span>
-        </li>`;
+        </span></li>`;
     });
   } else if ((p.livestock_yields || []).length) {
-    html += `<li style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
+    html += `<li class="rel-empty" style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
   }
   return html + `</ul></div>`;
 }
@@ -1751,12 +1759,12 @@ function openDetail(id) {
       if (visibleSources.length) {
         visibleSources.forEach(animalName => {
           const ap = PRODUCTS.find(x => x.gameset === p.gameset && x.name === animalName);
-          html += `<li ${ACTIVATABLE} onclick="${ap ? `openDetail('${ap.id.replace(/'/g,"\\'")}')` : ''}">
+          html += `<li><span class="rel-item" ${ACTIVATABLE} onclick="${ap ? `openDetail('${ap.id.replace(/'/g,"\\'")}')` : ''}">
             ${ap ? productIcon(ap, scenarioRestricted(ap)) : ''}<span><span${relNameStyle(ap)}>${esc(animalName)}</span>${ap ? restrictionNote(ap) : ''}</span>
-          </li>`;
+          </span></li>`;
         });
       } else {
-        html += `<li style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
+        html += `<li class="rel-empty" style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
       }
       html += `</ul></div>`;
     }
@@ -1771,29 +1779,29 @@ function openDetail(id) {
       if (hasInputs && visibleInputs.length) {
         visibleInputs.forEach(inp => {
           const ip = PRODUCTS.find(x => x.gameset === p.gameset && x.name === inp.material);
-          html += `<li ${ACTIVATABLE} onclick="${ip ? `openDetail('${ip.id.replace(/'/g,"\\'")}')` : ''}">
+          html += `<li><span class="rel-item" ${ACTIVATABLE} onclick="${ip ? `openDetail('${ip.id.replace(/'/g,"\\'")}')` : ''}">
             ${ip ? productIcon(ip, scenarioRestricted(ip)) : ''}
             <span><span${relNameStyle(ip)}>${esc(inp.material)}</span>${ip ? restrictionNote(ip) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(ip)}">${inp.amount} ${inp.unit || ''} · Q:${inp.quality_pct}%</span></span>
-          </li>`;
+          </span></li>`;
         });
       } else if (!hasInputs) {
-        html += `<li style="color:var(--muted)">— none (raw input) —</li>`;
+        html += `<li class="rel-empty" style="color:var(--muted)">— none (raw input) —</li>`;
       } else {
-        html += `<li style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
+        html += `<li class="rel-empty" style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
       }
       html += `</ul></div><div><h4>Used in (direct consumers)</h4><ul class="rel-list">`;
       if (hasUsedIn && visibleUsedIn.length) {
         visibleUsedIn.forEach(u => {
           const up = byId(u.id);
-          html += `<li ${ACTIVATABLE} onclick="openDetail('${u.id.replace(/'/g,"\\'")}')">
+          html += `<li><span class="rel-item" ${ACTIVATABLE} onclick="openDetail('${u.id.replace(/'/g,"\\'")}')">
             ${up ? productIcon(up, scenarioRestricted(up)) : ''}
             <span><span${relNameStyle(up)}>${esc(u.product)}</span>${up ? restrictionNote(up) : ''}<br><span style="color:var(--muted);font-size:11px;${relStrikeCss(up)}">${u.amount} ${u.unit || ''} · Q:${u.quality_pct}%</span></span>
-          </li>`;
+          </span></li>`;
         });
       } else if (!hasUsedIn) {
-        html += `<li style="color:var(--muted)">— none (sold directly) —</li>`;
+        html += `<li class="rel-empty" style="color:var(--muted)">— none (sold directly) —</li>`;
       } else {
-        html += `<li style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
+        html += `<li class="rel-empty" style="color:var(--muted)">— none shown (restricted; check "Show Restricted" in the sidebar) —</li>`;
       }
       html += `</ul></div></div></div>`;
     }
