@@ -54,6 +54,15 @@ jobs:
       - name: Install harness
         run: npm install
 
+      # TEMPORARY: this repo has no lockfile because it was authored on a machine
+      # with no Node. Uploading the one npm resolves here lets it be committed, at
+      # which point `npm install` becomes `npm ci` and this step goes away.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: package-lock
+          path: package-lock.json
+          retention-days: 1
+
       - name: Install browser
         run: npx playwright install --with-deps chromium
 
