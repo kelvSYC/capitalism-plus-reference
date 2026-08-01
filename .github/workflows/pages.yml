@@ -29,9 +29,9 @@ jobs:
   preflight:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -123,18 +123,18 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
       # site/ is self-contained and needs no build: index.html is committed
       # pre-built, with all CSS and JS inlined and no external dependency. If the
       # icon question is ever resolved in favour of publishing, the step that
       # populates site/images/ belongs here -- and the preflight guard above must
       # be updated deliberately, in the same commit, with the reasoning recorded.
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

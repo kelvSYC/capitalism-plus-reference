@@ -22,9 +22,9 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -36,9 +36,16 @@ jobs:
       - name: Data invariants
         run: python3 -m unittest discover -s tests -v
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          # Floating rather than pinned, deliberately. run_site_tests.py is
+          # engine-agnostic -- it takes whichever of node/bun/deno/jsc it finds --
+          # so there is nothing here that depends on a particular version, and a
+          # pin only rots: this said "20" until Node 20 went end-of-life, at which
+          # point CI was silently exercising an unsupported runtime. Tracking LTS
+          # means a new one breaking us shows up as a CI failure, which is the
+          # signal we want.
+          node-version: "lts/*"
 
       # Splices the real inline script out of the built site/index.html and
       # exercises it against a DOM stub -- so this tests the shipped artifact,
