@@ -129,8 +129,9 @@ coherent to listen to is a separate question, and an open one.
 accessibility-tree snapshots so a CSS refactor cannot quietly flatten the
 semantics, and a simulated screen reader recording what would be announced. It
 is the regression net rather than the audit — it will tell you an announcement
-changed, never that it was too long. It also needs Node, which nothing else here
-does, so it runs from its own manual workflow and is not part of the deploy gate.
+changed, never that it was too long. It needs Node, which nothing else here does,
+so it lives in its own workflow; `pages.yml` calls that workflow, so no deploy
+happens unless the audit passes.
 
 ## Licensing
 
