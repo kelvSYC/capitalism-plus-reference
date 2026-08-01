@@ -1050,7 +1050,7 @@ function productIcon(p, dim) {
     .slice(0, 2).map(w => w[0]).join('').toUpperCase();
   const bg = CLASS_COLORS[p.classification];
   const style = `--picon-fg:${readableOnWhite(bg)}` + (dim ? ';opacity:0.55' : '');
-  return `<span class="picon" data-initial="${initial}" style="${style}">` +
+  return `<span class="picon" aria-hidden="true" data-initial="${initial}" style="${style}">` +
     `<img src="images/${p.icon_file}" alt="" loading="lazy" decoding="async"></span>`;
 }
 function relNameStyle(rp) {
@@ -1626,7 +1626,7 @@ function plantIcon(p, dim) {
     .slice(0, 2).map(w => w[0]).join('').toUpperCase();
   const style = `--picon-fg:${readableOnWhite(CLASS_COLORS[p.classification])}`
     + (dim ? ';opacity:0.55' : '');
-  return `<span class="picon plant-tile" data-initial="${initial}" style="${style}" title="${esc(p.plant.name)} — the plant ${esc(p.name)} grows on">` +
+  return `<span class="picon plant-tile" aria-hidden="true" data-initial="${initial}" style="${style}" title="${esc(p.plant.name)} — the plant ${esc(p.name)} grows on">` +
     `<img src="images/${p.plant.icon_file}" alt="${esc(p.plant.name)}, the plant ${esc(p.name)} grows on" loading="lazy" decoding="async"></span>`;
 }
 
@@ -1700,19 +1700,24 @@ function openDetail(id) {
       // overflows its container.
       const rawTotal = p.inputs.reduce((sum, inp) => sum + (inp.quality_pct || 0), 0) + (p.production_technology_pct || 0);
       const scale = rawTotal > 0 ? 100 / rawTotal : 1;
-      html += `<div class="bar-wrap"><div class="bar">`;
+      html += `<div class="bar-wrap"><div class="bar" aria-hidden="true">`;
       p.inputs.forEach((inp, i) => {
         html += `<div class="bar-seg" style="width:${(inp.quality_pct || 0) * scale}%;background:${pctColor(i)};color:${onColor(pctColor(i))}">${inp.quality_pct}%</div>`;
       });
       if (p.production_technology_pct) {
         html += `<div class="bar-seg" style="width:${p.production_technology_pct * scale}%;background:#555b66;color:${onColor('#555b66')}">${p.production_technology_pct}%</div>`;
       }
+      // The bar showed percentages with no labels and the legend showed labels
+      // with no percentages, so the pairing lived only in the colours: a reader
+      // heard "5% 5% 68% Electronic Components Plastic Steel Production
+      // Technology". The legend now carries both -- which also helps anyone who
+      // cannot separate the swatches -- and the bar is decoration.
       html += `</div><div class="bar-legend">`;
       p.inputs.forEach((inp, i) => {
-        html += `<span><span class="sw" style="background:${pctColor(i)}"></span>${esc(inp.material)} — ${inp.amount} ${inp.unit || ''}</span>`;
+        html += `<span><span class="sw" style="background:${pctColor(i)}" aria-hidden="true"></span>${esc(inp.material)} — ${inp.amount} ${inp.unit || ''} · ${inp.quality_pct}%</span>`;
       });
       if (p.production_technology_pct) {
-        html += `<span><span class="sw" style="background:#555b66"></span>Production Technology</span>`;
+        html += `<span><span class="sw" style="background:#555b66" aria-hidden="true"></span>Production Technology · ${p.production_technology_pct}%</span>`;
       }
       html += `</div></div>`;
     }
