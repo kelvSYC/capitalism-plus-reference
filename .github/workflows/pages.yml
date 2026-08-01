@@ -113,6 +113,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
+      # Job-level permissions REPLACE the workflow-level set rather than adding to
+      # it, so contents: read has to be restated here or actions/checkout gets a
+      # token that cannot read this repository. The failure is opaque: GitHub
+      # answers "Repository not found", which reads as a wrong URL rather than a
+      # missing scope. It is also invisible on a public repo, where checkout falls
+      # back to anonymous read -- so this only bites while the repo is private.
+      contents: read
       pages: write
       id-token: write
     steps:
