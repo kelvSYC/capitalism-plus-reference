@@ -134,19 +134,19 @@ test("a full growing-calendar row, for judging verbosity", async ({ page }) => {
     const row = rows.find((r) => (r.textContent || "").includes("Rubber"));
     if (!row) return null;
     await virtual.start({ container: row });
+    // A fixed number of steps, NOT "stop when a phrase repeats": an unsown month
+    // is an empty cell announced as bare "cell", so consecutive empty months
+    // repeat legitimately and a repeat-detector truncates the row mid-way. 60 is
+    // comfortably past the ~45 a 16-column row produces.
     const log = [];
-    // Read until the reader stops producing anything new: the row is the
-    // container, so it runs out rather than escaping into the next row. Capped
-    // in case a future change makes next() cycle forever.
-    let previous = null;
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 60; i++) {
       await virtual.next();
-      const phrase = await virtual.lastSpokenPhrase();
-      if (phrase === previous) break;
-      log.push(phrase);
-      previous = phrase;
+      log.push(await virtual.lastSpokenPhrase());
     }
     await virtual.stop();
+    // Trim only the TRAILING run, which is the reader idling past the end of the
+    // container. Interior repeats are real: they are consecutive empty months.
+    while (log.length > 1 && log[log.length - 1] === log[log.length - 2]) log.pop();
     return log;
   });
   test.skip(spoken === null, "no Rubber row in this gameset");
