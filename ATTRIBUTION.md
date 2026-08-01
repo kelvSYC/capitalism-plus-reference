@@ -1,5 +1,12 @@
 # Attribution
 
+> **Icon position: unresolved.** No fair-use determination has been made, Enlight
+> has not been contacted, and the icons' own provenance is unverified (finding 4
+> below). They are therefore withheld from version control and from every
+> published form of this site, enforced by three mechanical guards rather than by
+> intention. This does **not** block publishing: the site is built to work without
+> artwork. Nothing else in this document is open.
+
 **Capitalism Plus** (1996) is a product of **Enlight Software Limited**
 (Hong Kong), founded by Trevor Chan. Enlight is still actively developing
 this game series today as **Capitalism Lab** (the successor to Capitalism

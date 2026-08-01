@@ -152,5 +152,7 @@ and every check is a hard failure with an explanation:
 The last one is the point the repository would otherwise miss entirely:
 attribution that lives only in a markdown file is invisible to a visitor.
 
-The open question is the icon hold in `ATTRIBUTION.md`, which the third gate
-enforces. Everything else is mechanical and passes today.
+The one open question is the icon hold in `ATTRIBUTION.md`, and the third gate
+enforces it. It gates the **artwork, not the deploy** — with `site/images/` empty
+every gate passes and products render as monogram tiles, which is the state the
+site was designed for.
