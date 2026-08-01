@@ -1,0 +1,49 @@
+- complementary "Filters":
+  - heading "Scenario Preset" [level=2]
+  - combobox "Scenario Preset":
+    - option "— None (browse all, no scenario) —" [selected]
+    - option "The Emerging Dragon"
+    - option "The Asian Gold Rush"
+    - option "Diversification Dilemma"
+    - option "Entrepreneurial Spirit"
+    - option "Global Domination"
+    - option "Italy — Looking South"
+    - option "Silicon Dream"
+    - option "Techno-Sweep"
+  - heading "Category" [level=2]
+  - group "Category":
+    - button "All categories" [pressed]
+    - button "Apparel, Footwear & Bags"
+    - button "Automobile"
+    - button "Beverage"
+    - button "Chemical Products"
+    - button "Cigarettes"
+    - button "Computers"
+    - button "Cosmetics"
+    - button "Electronic Products"
+    - button "Food"
+    - button "Furniture"
+    - button "Jewelry"
+    - button "Toys"
+    - button "Watches"
+  - heading "Classification" [level=2]
+  - group "Classification":
+    - button "All" [pressed]
+    - button "Retail Product"
+    - button "Livestock Product"
+    - button "Livestock Semi-Product"
+    - button "Livestock"
+    - button "Plant Product"
+    - button "Raw Material"
+    - button "Semi-Product"
+  - heading "Industry" [level=2]
+  - group "Industry":
+    - button "All" [pressed]
+    - button "Raw Material Production"
+    - button "Farming"
+    - button "Manufacturing"
+    - button "Retailing"
+  - heading "Goods Type" [level=2]
+  - group "Goods Type":
+    - button "Consumer Goods"
+    - button "Industrial Goods"

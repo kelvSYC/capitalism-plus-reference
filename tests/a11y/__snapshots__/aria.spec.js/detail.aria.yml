@@ -1,0 +1,24 @@
+- region "Air Conditioner":
+  - button "← Back"
+  - text: AC
+  - heading "Air Conditioner" [level=2]
+  - text: /Electronic Products · Manufacturing · Standard gameset Retail Product \d+% 5% 5% \d+% Electronic Components — 1 lb Plastic — 3 lb Steel — 6 lb Production Technology/
+  - heading "Output" [level=3]
+  - term: Yield
+  - definition: 1 unit per production run
+  - heading "Immediate Dependencies" [level=3]
+  - heading "Made from (direct inputs)" [level=4]
+  - list:
+    - listitem:
+      - button /EC Electronic Components 1 lb · Q:\d+%/
+    - listitem:
+      - button "P Plastic 3 lb · Q:5%"
+    - listitem:
+      - button "S Steel 6 lb · Q:5%"
+  - heading "Used in (direct consumers)" [level=4]
+  - list:
+    - listitem: — none (sold directly) —
+  - heading "Dependency Diagram (transitive)" [level=3]
+  - paragraph: Everything this product is transitively made from (left) through everything it transitively ends up in (right). Click any node to jump to it.
+  - region "Dependency diagram for Air Conditioner, scrollable":
+    - img "Everything Air Conditioner is transitively made from and ends up in. The same relationships are listed under Immediate Dependencies above.": Air Conditioner Chemical Minerals Coal Iron Ore Oil Silica Electronic Components Plastic Silicon Steel

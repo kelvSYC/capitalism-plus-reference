@@ -1,0 +1,7 @@
+document
+link, Skip to content
+banner
+heading, Capitalism Plus Product Reference, level 1
+Capitalism Plus
+Product Reference
+end of heading, Capitalism Plus Product Reference, level 1

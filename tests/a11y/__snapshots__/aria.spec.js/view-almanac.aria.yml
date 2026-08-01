@@ -1,0 +1,367 @@
+- tabpanel "Farmer's Almanac":
+  - text: 8 crops — Standard gameset Cold Cool Warm Hot Little rain Moderate rain Plentiful rain Sow Harvest
+  - heading "Crops" [level=2]
+  - region "Growing calendar, scrollable":
+    - 'table "Growing calendar: climate, rainfall and the sowing, growing and harvesting months for every crop in the Standard gameset."':
+      - caption: "Growing calendar: climate, rainfall and the sowing, growing and harvesting months for every crop in the Standard gameset."
+      - rowgroup:
+        - row "Crop Climate Rainfall Goods Type January February March April May June July August September October November December":
+          - columnheader "Crop"
+          - columnheader "Climate"
+          - columnheader "Rainfall"
+          - columnheader "Goods Type"
+          - columnheader "January"
+          - columnheader "February"
+          - columnheader "March"
+          - columnheader "April"
+          - columnheader "May"
+          - columnheader "June"
+          - columnheader "July"
+          - columnheader "August"
+          - columnheader "September"
+          - columnheader "October"
+          - columnheader "November"
+          - columnheader "December"
+      - rowgroup:
+        - row "C Cotton Warm Plentiful Industrial Goods Sown Growing Growing Growing Harvested":
+          - rowheader "C Cotton":
+            - text: ""
+            - button "Cotton"
+          - cell "Warm"
+          - cell "Plentiful"
+          - cell "Industrial Goods"
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Harvested"
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+        - row "B Barley Warm, Cool, or Cold Moderate Industrial Goods Sown Growing Growing Growing Growing Growing Growing Harvested":
+          - rowheader "B Barley":
+            - text: ""
+            - button "Barley"
+          - cell "Warm, Cool, or Cold"
+          - cell "Moderate"
+          - cell "Industrial Goods"
+          - cell
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Harvested"
+          - cell
+          - cell
+        - row "SC Sugar Sugar Cane Warm Moderate Industrial Goods Sown Growing Growing Growing Growing Growing Harvested":
+          - rowheader "SC Sugar Sugar Cane":
+            - text: ""
+            - button "Sugar"
+            - text: ""
+          - cell "Warm"
+          - cell "Moderate"
+          - cell "Industrial Goods"
+          - cell
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Harvested"
+          - cell
+          - cell
+          - cell
+        - row "C Cocoa Hot Moderate Industrial Goods Sown Growing Growing Growing Growing Growing Harvested":
+          - rowheader "C Cocoa":
+            - text: ""
+            - button "Cocoa"
+          - cell "Hot"
+          - cell "Moderate"
+          - cell "Industrial Goods"
+          - cell
+          - cell
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Harvested"
+          - cell
+          - cell
+        - row "RP Rubber Rubber Plant Hot Plentiful Industrial Goods Growing Harvested Sown Growing Growing Growing Growing Growing Growing Growing":
+          - rowheader "RP Rubber Rubber Plant":
+            - text: ""
+            - button "Rubber"
+            - text: ""
+          - cell "Hot"
+          - cell "Plentiful"
+          - cell "Industrial Goods"
+          - cell "Growing"
+          - cell "Harvested"
+          - cell
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+        - row "G Grapes Cool Moderate Consumer Goods Sown Growing Growing Growing Growing Harvested":
+          - rowheader "G Grapes":
+            - text: ""
+            - button "Grapes"
+          - cell "Cool"
+          - cell "Moderate"
+          - cell "Consumer Goods"
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Harvested"
+        - row "W Wheat Warm, Cool, or Cold Moderate Industrial Goods Growing Growing Growing Harvested Sown Growing Growing Growing Growing":
+          - rowheader "W Wheat":
+            - text: ""
+            - button "Wheat"
+          - cell "Warm, Cool, or Cold"
+          - cell "Moderate"
+          - cell "Industrial Goods"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Harvested"
+          - cell
+          - cell
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Growing"
+        - row "T Tobacco Cool Little Industrial Goods Growing Growing Harvested Sown Growing":
+          - rowheader "T Tobacco":
+            - text: ""
+            - button "Tobacco"
+          - cell "Cool"
+          - cell "Little"
+          - cell "Industrial Goods"
+          - cell "Growing"
+          - cell "Growing"
+          - cell "Harvested"
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell "Sown"
+          - cell "Growing"
+  - heading "Livestock — 8 products" [level=2]
+  - text: Yielding month Available any month, by slaughtering
+  - region "Livestock yields, scrollable":
+    - 'table "Livestock yields for the Standard gameset: what each animal produces, how much, and when."':
+      - caption: "Livestock yields for the Standard gameset: what each animal produces, how much, and when."
+      - rowgroup:
+        - row "Product From Yield January February March April May June July August September October November December":
+          - columnheader "Product"
+          - columnheader "From"
+          - columnheader "Yield"
+          - columnheader "January"
+          - columnheader "February"
+          - columnheader "March"
+          - columnheader "April"
+          - columnheader "May"
+          - columnheader "June"
+          - columnheader "July"
+          - columnheader "August"
+          - columnheader "September"
+          - columnheader "October"
+          - columnheader "November"
+          - columnheader "December"
+      - rowgroup:
+        - row "E Eggs Chicken (5 lb) 1.7 dozen per month Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding":
+          - rowheader "E Eggs":
+            - text: ""
+            - button "Eggs"
+          - cell "Chicken (5 lb)":
+            - button "Chicken"
+            - text: ""
+          - cell "1.7 dozen per month"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+        - row /M Milk Cattle \(\d+ lb\) \d+ quart per month Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding Yielding/:
+          - rowheader "M Milk":
+            - text: ""
+            - button "Milk"
+          - cell /Cattle \(\d+ lb\)/:
+            - button "Cattle"
+            - text: ""
+          - cell /\d+ quart per month/
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+        - row /W Wool Sheep \(\d+ lb\) 9 lb per month Yielding Yielding Yielding Yielding Yielding/:
+          - rowheader "W Wool":
+            - text: ""
+            - button "Wool"
+          - cell /Sheep \(\d+ lb\)/:
+            - button "Sheep"
+            - text: ""
+          - cell "9 lb per month"
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell "Yielding"
+          - cell
+          - cell
+        - row /FB Frozen Beef Cattle \(\d+ lb\) \d+% of the animal's weight, at slaughter Available Available Available Available Available Available Available Available Available Available Available Available/:
+          - rowheader "FB Frozen Beef":
+            - text: ""
+            - button "Frozen Beef"
+          - cell /Cattle \(\d+ lb\)/:
+            - button "Cattle"
+            - text: ""
+          - cell /\d+% of the animal's weight, at slaughter/
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+        - row /FC Frozen Chicken Chicken \(5 lb\) \d+% of the animal's weight, at slaughter Available Available Available Available Available Available Available Available Available Available Available Available/:
+          - rowheader "FC Frozen Chicken":
+            - text: ""
+            - button "Frozen Chicken"
+          - cell "Chicken (5 lb)":
+            - button "Chicken"
+            - text: ""
+          - cell /\d+% of the animal's weight, at slaughter/
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+        - row /FL Frozen Lamb Sheep \(\d+ lb\) \d+% of the animal's weight, at slaughter Available Available Available Available Available Available Available Available Available Available Available Available/:
+          - rowheader "FL Frozen Lamb":
+            - text: ""
+            - button "Frozen Lamb"
+          - cell /Sheep \(\d+ lb\)/:
+            - button "Sheep"
+            - text: ""
+          - cell /\d+% of the animal's weight, at slaughter/
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+        - row /FP Frozen Pork Pig \(\d+ lb\) \d+% of the animal's weight, at slaughter Available Available Available Available Available Available Available Available Available Available Available Available/:
+          - rowheader "FP Frozen Pork":
+            - text: ""
+            - button "Frozen Pork"
+          - cell /Pig \(\d+ lb\)/:
+            - button "Pig"
+            - text: ""
+          - cell /\d+% of the animal's weight, at slaughter/
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+        - row /L Leather any one of Cattle \(\d+ lb\), Pig \(\d+ lb\) or Sheep \(\d+ lb\) \d+% of the animal's weight, at slaughter Available Available Available Available Available Available Available Available Available Available Available Available/:
+          - rowheader "L Leather":
+            - text: ""
+            - button "Leather"
+          - cell /any one of Cattle \(\d+ lb\), Pig \(\d+ lb\) or Sheep \(\d+ lb\)/:
+            - text: ""
+            - button "Cattle"
+            - text: ""
+            - button "Pig"
+            - text: ""
+            - button "Sheep"
+            - text: ""
+          - cell /\d+% of the animal's weight, at slaughter/
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"
+          - cell "Available"

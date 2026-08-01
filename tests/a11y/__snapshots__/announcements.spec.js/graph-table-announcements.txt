@@ -1,0 +1,12 @@
+Showing Standard
+button, Diagram, not pressed
+button, Table, pressed
+region, Production chain, scrollable
+table, Production chain for Standard: 82 products, ordered from raw materials and livestock through to finished goods.
+caption, Production chain for Standard: 82 products, ordered from raw materials and livestock through to finished goods.
+Production chain for Standard: 82 products, ordered from raw materials and livestock through to finished goods.
+end of caption, Production chain for Standard: 82 products, ordered from raw materials and livestock through to finished goods.
+rowgroup
+row, Product Made from Used in
+columnheader, Product
+columnheader, Made from

@@ -1,0 +1,4 @@
+tab, Grid, selected, position 1, set size 3
+tab, Dependency Graph, not selected, position 2, set size 3
+tab, Farmer's Almanac, not selected, position 3, set size 3
+end of tablist, View, orientated horizontally

@@ -1,0 +1,7 @@
+- tabpanel "Dependency Graph":
+  - text: Showing Standard
+  - button "Diagram" [pressed]
+  - button "Table"
+  - text: Raw materials / livestock on the left → finished, never-reprocessed products on the right
+  - region "Dependency diagram, scrollable":
+    - 'img /Dependency diagram: \d+ products in Standard, drawn from raw materials on the left to finished goods on the right\. Switch to Table view for the same information as text\./': Car Motorcycle Beer Bottled Milk Cola Wine Detergent Diaper Shampoo Toothpaste Cigarettes Desktop Computer Internet-TV PDA VR Computer Wrist Computer Eye Shadow Perfume Air Conditioner Camera DVD Player Hi-fi Television Video Camera Video Recorder Bread Chocolate Bar Cookies Ice Cream Bed Sofa Jewelry Eggs Frozen Beef Frozen Chicken Frozen Pork Frozen Lamb Leather Milk Wool Cattle Chicken Pig Sheep Barley Cocoa Cotton Grapes Rubber Sugar Tobacco Wheat Aluminum Chemical Minerals Coal Gold Iron Ore Oil Silica Timber Car Body CPU Electronic Components Engine Flour Glass Paper Plastic Silicon Steel Textiles Wheel & Tire Toy Train Toy Bear Watch Leather Briefcase Leather Jacket Jeans Leather Shoes Socks Sweater Sport Shoes

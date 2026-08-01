@@ -1,0 +1,8 @@
+Yield
+end of term
+definition
+1 unit per production run
+end of definition
+term
+Yield
+end of term
