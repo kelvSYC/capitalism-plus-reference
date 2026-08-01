@@ -82,9 +82,9 @@ The first two were caught by assertions. The other two were caught by *reading t
 recorded snapshots* — worth doing whenever they change, because an assertion
 confirms what you thought to ask and a transcript shows what you did not.
 
-Two things are known-missing rather than broken:
+`package-lock.json` is committed and the workflow installs with `npm ci`, so a
+transitive dependency cannot change underneath a gate that blocks deploys.
 
-- **No lockfile.** Direct dependencies are pinned exactly, transitives float.
-  Commit a `package-lock.json` and switch the workflow to `npm ci`.
-- **Not a deploy gate.** Wired to nothing; `pages.yml` does not depend on it.
-  Promote it once it has been boring for a while.
+**This is a required gate.** `pages.yml` calls this workflow, so no deploy happens
+unless the audit passes. It stayed out of the gate until several consecutive green
+runs had shown it was boring — a gate people want to bypass is worse than none.

@@ -1,10 +1,11 @@
 # Accessibility harness: axe rule sweep, accessibility-tree snapshots, and
 # simulated screen-reader announcements against the built site.
 #
-# Manual-only, and deliberately NOT wired into the pages preflight. A gate is
-# only worth having if nobody wants to bypass it, and this job downloads a
-# browser -- if that is ever slow or flaky it must not be able to block a deploy.
-# Promote it into pages.yml once it has been boring for a while.
+# Runs on demand, and as a required gate before any Pages deploy: pages.yml calls
+# this file rather than copying its steps, so the audit that guards a deploy is
+# the same one you can run by hand. It was kept out of the gate until it had been
+# boring for several runs, because a gate that people want to bypass is worse than
+# no gate.
 #
 # Two modes:
 #
@@ -28,6 +29,13 @@ on:
         description: "Re-record missing or changed snapshots and upload them for review, instead of failing on them"
         type: boolean
         default: false
+  # Called by pages.yml. Recording is never enabled through this path: a deploy
+  # must not be able to rewrite the expectations it is being checked against.
+  workflow_call:
+    inputs:
+      record_snapshots:
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -48,20 +56,11 @@ jobs:
         with:
           node-version: "lts/*"
 
-      # No `npm ci`: there is no lockfile yet. Direct dependencies are pinned
-      # exactly in package.json, so this is reproducible for them; commit a
-      # package-lock.json and switch to `npm ci` to pin transitives too.
+      # `npm ci` rather than `npm install`: it installs exactly the committed
+      # lockfile and fails if package.json and the lock disagree, so a transitive
+      # dependency cannot change under a gate that blocks deploys.
       - name: Install harness
-        run: npm install
-
-      # TEMPORARY: this repo has no lockfile because it was authored on a machine
-      # with no Node. Uploading the one npm resolves here lets it be committed, at
-      # which point `npm install` becomes `npm ci` and this step goes away.
-      - uses: actions/upload-artifact@v7
-        with:
-          name: package-lock
-          path: package-lock.json
-          retention-days: 1
+        run: npm ci
 
       - name: Install browser
         run: npx playwright install --with-deps chromium

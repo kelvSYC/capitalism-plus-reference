@@ -45,7 +45,8 @@ tests/
 .github/workflows/
   ci.yml          verify build + tests on push/PR
   pages.yml       manual-only Pages deploy, gated on the launch checklist
-  a11y.yml        manual-only accessibility audit (downloads a browser)
+  a11y.yml        accessibility audit — runs on demand, and is called by
+                  pages.yml as a required gate before any deploy
 data/
   site_template.html    site source: all HTML/CSS/JS, with one placeholder
                         (__PRODUCTS_JSON__) for the product data
@@ -163,8 +164,9 @@ as code, and every check is a hard failure with an explanation:
 | Project LICENSE exists | publishing would leave this project's own work all-rights-reserved |
 | Nothing vendored without its license | a third-party file appears under `site/` |
 | Attribution is reachable | the rendered page never names Enlight Software, or never says it is unofficial |
+| Accessibility audit | axe finds a WCAG A/AA violation, or an accessibility-tree snapshot has changed (`a11y.yml`, called as a job) |
 
-The last one is the point the repository would otherwise miss entirely:
+The attribution gate is the point the repository would otherwise miss entirely:
 attribution that lives only in a markdown file is invisible to a visitor.
 
 The one open question is the icon hold in `ATTRIBUTION.md`, and the third gate

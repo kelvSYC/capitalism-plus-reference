@@ -106,8 +106,14 @@ jobs:
           fi
           echo "ok: attribution visible in the rendered page"
 
+  # Defined in a11y.yml and called rather than copied, so the audit that gates a
+  # deploy cannot drift from the one run by hand. Verify mode only -- this call
+  # does not pass record_snapshots.
+  a11y:
+    uses: ./.github/workflows/a11y.yml
+
   deploy:
-    needs: preflight
+    needs: [preflight, a11y]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
