@@ -2,3 +2,41 @@ rowheader, Rubber Rubber Plant
 button, Rubber
 Rubber Plant
 end of rowheader, Rubber Rubber Plant
+cell, Hot
+cell, Plentiful
+cell, Industrial Goods
+Industrial Goods
+end of cell, Industrial Goods
+cell, Growing
+Growing
+end of cell, Growing
+cell, Harvested
+Harvested
+end of cell, Harvested
+cell
+cell
+cell, Sown
+Sown
+end of cell, Sown
+cell, Growing
+Growing
+end of cell, Growing
+cell, Growing
+Growing
+end of cell, Growing
+cell, Growing
+Growing
+end of cell, Growing
+cell, Growing
+Growing
+end of cell, Growing
+cell, Growing
+Growing
+end of cell, Growing
+cell, Growing
+Growing
+end of cell, Growing
+cell, Growing
+Growing
+end of cell, Growing
+end of row, Rubber Rubber Plant Hot Plentiful Industrial Goods Growing Harvested Sown Growing Growing Growing Growing Growing Growing Growing
