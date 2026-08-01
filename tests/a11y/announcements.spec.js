@@ -119,6 +119,40 @@ test("the graph's table equivalent reads as a table", async ({ page }) => {
   expect(spoken.join(" ").toLowerCase()).toContain("table");
 });
 
+test("a full growing-calendar row, for judging verbosity", async ({ page }) => {
+  // Recorded rather than asserted. The calendar is 16 columns wide, so every one
+  // of the twelve month cells is announced with its column header -- correct, and
+  // possibly unbearable. No tool can decide which; this exists so a person can
+  // read one row end to end and form a view.
+  //
+  // Rubber deliberately: it is a crop WITH a growing plant, so its row header
+  // carries two names and is the longest case rather than the friendliest.
+  await showView(page, "almanac");
+  const spoken = await page.evaluate(async () => {
+    const virtual = window.__virtual;
+    const rows = Array.from(document.querySelectorAll("#almanac-view tbody tr"));
+    const row = rows.find((r) => (r.textContent || "").includes("Rubber"));
+    if (!row) return null;
+    await virtual.start({ container: row });
+    const log = [];
+    // Read until the reader stops producing anything new: the row is the
+    // container, so it runs out rather than escaping into the next row. Capped
+    // in case a future change makes next() cycle forever.
+    let previous = null;
+    for (let i = 0; i < 200; i++) {
+      await virtual.next();
+      const phrase = await virtual.lastSpokenPhrase();
+      if (phrase === previous) break;
+      log.push(phrase);
+      previous = phrase;
+    }
+    await virtual.stop();
+    return log;
+  });
+  test.skip(spoken === null, "no Rubber row in this gameset");
+  expect(spoken.join("\n")).toMatchSnapshot("almanac-row-announcements.txt");
+});
+
 test("filtering announces the new result count", async ({ page }) => {
   // #resultStatus is a persistent role=status region, deliberately not recreated
   // on each render. Its CONTENT is what a reader hears; assert the content
