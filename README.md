@@ -5,6 +5,8 @@ DOS-era business simulation from Enlight Software — covering all three
 gamesets' products, dependency chains, farming data, and scenario goals.
 Meant to be kept open in a browser tab alongside the game itself.
 
+**→ [capitalism-plus.kelvsyc.com](https://capitalism-plus.kelvsyc.com/)**
+
 Every gameplay fact on the site (sale restrictions, scenario domination
 goals, production chains) is decoded directly from the game's own `.SET` /
 `.SCN` formats, not guessed from memory or secondary sources — and checked
@@ -133,12 +135,14 @@ here grants any right in Enlight Software's game, artwork, or trademarks.
 ## Publishing
 
 `site/index.html` is a static file with everything inlined, so any host will serve
-it and opening it from disk works too.
+it and opening it from disk works too. The deployed copy lives at
+[capitalism-plus.kelvsyc.com](https://capitalism-plus.kelvsyc.com/), on GitHub
+Pages with HTTPS enforced.
 
-The `pages` workflow deploys to GitHub Pages and is **manual-only by design** — a
-deploy-on-push trigger would quietly overrule the icon hold below the first time
-somebody merged a typo fix. Its preflight job is the launch checklist as code,
-and every check is a hard failure with an explanation:
+The `pages` workflow deploys there and is **manual-only by design** — a
+deploy-on-push trigger would quietly overrule the icon hold described above the
+first time somebody merged a typo fix. Its preflight job is the launch checklist
+as code, and every check is a hard failure with an explanation:
 
 | Gate | Fails when |
 |---|---|
