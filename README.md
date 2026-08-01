@@ -122,8 +122,19 @@ text equivalent for the dependency graph and the growing calendar in text are al
 in place, and asserted by the test suites rather than left to inspection.
 
 They have not been through an actual screen reader. Everything above is
-structural, and structure is what a test can reach; whether the result is
-coherent to listen to is a separate question, and an open one.
+structural, and structure is what a test can reach.
+
+Verbosity has been looked at, though, using a recorded transcript of the worst
+case — one row of the 16-column growing calendar, for a crop that also has a
+growing plant (`tests/a11y/__snapshots__/announcements.spec.js/almanac-row-announcements.txt`).
+It comes to 41 announcements per crop: the two names, climate, rainfall, goods
+type, then nine months carrying a state word and three announced as bare "cell".
+That is tolerable rather than pleasant, and two things make it defensible. Empty
+months deliberately say nothing instead of "not growing" twelve times. And the
+months themselves are not only in the table — the crop's own page states Sowing
+Month and Harvesting Month as text, reached from the button in the row header,
+which is what a linear read needs since continuous reading does not announce
+column headers.
 
 `tests/a11y/` narrows that gap without closing it: axe for rule violations,
 accessibility-tree snapshots so a CSS refactor cannot quietly flatten the

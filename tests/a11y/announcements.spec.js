@@ -144,10 +144,11 @@ test("a full growing-calendar row, for judging verbosity", async ({ page }) => {
       log.push(await virtual.lastSpokenPhrase());
     }
     await virtual.stop();
-    // Trim only the TRAILING run, which is the reader idling past the end of the
-    // container. Interior repeats are real: they are consecutive empty months.
-    while (log.length > 1 && log[log.length - 1] === log[log.length - 2]) log.pop();
-    return log;
+    // Cut at "end of row": the reader wraps back to the top of the container once
+    // it runs out, and a second pass through the same row is noise that would
+    // double the snapshot and hide where the row actually ends.
+    const end = log.findIndex((phrase) => phrase.startsWith("end of row"));
+    return end === -1 ? log : log.slice(0, end + 1);
   });
   test.skip(spoken === null, "no Rubber row in this gameset");
   expect(spoken.join("\n")).toMatchSnapshot("almanac-row-announcements.txt");
