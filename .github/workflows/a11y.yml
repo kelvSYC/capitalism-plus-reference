@@ -6,13 +6,26 @@
 # browser -- if that is ever slow or flaky it must not be able to block a deploy.
 # Promote it into pages.yml once it has been boring for a while.
 #
-# It will fail until the snapshots exist: they are generated locally with
-# `npm run a11y:update` and reviewed as a diff, because a snapshot created by CI
-# records whatever the tree happened to be rather than what anyone intended.
+# Two modes:
+#
+#   default            verify. Snapshots must already exist; a missing one fails.
+#   record_snapshots   bootstrap. Records what is missing and uploads it as an
+#                      artifact to download, read and commit.
+#
+# Recording happens here rather than on a laptop on purpose. These snapshots are
+# checked on this runner, so recording them anywhere else bakes in a platform
+# difference that resurfaces later as a failure nobody can reproduce. The
+# workflow never commits them itself: a snapshot is an expectation, and it should
+# enter the repo through a commit somebody read.
 name: a11y
 
 on:
   workflow_dispatch:
+    inputs:
+      record_snapshots:
+        description: "Record missing snapshots and upload them for review, instead of failing on them"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -48,11 +61,36 @@ jobs:
         run: python3 tools/build_site.py --check
 
       - name: Accessibility audit
+        env:
+          A11Y_RECORD_SNAPSHOTS: ${{ inputs.record_snapshots && '1' || '' }}
         run: npx playwright test
 
+      # Uploaded even on failure: the report is the whole point when something
+      # breaks, and on a first run something will.
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 14
+
+      # Only in bootstrap mode, and only if anything was written -- an empty
+      # artifact on a normal run would imply snapshots are regenerated each time.
+      - name: Collect recorded snapshots
+        if: ${{ inputs.record_snapshots && !cancelled() }}
+        id: collect
+        run: |
+          if [ -d tests/a11y/__snapshots__ ]; then
+            echo "count=$(find tests/a11y/__snapshots__ -type f | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
+            find tests/a11y/__snapshots__ -type f -print | sed 's/^/  /'
+          else
+            echo "count=0" >> "$GITHUB_OUTPUT"
+            echo "::warning::No snapshots were written. Either every one already existed, or the run failed before reaching them."
+          fi
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ inputs.record_snapshots && steps.collect.outputs.count != '0' && !cancelled() }}
+        with:
+          name: recorded-snapshots
+          path: tests/a11y/__snapshots__/
           retention-days: 14

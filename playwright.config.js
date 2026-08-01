@@ -17,10 +17,24 @@ module.exports = defineConfig({
   testDir: "./tests/a11y",
   fullyParallel: true,
 
-  // A snapshot written by a stray --update-snapshots run is worse than a failure,
-  // because it records whatever the tree happened to be. CI never updates.
   forbidOnly: !!process.env.CI,
-  updateSnapshots: process.env.CI ? "none" : "missing",
+
+  // A snapshot written by a stray update run is worse than a failure: it records
+  // whatever the tree happened to be and calls it correct. So recording is opt-in
+  // through an explicit variable rather than inferred, and CI refuses by default.
+  // The a11y workflow sets this only when asked to bootstrap, and then uploads
+  // what it recorded for review instead of committing it.
+  updateSnapshots: process.env.A11Y_RECORD_SNAPSHOTS
+    ? "missing"
+    : process.env.CI
+      ? "none"
+      : "missing",
+
+  // One canonical set of snapshots, not one per platform. They are recorded and
+  // checked on CI's Linux/Chromium, so a platform-suffixed path would let a
+  // second set appear from someone's laptop and quietly diverge. A real
+  // difference between platforms should surface as a failure to look at.
+  snapshotPathTemplate: "{testDir}/__snapshots__/{testFileName}/{arg}{ext}",
 
   // No retries: an accessibility assertion that passes on the second attempt is
   // reporting a race in the page, which is itself the finding.

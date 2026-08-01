@@ -11,11 +11,28 @@ deploy serves:
 
 ## Running it
 
+**In CI, which is where snapshots should be recorded:**
+
+```sh
+gh workflow run a11y -f record_snapshots=true   # bootstrap: records and uploads
+gh workflow run a11y                            # thereafter: verifies
+```
+
+Bootstrap mode uploads a `recorded-snapshots` artifact. Download it, read it,
+commit it under `tests/a11y/__snapshots__/`. The workflow never commits for you —
+a snapshot is an expectation, and it should arrive through a commit somebody read.
+
+Recording on the runner rather than a laptop is deliberate: these snapshots are
+*checked* on that runner, so recording them anywhere else bakes in a platform
+difference that resurfaces later as a failure nobody can reproduce locally.
+
+**Locally, if you have Node:**
+
 ```sh
 npm install
 npm run a11y:install     # downloads Chromium
-npm run a11y:update      # FIRST RUN ONLY: records the snapshots
-npm run a11y             # thereafter
+npm run a11y             # verify
+npm run a11y:update      # record (only when you mean to)
 npm run a11y:report      # open the HTML report after a failure
 ```
 
@@ -48,9 +65,18 @@ VoiceOver; this is what stops the audit's findings from silently coming back.
 
 ## Status
 
-**Never executed.** The machine this was written on has no Node, so every file
-here is unverified: selectors were cross-checked against `site/index.html` by
-hand, but nothing has run. Expect the first run to need fixes — most likely in
-`announcements.spec.js`, where the virtual reader is injected as an ES module
-through a route. If that bundle turns out not to be self-contained, the fallback
-is to run the virtual reader in Node against jsdom instead of in the page.
+Written on a machine with no Node, so the first run is in CI. Selectors were
+cross-checked against `site/index.html` by hand, but until `gh workflow run a11y`
+has passed, treat every file here as unverified.
+
+The likeliest thing to break is the module injection in `announcements.spec.js`:
+the virtual reader is served to the page through a route and imported as an ES
+module. If that browser bundle is not self-contained, the fallback is to run the
+virtual reader in Node against jsdom instead of inside the page.
+
+Two things are known-missing rather than broken:
+
+- **No lockfile.** Direct dependencies are pinned exactly, transitives float.
+  Commit a `package-lock.json` and switch the workflow to `npm ci`.
+- **Not a deploy gate.** Wired to nothing; `pages.yml` does not depend on it.
+  Promote it once it has been boring for a while.
