@@ -11,25 +11,22 @@
           - columnheader "Made from"
           - columnheader "Used in"
       - rowgroup:
-        - row "A Aluminum — Beer , Cola":
-          - rowheader "A Aluminum":
-            - text: ""
+        - row "Aluminum — Beer , Cola":
+          - rowheader "Aluminum":
             - button "Aluminum"
           - cell "—"
           - cell "Beer , Cola":
             - button "Beer"
             - text: ""
             - button "Cola"
-        - row "B Barley — Beer":
-          - rowheader "B Barley":
-            - text: ""
+        - row "Barley — Beer":
+          - rowheader "Barley":
             - button "Barley"
           - cell "—"
           - cell "Beer":
             - button "Beer"
-        - row "C Cattle — Frozen Beef , Milk , Leather":
-          - rowheader "C Cattle":
-            - text: ""
+        - row "Cattle — Frozen Beef , Milk , Leather":
+          - rowheader "Cattle":
             - button "Cattle"
           - cell "—"
           - cell "Frozen Beef , Milk , Leather":
@@ -38,9 +35,8 @@
             - button "Milk"
             - text: ""
             - button "Leather"
-        - row "CM Chemical Minerals — Detergent , Shampoo , Toothpaste , Eye Shadow , Perfume , Electronic Components":
-          - rowheader "CM Chemical Minerals":
-            - text: ""
+        - row "Chemical Minerals — Detergent , Shampoo , Toothpaste , Eye Shadow , Perfume , Electronic Components":
+          - rowheader "Chemical Minerals":
             - button "Chemical Minerals"
           - cell "—"
           - cell "Detergent , Shampoo , Toothpaste , Eye Shadow , Perfume , Electronic Components":
@@ -55,32 +51,28 @@
             - button "Perfume"
             - text: ""
             - button "Electronic Components"
-        - row "C Chicken — Frozen Chicken , Eggs":
-          - rowheader "C Chicken":
-            - text: ""
+        - row "Chicken — Frozen Chicken , Eggs":
+          - rowheader "Chicken":
             - button "Chicken"
           - cell "—"
           - cell "Frozen Chicken , Eggs":
             - button "Frozen Chicken"
             - text: ""
             - button "Eggs"
-        - row "C Coal — Steel":
-          - rowheader "C Coal":
-            - text: ""
+        - row "Coal — Steel":
+          - rowheader "Coal":
             - button "Coal"
           - cell "—"
           - cell "Steel":
             - button "Steel"
-        - row "C Cocoa — Chocolate Bar":
-          - rowheader "C Cocoa":
-            - text: ""
+        - row "Cocoa — Chocolate Bar":
+          - rowheader "Cocoa":
             - button "Cocoa"
           - cell "—"
           - cell "Chocolate Bar":
             - button "Chocolate Bar"
-        - row "C Cotton — Diaper , Sofa , Textiles , Toy Bear , Sport Shoes":
-          - rowheader "C Cotton":
-            - text: ""
+        - row "Cotton — Diaper , Sofa , Textiles , Toy Bear , Sport Shoes":
+          - rowheader "Cotton":
             - button "Cotton"
           - cell "—"
           - cell "Diaper , Sofa , Textiles , Toy Bear , Sport Shoes":
@@ -93,46 +85,40 @@
             - button "Toy Bear"
             - text: ""
             - button "Sport Shoes"
-        - row "G Gold — Jewelry":
-          - rowheader "G Gold":
-            - text: ""
+        - row "Gold — Jewelry":
+          - rowheader "Gold":
             - button "Gold"
           - cell "—"
           - cell "Jewelry":
             - button "Jewelry"
-        - row "G Grapes — Wine":
-          - rowheader "G Grapes":
-            - text: ""
+        - row "Grapes — Wine":
+          - rowheader "Grapes":
             - button "Grapes"
           - cell "—"
           - cell "Wine":
             - button "Wine"
-        - row "IO Iron Ore — Steel":
-          - rowheader "IO Iron Ore":
-            - text: ""
+        - row "Iron Ore — Steel":
+          - rowheader "Iron Ore":
             - button "Iron Ore"
           - cell "—"
           - cell "Steel":
             - button "Steel"
-        - row "O Oil — Plastic":
-          - rowheader "O Oil":
-            - text: ""
+        - row "Oil — Plastic":
+          - rowheader "Oil":
             - button "Oil"
           - cell "—"
           - cell "Plastic":
             - button "Plastic"
-        - row "P Pig — Frozen Pork , Leather":
-          - rowheader "P Pig":
-            - text: ""
+        - row "Pig — Frozen Pork , Leather":
+          - rowheader "Pig":
             - button "Pig"
           - cell "—"
           - cell "Frozen Pork , Leather":
             - button "Frozen Pork"
             - text: ""
             - button "Leather"
-        - row "R Rubber — Wheel & Tire , Leather Shoes , Sport Shoes":
-          - rowheader "R Rubber":
-            - text: ""
+        - row "Rubber — Wheel & Tire , Leather Shoes , Sport Shoes":
+          - rowheader "Rubber":
             - button "Rubber"
           - cell "—"
           - cell "Wheel & Tire , Leather Shoes , Sport Shoes":
@@ -141,9 +127,8 @@
             - button "Leather Shoes"
             - text: ""
             - button "Sport Shoes"
-        - row "S Sheep — Frozen Lamb , Wool , Leather":
-          - rowheader "S Sheep":
-            - text: ""
+        - row "Sheep — Frozen Lamb , Wool , Leather":
+          - rowheader "Sheep":
             - button "Sheep"
           - cell "—"
           - cell "Frozen Lamb , Wool , Leather":
@@ -152,18 +137,16 @@
             - button "Wool"
             - text: ""
             - button "Leather"
-        - row "S Silica — Glass , Silicon":
-          - rowheader "S Silica":
-            - text: ""
+        - row "Silica — Glass , Silicon":
+          - rowheader "Silica":
             - button "Silica"
           - cell "—"
           - cell "Glass , Silicon":
             - button "Glass"
             - text: ""
             - button "Silicon"
-        - row "S Sugar — Cola , Cookies , Ice Cream":
-          - rowheader "S Sugar":
-            - text: ""
+        - row "Sugar — Cola , Cookies , Ice Cream":
+          - rowheader "Sugar":
             - button "Sugar"
           - cell "—"
           - cell "Cola , Cookies , Ice Cream":
@@ -172,9 +155,8 @@
             - button "Cookies"
             - text: ""
             - button "Ice Cream"
-        - row "T Timber — Bed , Sofa , Paper":
-          - rowheader "T Timber":
-            - text: ""
+        - row "Timber — Bed , Sofa , Paper":
+          - rowheader "Timber":
             - button "Timber"
           - cell "—"
           - cell "Bed , Sofa , Paper":
@@ -183,23 +165,20 @@
             - button "Sofa"
             - text: ""
             - button "Paper"
-        - row "T Tobacco — Cigarettes":
-          - rowheader "T Tobacco":
-            - text: ""
+        - row "Tobacco — Cigarettes":
+          - rowheader "Tobacco":
             - button "Tobacco"
           - cell "—"
           - cell "Cigarettes":
             - button "Cigarettes"
-        - row "W Wheat — Flour":
-          - rowheader "W Wheat":
-            - text: ""
+        - row "Wheat — Flour":
+          - rowheader "Wheat":
             - button "Wheat"
           - cell "—"
           - cell "Flour":
             - button "Flour"
-        - row "F Flour Wheat Bread , Cookies":
-          - rowheader "F Flour":
-            - text: ""
+        - row "Flour Wheat Bread , Cookies":
+          - rowheader "Flour":
             - button "Flour"
           - cell "Wheat":
             - button "Wheat"
@@ -207,9 +186,8 @@
             - button "Bread"
             - text: ""
             - button "Cookies"
-        - row "G Glass Silica Bottled Milk , Wine , Internet-TV , VR Computer , Perfume , Camera , Television , Video Camera , Car Body , Watch":
-          - rowheader "G Glass":
-            - text: ""
+        - row "Glass Silica Bottled Milk , Wine , Internet-TV , VR Computer , Perfume , Camera , Television , Video Camera , Car Body , Watch":
+          - rowheader "Glass":
             - button "Glass"
           - cell "Silica":
             - button "Silica"
@@ -233,9 +211,8 @@
             - button "Car Body"
             - text: ""
             - button "Watch"
-        - row "L Leather any one of Cattle , Pig or Sheep Sofa , Leather Briefcase , Leather Jacket , Leather Shoes , Sport Shoes":
-          - rowheader "L Leather":
-            - text: ""
+        - row "Leather any one of Cattle , Pig or Sheep Sofa , Leather Briefcase , Leather Jacket , Leather Shoes , Sport Shoes":
+          - rowheader "Leather":
             - button "Leather"
           - cell "any one of Cattle , Pig or Sheep":
             - text: ""
@@ -254,9 +231,8 @@
             - button "Leather Shoes"
             - text: ""
             - button "Sport Shoes"
-        - row "M Milk Cattle Bottled Milk , Chocolate Bar , Ice Cream":
-          - rowheader "M Milk":
-            - text: ""
+        - row "Milk Cattle Bottled Milk , Chocolate Bar , Ice Cream":
+          - rowheader "Milk":
             - button "Milk"
           - cell "Cattle":
             - button "Cattle"
@@ -266,9 +242,8 @@
             - button "Chocolate Bar"
             - text: ""
             - button "Ice Cream"
-        - row "P Paper Timber Diaper , Cigarettes":
-          - rowheader "P Paper":
-            - text: ""
+        - row "Paper Timber Diaper , Cigarettes":
+          - rowheader "Paper":
             - button "Paper"
           - cell "Timber":
             - button "Timber"
@@ -276,9 +251,8 @@
             - button "Diaper"
             - text: ""
             - button "Cigarettes"
-        - row "P Plastic Oil Detergent , Shampoo , Toothpaste , Internet-TV , PDA , Wrist Computer , Eye Shadow , Air Conditioner , Camera , DVD Player , Hi-fi , Television , Video Camera , Video Recorder , Car Body , Toy Train":
-          - rowheader "P Plastic":
-            - text: ""
+        - row "Plastic Oil Detergent , Shampoo , Toothpaste , Internet-TV , PDA , Wrist Computer , Eye Shadow , Air Conditioner , Camera , DVD Player , Hi-fi , Television , Video Camera , Video Recorder , Car Body , Toy Train":
+          - rowheader "Plastic":
             - button "Plastic"
           - cell "Oil":
             - button "Oil"
@@ -314,9 +288,8 @@
             - button "Car Body"
             - text: ""
             - button "Toy Train"
-        - row "S Silicon Silica CPU , Electronic Components":
-          - rowheader "S Silicon":
-            - text: ""
+        - row "Silicon Silica CPU , Electronic Components":
+          - rowheader "Silicon":
             - button "Silicon"
           - cell "Silica":
             - button "Silica"
@@ -324,9 +297,8 @@
             - button "CPU"
             - text: ""
             - button "Electronic Components"
-        - row "S Steel Coal , Iron Ore Motorcycle , Desktop Computer , Air Conditioner , Hi-fi , Video Recorder , Car Body , Electronic Components , Engine , Wheel & Tire , Toy Train , Watch":
-          - rowheader "S Steel":
-            - text: ""
+        - row "Steel Coal , Iron Ore Motorcycle , Desktop Computer , Air Conditioner , Hi-fi , Video Recorder , Car Body , Electronic Components , Engine , Wheel & Tire , Toy Train , Watch":
+          - rowheader "Steel":
             - button "Steel"
           - cell "Coal , Iron Ore":
             - button "Coal"
@@ -354,9 +326,8 @@
             - button "Toy Train"
             - text: ""
             - button "Watch"
-        - row "T Textiles Cotton Toy Bear , Leather Briefcase , Leather Jacket , Jeans":
-          - rowheader "T Textiles":
-            - text: ""
+        - row "Textiles Cotton Toy Bear , Leather Briefcase , Leather Jacket , Jeans":
+          - rowheader "Textiles":
             - button "Textiles"
           - cell "Cotton":
             - button "Cotton"
@@ -368,9 +339,8 @@
             - button "Leather Jacket"
             - text: ""
             - button "Jeans"
-        - row "W Wool Sheep Socks , Sweater":
-          - rowheader "W Wool":
-            - text: ""
+        - row "Wool Sheep Socks , Sweater":
+          - rowheader "Wool":
             - button "Wool"
           - cell "Sheep":
             - button "Sheep"
@@ -378,9 +348,8 @@
             - button "Socks"
             - text: ""
             - button "Sweater"
-        - row "CB Car Body Glass , Plastic , Steel Car":
-          - rowheader "CB Car Body":
-            - text: ""
+        - row "Car Body Glass , Plastic , Steel Car":
+          - rowheader "Car Body":
             - button "Car Body"
           - cell "Glass , Plastic , Steel":
             - button "Glass"
@@ -390,9 +359,8 @@
             - button "Steel"
           - cell "Car":
             - button "Car"
-        - row "C CPU Silicon Desktop Computer , Internet-TV , PDA , VR Computer , Wrist Computer , DVD Player":
-          - rowheader "C CPU":
-            - text: ""
+        - row "CPU Silicon Desktop Computer , Internet-TV , PDA , VR Computer , Wrist Computer , DVD Player":
+          - rowheader "CPU":
             - button "CPU"
           - cell "Silicon":
             - button "Silicon"
@@ -408,9 +376,8 @@
             - button "Wrist Computer"
             - text: ""
             - button "DVD Player"
-        - row "EC Electronic Components Chemical Minerals , Silicon , Steel Desktop Computer , PDA , Wrist Computer , Air Conditioner , Camera , DVD Player , Hi-fi , Television , Video Camera , Video Recorder":
-          - rowheader "EC Electronic Components":
-            - text: ""
+        - row "Electronic Components Chemical Minerals , Silicon , Steel Desktop Computer , PDA , Wrist Computer , Air Conditioner , Camera , DVD Player , Hi-fi , Television , Video Camera , Video Recorder":
+          - rowheader "Electronic Components":
             - button "Electronic Components"
           - cell "Chemical Minerals , Silicon , Steel":
             - button "Chemical Minerals"
@@ -438,9 +405,8 @@
             - button "Video Camera"
             - text: ""
             - button "Video Recorder"
-        - row "E Engine Steel Car , Motorcycle":
-          - rowheader "E Engine":
-            - text: ""
+        - row "Engine Steel Car , Motorcycle":
+          - rowheader "Engine":
             - button "Engine"
           - cell "Steel":
             - button "Steel"
@@ -448,9 +414,8 @@
             - button "Car"
             - text: ""
             - button "Motorcycle"
-        - row "WT Wheel & Tire Rubber , Steel Car , Motorcycle":
-          - rowheader "WT Wheel & Tire":
-            - text: ""
+        - row "Wheel & Tire Rubber , Steel Car , Motorcycle":
+          - rowheader "Wheel & Tire":
             - button "Wheel & Tire"
           - cell "Rubber , Steel":
             - button "Rubber"
@@ -460,9 +425,8 @@
             - button "Car"
             - text: ""
             - button "Motorcycle"
-        - row "AC Air Conditioner Electronic Components , Plastic , Steel —":
-          - rowheader "AC Air Conditioner":
-            - text: ""
+        - row "Air Conditioner Electronic Components , Plastic , Steel —":
+          - rowheader "Air Conditioner":
             - button "Air Conditioner"
           - cell "Electronic Components , Plastic , Steel":
             - button "Electronic Components"
@@ -471,41 +435,36 @@
             - text: ""
             - button "Steel"
           - cell "—"
-        - row "B Bed Timber —":
-          - rowheader "B Bed":
-            - text: ""
+        - row "Bed Timber —":
+          - rowheader "Bed":
             - button "Bed"
           - cell "Timber":
             - button "Timber"
           - cell "—"
-        - row "B Beer Barley , Aluminum —":
-          - rowheader "B Beer":
-            - text: ""
+        - row "Beer Barley , Aluminum —":
+          - rowheader "Beer":
             - button "Beer"
           - cell "Barley , Aluminum":
             - button "Barley"
             - text: ""
             - button "Aluminum"
           - cell "—"
-        - row "BM Bottled Milk Milk , Glass —":
-          - rowheader "BM Bottled Milk":
-            - text: ""
+        - row "Bottled Milk Milk , Glass —":
+          - rowheader "Bottled Milk":
             - button "Bottled Milk"
           - cell "Milk , Glass":
             - button "Milk"
             - text: ""
             - button "Glass"
           - cell "—"
-        - row "B Bread Flour —":
-          - rowheader "B Bread":
-            - text: ""
+        - row "Bread Flour —":
+          - rowheader "Bread":
             - button "Bread"
           - cell "Flour":
             - button "Flour"
           - cell "—"
-        - row "C Camera Electronic Components , Glass , Plastic —":
-          - rowheader "C Camera":
-            - text: ""
+        - row "Camera Electronic Components , Glass , Plastic —":
+          - rowheader "Camera":
             - button "Camera"
           - cell "Electronic Components , Glass , Plastic":
             - button "Electronic Components"
@@ -514,9 +473,8 @@
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "C Car Car Body , Engine , Wheel & Tire —":
-          - rowheader "C Car":
-            - text: ""
+        - row "Car Car Body , Engine , Wheel & Tire —":
+          - rowheader "Car":
             - button "Car"
           - cell "Car Body , Engine , Wheel & Tire":
             - button "Car Body"
@@ -525,45 +483,40 @@
             - text: ""
             - button "Wheel & Tire"
           - cell "—"
-        - row "CB Chocolate Bar Milk , Cocoa —":
-          - rowheader "CB Chocolate Bar":
-            - text: ""
+        - row "Chocolate Bar Milk , Cocoa —":
+          - rowheader "Chocolate Bar":
             - button "Chocolate Bar"
           - cell "Milk , Cocoa":
             - button "Milk"
             - text: ""
             - button "Cocoa"
           - cell "—"
-        - row "C Cigarettes Tobacco , Paper —":
-          - rowheader "C Cigarettes":
-            - text: ""
+        - row "Cigarettes Tobacco , Paper —":
+          - rowheader "Cigarettes":
             - button "Cigarettes"
           - cell "Tobacco , Paper":
             - button "Tobacco"
             - text: ""
             - button "Paper"
           - cell "—"
-        - row "C Cola Sugar , Aluminum —":
-          - rowheader "C Cola":
-            - text: ""
+        - row "Cola Sugar , Aluminum —":
+          - rowheader "Cola":
             - button "Cola"
           - cell "Sugar , Aluminum":
             - button "Sugar"
             - text: ""
             - button "Aluminum"
           - cell "—"
-        - row "C Cookies Sugar , Flour —":
-          - rowheader "C Cookies":
-            - text: ""
+        - row "Cookies Sugar , Flour —":
+          - rowheader "Cookies":
             - button "Cookies"
           - cell "Sugar , Flour":
             - button "Sugar"
             - text: ""
             - button "Flour"
           - cell "—"
-        - row "DC Desktop Computer CPU , Electronic Components , Steel —":
-          - rowheader "DC Desktop Computer":
-            - text: ""
+        - row "Desktop Computer CPU , Electronic Components , Steel —":
+          - rowheader "Desktop Computer":
             - button "Desktop Computer"
           - cell "CPU , Electronic Components , Steel":
             - button "CPU"
@@ -572,27 +525,24 @@
             - text: ""
             - button "Steel"
           - cell "—"
-        - row "D Detergent Chemical Minerals , Plastic —":
-          - rowheader "D Detergent":
-            - text: ""
+        - row "Detergent Chemical Minerals , Plastic —":
+          - rowheader "Detergent":
             - button "Detergent"
           - cell "Chemical Minerals , Plastic":
             - button "Chemical Minerals"
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "D Diaper Cotton , Paper —":
-          - rowheader "D Diaper":
-            - text: ""
+        - row "Diaper Cotton , Paper —":
+          - rowheader "Diaper":
             - button "Diaper"
           - cell "Cotton , Paper":
             - button "Cotton"
             - text: ""
             - button "Paper"
           - cell "—"
-        - row "DP DVD Player CPU , Electronic Components , Plastic —":
-          - rowheader "DP DVD Player":
-            - text: ""
+        - row "DVD Player CPU , Electronic Components , Plastic —":
+          - rowheader "DVD Player":
             - button "DVD Player"
           - cell "CPU , Electronic Components , Plastic":
             - button "CPU"
@@ -601,53 +551,46 @@
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "E Eggs Chicken —":
-          - rowheader "E Eggs":
-            - text: ""
+        - row "Eggs Chicken —":
+          - rowheader "Eggs":
             - button "Eggs"
           - cell "Chicken":
             - button "Chicken"
           - cell "—"
-        - row "ES Eye Shadow Chemical Minerals , Plastic —":
-          - rowheader "ES Eye Shadow":
-            - text: ""
+        - row "Eye Shadow Chemical Minerals , Plastic —":
+          - rowheader "Eye Shadow":
             - button "Eye Shadow"
           - cell "Chemical Minerals , Plastic":
             - button "Chemical Minerals"
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "FB Frozen Beef Cattle —":
-          - rowheader "FB Frozen Beef":
-            - text: ""
+        - row "Frozen Beef Cattle —":
+          - rowheader "Frozen Beef":
             - button "Frozen Beef"
           - cell "Cattle":
             - button "Cattle"
           - cell "—"
-        - row "FC Frozen Chicken Chicken —":
-          - rowheader "FC Frozen Chicken":
-            - text: ""
+        - row "Frozen Chicken Chicken —":
+          - rowheader "Frozen Chicken":
             - button "Frozen Chicken"
           - cell "Chicken":
             - button "Chicken"
           - cell "—"
-        - row "FL Frozen Lamb Sheep —":
-          - rowheader "FL Frozen Lamb":
-            - text: ""
+        - row "Frozen Lamb Sheep —":
+          - rowheader "Frozen Lamb":
             - button "Frozen Lamb"
           - cell "Sheep":
             - button "Sheep"
           - cell "—"
-        - row "FP Frozen Pork Pig —":
-          - rowheader "FP Frozen Pork":
-            - text: ""
+        - row "Frozen Pork Pig —":
+          - rowheader "Frozen Pork":
             - button "Frozen Pork"
           - cell "Pig":
             - button "Pig"
           - cell "—"
-        - row "HF Hi-fi Electronic Components , Plastic , Steel —":
-          - rowheader "HF Hi-fi":
-            - text: ""
+        - row "Hi-fi Electronic Components , Plastic , Steel —":
+          - rowheader "Hi-fi":
             - button "Hi-fi"
           - cell "Electronic Components , Plastic , Steel":
             - button "Electronic Components"
@@ -656,18 +599,16 @@
             - text: ""
             - button "Steel"
           - cell "—"
-        - row "IC Ice Cream Milk , Sugar —":
-          - rowheader "IC Ice Cream":
-            - text: ""
+        - row "Ice Cream Milk , Sugar —":
+          - rowheader "Ice Cream":
             - button "Ice Cream"
           - cell "Milk , Sugar":
             - button "Milk"
             - text: ""
             - button "Sugar"
           - cell "—"
-        - row "IT Internet-TV CPU , Glass , Plastic —":
-          - rowheader "IT Internet-TV":
-            - text: ""
+        - row "Internet-TV CPU , Glass , Plastic —":
+          - rowheader "Internet-TV":
             - button "Internet-TV"
           - cell "CPU , Glass , Plastic":
             - button "CPU"
@@ -676,50 +617,44 @@
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "J Jeans Textiles —":
-          - rowheader "J Jeans":
-            - text: ""
+        - row "Jeans Textiles —":
+          - rowheader "Jeans":
             - button "Jeans"
           - cell "Textiles":
             - button "Textiles"
           - cell "—"
-        - row "J Jewelry Gold —":
-          - rowheader "J Jewelry":
-            - text: ""
+        - row "Jewelry Gold —":
+          - rowheader "Jewelry":
             - button "Jewelry"
           - cell "Gold":
             - button "Gold"
           - cell "—"
-        - row "LB Leather Briefcase Leather , Textiles —":
-          - rowheader "LB Leather Briefcase":
-            - text: ""
+        - row "Leather Briefcase Leather , Textiles —":
+          - rowheader "Leather Briefcase":
             - button "Leather Briefcase"
           - cell "Leather , Textiles":
             - button "Leather"
             - text: ""
             - button "Textiles"
           - cell "—"
-        - row "LJ Leather Jacket Leather , Textiles —":
-          - rowheader "LJ Leather Jacket":
-            - text: ""
+        - row "Leather Jacket Leather , Textiles —":
+          - rowheader "Leather Jacket":
             - button "Leather Jacket"
           - cell "Leather , Textiles":
             - button "Leather"
             - text: ""
             - button "Textiles"
           - cell "—"
-        - row "LS Leather Shoes Leather , Rubber —":
-          - rowheader "LS Leather Shoes":
-            - text: ""
+        - row "Leather Shoes Leather , Rubber —":
+          - rowheader "Leather Shoes":
             - button "Leather Shoes"
           - cell "Leather , Rubber":
             - button "Leather"
             - text: ""
             - button "Rubber"
           - cell "—"
-        - row "M Motorcycle Engine , Steel , Wheel & Tire —":
-          - rowheader "M Motorcycle":
-            - text: ""
+        - row "Motorcycle Engine , Steel , Wheel & Tire —":
+          - rowheader "Motorcycle":
             - button "Motorcycle"
           - cell "Engine , Steel , Wheel & Tire":
             - button "Engine"
@@ -728,9 +663,8 @@
             - text: ""
             - button "Wheel & Tire"
           - cell "—"
-        - row "P PDA CPU , Electronic Components , Plastic —":
-          - rowheader "P PDA":
-            - text: ""
+        - row "PDA CPU , Electronic Components , Plastic —":
+          - rowheader "PDA":
             - button "PDA"
           - cell "CPU , Electronic Components , Plastic":
             - button "CPU"
@@ -739,34 +673,30 @@
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "P Perfume Chemical Minerals , Glass —":
-          - rowheader "P Perfume":
-            - text: ""
+        - row "Perfume Chemical Minerals , Glass —":
+          - rowheader "Perfume":
             - button "Perfume"
           - cell "Chemical Minerals , Glass":
             - button "Chemical Minerals"
             - text: ""
             - button "Glass"
           - cell "—"
-        - row "S Shampoo Chemical Minerals , Plastic —":
-          - rowheader "S Shampoo":
-            - text: ""
+        - row "Shampoo Chemical Minerals , Plastic —":
+          - rowheader "Shampoo":
             - button "Shampoo"
           - cell "Chemical Minerals , Plastic":
             - button "Chemical Minerals"
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "S Socks Wool —":
-          - rowheader "S Socks":
-            - text: ""
+        - row "Socks Wool —":
+          - rowheader "Socks":
             - button "Socks"
           - cell "Wool":
             - button "Wool"
           - cell "—"
-        - row "S Sofa Leather , Cotton , Timber —":
-          - rowheader "S Sofa":
-            - text: ""
+        - row "Sofa Leather , Cotton , Timber —":
+          - rowheader "Sofa":
             - button "Sofa"
           - cell "Leather , Cotton , Timber":
             - button "Leather"
@@ -775,9 +705,8 @@
             - text: ""
             - button "Timber"
           - cell "—"
-        - row "SS Sport Shoes Leather , Cotton , Rubber —":
-          - rowheader "SS Sport Shoes":
-            - text: ""
+        - row "Sport Shoes Leather , Cotton , Rubber —":
+          - rowheader "Sport Shoes":
             - button "Sport Shoes"
           - cell "Leather , Cotton , Rubber":
             - button "Leather"
@@ -786,16 +715,14 @@
             - text: ""
             - button "Rubber"
           - cell "—"
-        - row "S Sweater Wool —":
-          - rowheader "S Sweater":
-            - text: ""
+        - row "Sweater Wool —":
+          - rowheader "Sweater":
             - button "Sweater"
           - cell "Wool":
             - button "Wool"
           - cell "—"
-        - row "T Television Electronic Components , Glass , Plastic —":
-          - rowheader "T Television":
-            - text: ""
+        - row "Television Electronic Components , Glass , Plastic —":
+          - rowheader "Television":
             - button "Television"
           - cell "Electronic Components , Glass , Plastic":
             - button "Electronic Components"
@@ -804,36 +731,32 @@
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "T Toothpaste Chemical Minerals , Plastic —":
-          - rowheader "T Toothpaste":
-            - text: ""
+        - row "Toothpaste Chemical Minerals , Plastic —":
+          - rowheader "Toothpaste":
             - button "Toothpaste"
           - cell "Chemical Minerals , Plastic":
             - button "Chemical Minerals"
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "TB Toy Bear Cotton , Textiles —":
-          - rowheader "TB Toy Bear":
-            - text: ""
+        - row "Toy Bear Cotton , Textiles —":
+          - rowheader "Toy Bear":
             - button "Toy Bear"
           - cell "Cotton , Textiles":
             - button "Cotton"
             - text: ""
             - button "Textiles"
           - cell "—"
-        - row "TT Toy Train Plastic , Steel —":
-          - rowheader "TT Toy Train":
-            - text: ""
+        - row "Toy Train Plastic , Steel —":
+          - rowheader "Toy Train":
             - button "Toy Train"
           - cell "Plastic , Steel":
             - button "Plastic"
             - text: ""
             - button "Steel"
           - cell "—"
-        - row "VC Video Camera Electronic Components , Glass , Plastic —":
-          - rowheader "VC Video Camera":
-            - text: ""
+        - row "Video Camera Electronic Components , Glass , Plastic —":
+          - rowheader "Video Camera":
             - button "Video Camera"
           - cell "Electronic Components , Glass , Plastic":
             - button "Electronic Components"
@@ -842,9 +765,8 @@
             - text: ""
             - button "Plastic"
           - cell "—"
-        - row "VR Video Recorder Electronic Components , Plastic , Steel —":
-          - rowheader "VR Video Recorder":
-            - text: ""
+        - row "Video Recorder Electronic Components , Plastic , Steel —":
+          - rowheader "Video Recorder":
             - button "Video Recorder"
           - cell "Electronic Components , Plastic , Steel":
             - button "Electronic Components"
@@ -853,36 +775,32 @@
             - text: ""
             - button "Steel"
           - cell "—"
-        - row "VC VR Computer CPU , Glass —":
-          - rowheader "VC VR Computer":
-            - text: ""
+        - row "VR Computer CPU , Glass —":
+          - rowheader "VR Computer":
             - button "VR Computer"
           - cell "CPU , Glass":
             - button "CPU"
             - text: ""
             - button "Glass"
           - cell "—"
-        - row "W Watch Glass , Steel —":
-          - rowheader "W Watch":
-            - text: ""
+        - row "Watch Glass , Steel —":
+          - rowheader "Watch":
             - button "Watch"
           - cell "Glass , Steel":
             - button "Glass"
             - text: ""
             - button "Steel"
           - cell "—"
-        - row "W Wine Grapes , Glass —":
-          - rowheader "W Wine":
-            - text: ""
+        - row "Wine Grapes , Glass —":
+          - rowheader "Wine":
             - button "Wine"
           - cell "Grapes , Glass":
             - button "Grapes"
             - text: ""
             - button "Glass"
           - cell "—"
-        - row "WC Wrist Computer CPU , Electronic Components , Plastic —":
-          - rowheader "WC Wrist Computer":
-            - text: ""
+        - row "Wrist Computer CPU , Electronic Components , Plastic —":
+          - rowheader "Wrist Computer":
             - button "Wrist Computer"
           - cell "CPU , Electronic Components , Plastic":
             - button "CPU"

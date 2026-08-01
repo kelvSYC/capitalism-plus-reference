@@ -1,8 +1,7 @@
 - region "Air Conditioner":
   - button "← Back"
-  - text: AC
   - heading "Air Conditioner" [level=2]
-  - text: /Electronic Products · Manufacturing · Standard gameset Retail Product \d+% 5% 5% \d+% Electronic Components — 1 lb Plastic — 3 lb Steel — 6 lb Production Technology/
+  - text: /Electronic Products · Manufacturing · Standard gameset Retail Product Electronic Components — 1 lb · \d+% Plastic — 3 lb · 5% Steel — 6 lb · 5% Production Technology · \d+%/
   - heading "Output" [level=3]
   - term: Yield
   - definition: 1 unit per production run
@@ -10,11 +9,11 @@
   - heading "Made from (direct inputs)" [level=4]
   - list:
     - listitem:
-      - button /EC Electronic Components 1 lb · Q:\d+%/
+      - button /Electronic Components 1 lb · Q:\d+%/
     - listitem:
-      - button "P Plastic 3 lb · Q:5%"
+      - button "Plastic 3 lb · Q:5%"
     - listitem:
-      - button "S Steel 6 lb · Q:5%"
+      - button "Steel 6 lb · Q:5%"
   - heading "Used in (direct consumers)" [level=4]
   - list:
     - listitem: — none (sold directly) —
