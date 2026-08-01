@@ -147,7 +147,10 @@ test("a full growing-calendar row, for judging verbosity", async ({ page }) => {
     // Cut at "end of row": the reader wraps back to the top of the container once
     // it runs out, and a second pass through the same row is noise that would
     // double the snapshot and hide where the row actually ends.
-    const end = log.findIndex((phrase) => phrase.startsWith("end of row"));
+    // "end of row," with the comma: "end of rowheader, ..." also starts with
+    // "end of row" and is four announcements in, so a prefix match truncates the
+    // transcript to the row header alone.
+    const end = log.findIndex((phrase) => phrase.startsWith("end of row,"));
     return end === -1 ? log : log.slice(0, end + 1);
   });
   test.skip(spoken === null, "no Rubber row in this gameset");
