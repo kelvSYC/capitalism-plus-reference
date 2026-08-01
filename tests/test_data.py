@@ -527,6 +527,37 @@ class TestAccessibility(unittest.TestCase):
     mouse-only in the first place."""
 
     HTML = BUILT.read_text(encoding="utf-8")
+    TEMPLATE = TEMPLATE_TEXT
+
+    # The three checks below duplicate ground the Playwright harness covers far
+    # better -- but that harness is not a deploy gate (it downloads a browser), and
+    # this suite is. Each guards a defect the harness found in the accessibility
+    # tree and nothing else could see, so each needs to fail in the fast suite too.
+
+    def test_activatable_is_never_applied_to_a_list_item(self):
+        """role="button" replaces the implicit listitem role, so a <ul> of them
+        stops being a list: no "list, 3 items", no positions, and axe reports
+        "<ul> must only directly contain <li>". Rows wrap their contents in a
+        span that carries it instead."""
+        self.assertNotIn("<li ${ACTIVATABLE}", self.TEMPLATE)
+        self.assertIn('class="rel-item" ${ACTIVATABLE}', self.TEMPLATE)
+
+    def test_monogram_tiles_are_hidden_from_assistive_tech(self):
+        """The initial is drawn by CSS content: attr(data-initial), which Chromium
+        exposes to the accessibility tree -- so without aria-hidden every product
+        announces as "AC Air Conditioner". alt="" cannot reach generated content."""
+        for opener in re.findall(r'<span class="picon[^>]*>', self.TEMPLATE):
+            self.assertIn("aria-hidden", opener, opener)
+
+    def test_the_composition_bar_pairs_each_name_with_its_percentage(self):
+        """The bar's segments carry percentages and its legend carries names, so
+        the association was colour-only -- unusable to a reader and to anyone who
+        cannot separate the swatches. The legend must carry both, and the bar is
+        then decoration."""
+        self.assertIn('class="bar" aria-hidden="true"', self.TEMPLATE)
+        self.assertIn("${inp.quality_pct}%</span>", self.TEMPLATE)
+        self.assertIn("Production Technology &middot; ${p.production_technology_pct}%"
+                      .replace("&middot;", "\u00b7"), self.TEMPLATE)
 
     def test_has_viewport_meta(self):
         # Without it, mobile browsers scale a 980px layout down to ~38%.

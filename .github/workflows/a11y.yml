@@ -9,8 +9,10 @@
 # Two modes:
 #
 #   default            verify. Snapshots must already exist; a missing one fails.
-#   record_snapshots   bootstrap. Records what is missing and uploads it as an
-#                      artifact to download, read and commit.
+#   record_snapshots   re-record. Writes snapshots that are missing OR that have
+#                      changed, and uploads them as an artifact to download, read
+#                      and commit. Reading the diff is the safeguard: "changed"
+#                      would otherwise bless a regression as the new expectation.
 #
 # Recording happens here rather than on a laptop on purpose. These snapshots are
 # checked on this runner, so recording them anywhere else bakes in a platform
@@ -23,7 +25,7 @@ on:
   workflow_dispatch:
     inputs:
       record_snapshots:
-        description: "Record missing snapshots and upload them for review, instead of failing on them"
+        description: "Re-record missing or changed snapshots and upload them for review, instead of failing on them"
         type: boolean
         default: false
 

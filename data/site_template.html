@@ -194,7 +194,8 @@
      monograms side by side -- "SC" and "S" for Sugar -- which says nothing the
      product's alone does not, so the plant tile drops out and one monogram
      remains. Scoped to .title-art: in the Almanac the plant IS the only tile and
-     must keep its monogram, which is why that row names the plant in text. */
+     must keep its monogram VISUALLY, which is why that row also names the plant in
+     text -- the monogram itself is hidden from assistive tech. */
   .title-art .picon-empty.plant-tile { display: none; }
   .detail-head h2 { margin: 0 0 4px; font-size: 24px; }
   .detail-head .cat { color: var(--muted); font-size: 14px; }
@@ -273,10 +274,10 @@
   .almanac-table .from-cell { max-width: 26ch; }
   .almanac-table .yield-cell { max-width: 20ch; }
   /* The tile in this column is the growing plant, not the harvested crop, so the
-     plant is named. That also keeps the column readable when there is no artwork:
-     otherwise a reader sees an "SC" monogram beside a row labelled "Sugar", with
-     only a title attribute to explain it -- and a title is no use to a keyboard or
-     a touchscreen. */
+     plant is named. That keeps the column legible with no artwork, where the tile
+     shows an "SC" monogram beside a row labelled "Sugar". The monogram and its
+     title are aria-hidden, so this text is the ONLY plant name assistive tech
+     gets -- and a title was never any use to a keyboard or a touchscreen. */
   /* Stacked under the crop name rather than beside it: the first column is
      already the widest in a 16-column table, and on a narrow screen the month
      grid is the thing that needs the room. */
@@ -2871,11 +2872,17 @@ function renderAll() {
   if (focusKey) restoreFocus(focusKey);
 }
 
-// Div and li elements carrying an onclick are not focusable and do not respond
-// to Enter or Space, so the whole grid, the relation lists and the detail-page
-// Back control were unreachable without a mouse. They now carry role="button"
-// and tabindex="0" (see ACTIVATABLE); this supplies the key handling a real
-// <button> would have given for free.
+// Elements carrying an onclick are not focusable and do not respond to Enter or
+// Space, so the whole grid, the relation lists and the detail-page Back control
+// were unreachable without a mouse. They carry role="button" and tabindex="0"
+// (see ACTIVATABLE); this supplies the key handling a real <button> would have
+// given for free.
+//
+// NEVER put ACTIVATABLE on an <li>. role="button" replaces the implicit listitem
+// role, so the <ul> stops being a list: a reader loses "list, 3 items" and every
+// position, and axe reports "<ul> must only directly contain <li>". Relation and
+// yield rows wrap their contents in a <span class="rel-item"> that carries it
+// instead. That wrapper looks redundant and is not.
 //
 // One delegated listener rather than per-element handlers: every render replaces
 // its container's innerHTML wholesale, so per-element handlers would have to be

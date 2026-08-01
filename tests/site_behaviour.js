@@ -723,7 +723,8 @@ ok('a crop with no distinct plant still shows its own image',
    ac.includes('Standard_Wheat.png'));
 // The graphic-less case matters as much as the graphic-enabled one. The tile in
 // this column is the PLANT, so without artwork a reader would see an "SC"
-// monogram beside a row labelled "Sugar" -- explained only by a title attribute,
+// monogram beside a row labelled "Sugar". The monogram is aria-hidden, so this
+// text is the only plant name assistive tech gets -- a title attribute,
 // which a keyboard or a touchscreen never surfaces. Naming the plant in text
 // resolves it, and matches the in-game Farmer's Guide listing crops by plant.
 ok('the plant tile carries a monogram for when artwork is absent',

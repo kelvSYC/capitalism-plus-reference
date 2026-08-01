@@ -65,14 +65,22 @@ VoiceOver; this is what stops the audit's findings from silently coming back.
 
 ## Status
 
-Written on a machine with no Node, so the first run is in CI. Selectors were
-cross-checked against `site/index.html` by hand, but until `gh workflow run a11y`
-has passed, treat every file here as unverified.
+**Passing: 17 tests, verified in CI.** This was authored on a machine with no
+Node and first run on the runner; the module injection in `announcements.spec.js`
+works, with the virtual reader served to the page through a route.
 
-The likeliest thing to break is the module injection in `announcements.spec.js`:
-the virtual reader is served to the page through a route and imported as an ES
-module. If that browser bundle is not self-contained, the fallback is to run the
-virtual reader in Node against jsdom instead of inside the page.
+Its first runs earned it, finding four defects that 87 Python tests and 258
+behavioural assertions could not see, all four being properties of the
+accessibility tree:
+
+1. `role="button"` on the `<li>` of every relation row, so the `<ul>` was not a list.
+2. The skip link placed after everything it skips.
+3. Monogram initials read as part of all 245 product names.
+4. The composition bar pairing names to percentages by colour alone.
+
+The first two were caught by assertions. The other two were caught by *reading the
+recorded snapshots* — worth doing whenever they change, because an assertion
+confirms what you thought to ask and a transcript shows what you did not.
 
 Two things are known-missing rather than broken:
 
