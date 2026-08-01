@@ -22,10 +22,15 @@ module.exports = defineConfig({
   // A snapshot written by a stray update run is worse than a failure: it records
   // whatever the tree happened to be and calls it correct. So recording is opt-in
   // through an explicit variable rather than inferred, and CI refuses by default.
-  // The a11y workflow sets this only when asked to bootstrap, and then uploads
-  // what it recorded for review instead of committing it.
+  //
+  // "changed" rather than "missing" when recording, because a deliberate
+  // improvement to the markup makes existing snapshots MISMATCH, not disappear --
+  // and "missing" leaves those untouched, so a re-record run reports failures and
+  // silently rewrites nothing. What keeps "changed" honest is not the mode but the
+  // workflow: it uploads what it wrote as an artifact for review instead of
+  // committing it, so a diff is still read by a person before it lands.
   updateSnapshots: process.env.A11Y_RECORD_SNAPSHOTS
-    ? "missing"
+    ? "changed"
     : process.env.CI
       ? "none"
       : "missing",
