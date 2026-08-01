@@ -1,0 +1,58 @@
+# Accessibility harness: axe rule sweep, accessibility-tree snapshots, and
+# simulated screen-reader announcements against the built site.
+#
+# Manual-only, and deliberately NOT wired into the pages preflight. A gate is
+# only worth having if nobody wants to bypass it, and this job downloads a
+# browser -- if that is ever slow or flaky it must not be able to block a deploy.
+# Promote it into pages.yml once it has been boring for a while.
+#
+# It will fail until the snapshots exist: they are generated locally with
+# `npm run a11y:update` and reviewed as a diff, because a snapshot created by CI
+# records whatever the tree happened to be rather than what anyone intended.
+name: a11y
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # The site is served by python3's stdlib http.server (see
+      # playwright.config.js), so Python is a requirement of the harness too.
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "lts/*"
+
+      # No `npm ci`: there is no lockfile yet. Direct dependencies are pinned
+      # exactly in package.json, so this is reproducible for them; commit a
+      # package-lock.json and switch to `npm ci` to pin transitives too.
+      - name: Install harness
+        run: npm install
+
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify the artifact under test is current
+        # The harness loads site/index.html. Auditing a stale artifact would
+        # report on something the deploy would never serve.
+        run: python3 tools/build_site.py --check
+
+      - name: Accessibility audit
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

@@ -39,9 +39,13 @@ tests/
   test_data.py         data invariants the site depends on (unittest, stdlib)
   site_behaviour.js    behavioural tests, spliced into the built site
   run_site_tests.py    runs the above under node/bun/deno/jsc
+  a11y/                accessibility harness — axe, accessibility-tree
+                       snapshots, simulated screen-reader output. The only
+                       part of this repo with dependencies; see a11y/README.md
 .github/workflows/
   ci.yml          verify build + tests on push/PR
   pages.yml       manual-only Pages deploy, gated on the launch checklist
+  a11y.yml        manual-only accessibility audit (downloads a browser)
 data/
   site_template.html    site source: all HTML/CSS/JS, with one placeholder
                         (__PRODUCTS_JSON__) for the product data
@@ -119,6 +123,13 @@ in place, and asserted by the test suites rather than left to inspection.
 They have not been through an actual screen reader. Everything above is
 structural, and structure is what a test can reach; whether the result is
 coherent to listen to is a separate question, and an open one.
+
+`tests/a11y/` narrows that gap without closing it: axe for rule violations,
+accessibility-tree snapshots so a CSS refactor cannot quietly flatten the
+semantics, and a simulated screen reader recording what would be announced. It
+is the regression net rather than the audit — it will tell you an announcement
+changed, never that it was too long. It also needs Node, which nothing else here
+does, so it runs from its own manual workflow and is not part of the deploy gate.
 
 ## Licensing
 

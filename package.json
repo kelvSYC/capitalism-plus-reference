@@ -1,0 +1,19 @@
+{
+  "//": "DEV-ONLY accessibility harness. Nothing here ships: site/index.html vendors nothing and has no runtime dependency, which the pages workflow enforces by failing on any file under site/. Deliberately NOT \"type\": \"module\" -- tests/run_site_tests.py writes its spliced harness to tests/_site_behaviour.generated.js, inside the repo, and Node would then read that plain script as ESM and break the existing suite.",
+  "name": "capitalism-plus-reference-a11y",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Accessibility test harness for the Capitalism Plus reference site (development only).",
+  "license": "MIT",
+  "scripts": {
+    "a11y": "playwright test",
+    "a11y:update": "playwright test --update-snapshots",
+    "a11y:report": "playwright show-report",
+    "a11y:install": "playwright install --with-deps chromium"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
+    "@guidepup/virtual-screen-reader": "0.32.1",
+    "@playwright/test": "1.62.1"
+  }
+}

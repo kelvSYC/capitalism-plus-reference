@@ -30,3 +30,16 @@ venv/
 
 # macOS cruft
 .DS_Store
+
+# --- Development-only accessibility harness (see package.json) ---
+# None of this ships. site/index.html vendors nothing and has no runtime
+# dependency; the pages workflow fails closed on any file appearing under site/.
+/node_modules/
+/playwright-report/
+/test-results/
+/blob-report/
+
+# Spliced harness written by tests/run_site_tests.py next to itself, inside the
+# repo. Removed in a finally block, so it exists only after an interrupted run --
+# but one `git add -A` at the wrong moment would commit a generated file.
+/tests/_site_behaviour.generated.js
