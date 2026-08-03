@@ -1,15 +1,15 @@
 # Publish site/ to GitHub Pages.
 #
-# DELIBERATELY manual (workflow_dispatch only), not on push. ATTRIBUTION.md
-# records an unresolved question about whether displaying 245 icons extracted
-# from the commercial game qualifies as fair use, and states that resolving it is
-# "a precondition for making this site public, not an afterthought." An
-# auto-deploy-on-push trigger would quietly overrule that decision the first time
-# somebody merged a typo fix.
+# DELIBERATELY manual (workflow_dispatch only), not on push. The site displays
+# product artwork under written permission from Enlight Software which they can
+# withdraw, and we undertook to remove it immediately on request (ATTRIBUTION.md).
+# An auto-deploy-on-push trigger would republish that artwork the first time
+# somebody merged a typo fix -- possibly after a takedown had been actioned.
 #
-# The preflight job below turns that written intention into an enforced one: the
-# deploy cannot run until the legal picture is actually in place and visible.
-# Every check is a hard failure with an explanation, not a warning.
+# The preflight job below turns the written undertakings into enforced ones: the
+# deploy cannot run unless the permission is still on record and the attribution
+# is actually visible to a visitor. Every check is a hard failure with an
+# explanation, not a warning.
 name: pages
 
 on:
@@ -41,23 +41,28 @@ jobs:
       - name: Data invariants
         run: python3 -m unittest discover -s tests
 
-      # (1) The icon hold. Checks the working tree that would actually be
-      # uploaded, not just git -- if a future step fetches icons from somewhere
-      # else, this still catches them.
-      - name: No game-extracted assets in the deploy tree
+      # (1) Artwork ships only while the permission that allows it is on record.
+      # Enlight granted it in writing; the grant is what makes publishing these
+      # lawful, so the gate keys on the record rather than on someone remembering.
+      # Deleting the record without deleting the artwork now fails the deploy,
+      # which is the right way round.
+      - name: Artwork ships only with the recorded grant
         run: |
-          stray="$(find site/images -type f ! -name .gitkeep -print 2>/dev/null || true)"
-          if [ -n "$stray" ]; then
-            echo "::error::Game-extracted icons present in the deploy tree:"
-            echo "$stray"
-            echo
-            echo "These are icons from the commercial game. Publishing them is gated on"
-            echo "the fair-use question in ATTRIBUTION.md. If that question has been"
-            echo "resolved, update ATTRIBUTION.md and remove this check deliberately --"
-            echo "do not bypass it."
-            exit 1
+          count="$(find site/images -type f -name '*.png' | wc -l | tr -d ' ')"
+          if [ "$count" -gt 0 ]; then
+            grep -q 'Product icons: permission granted' ATTRIBUTION.md || {
+              echo "::error::$count icon(s) in the deploy tree, but ATTRIBUTION.md no"
+              echo "longer records Enlight's permission. That record is what allows them"
+              echo "to be published. Restore it, or remove the artwork in the same commit."
+              exit 1
+            }
+            grep -q 'David Lee' ATTRIBUTION.md || {
+              echo "::error::The grant record has lost the name of who gave it."
+              echo "ATTRIBUTION.md must say who granted permission and when."
+              exit 1
+            }
           fi
-          echo "ok: no extracted assets in site/images/"
+          echo "ok: $count icons, grant on record"
 
       # (2) The project's own terms. Without a LICENSE the code and the decoded
       # dataset are all-rights-reserved by default, which contradicts the

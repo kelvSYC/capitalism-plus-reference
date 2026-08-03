@@ -1,16 +1,7 @@
-# --- product icons: extracted from the commercial game's own asset files. ---
-# Not committed pending a fair-use/attribution determination (see ATTRIBUTION.md).
-# The folder itself is tracked (via .gitkeep) so the site's relative image
-# paths resolve locally once icons are populated from your own legitimately
-# owned copy of the game.
-#
-# Ignores every file in the folder, not just *.png: icons extracted as .webp,
-# .gif or .bmp are the same unresolved question as the PNGs, and an ignore rule
-# that names one format silently permits the others. Note that this rule is the
-# ONLY thing keeping the icons out of git -- it does not protect a non-git
-# deploy path (rsync/drag-and-drop of a populated local site/ directory).
-/site/images/*
-!/site/images/.gitkeep
+# Product icons ARE committed, under written permission from Enlight Software
+# (see ATTRIBUTION.md). They were ignored here until that permission existed.
+# Nothing to exclude now: tests/test_data.py asserts the tracked set matches the
+# dataset exactly, so a stray file is a test failure rather than a silent extra.
 
 # Python
 __pycache__/

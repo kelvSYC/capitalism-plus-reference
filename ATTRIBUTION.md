@@ -1,11 +1,10 @@
 # Attribution
 
-> **Icon position: unresolved.** No fair-use determination has been made, Enlight
-> has not been contacted, and the icons' own provenance is unverified (finding 4
-> below). They are therefore withheld from version control and from every
-> published form of this site, enforced by three mechanical guards rather than by
-> intention. This does **not** block publishing: the site is built to work without
-> artwork. Nothing else in this document is open.
+> **Icon position: granted, in writing.** On 2026-08-02 Enlight Software gave
+> permission to display the product icons and to include the files in this
+> repository, public or not. The grant and the undertakings we gave in return are
+> quoted below. The icons remain Enlight's property, not ours, and come out on
+> request. Nothing in this document is open.
 
 **Capitalism Plus** (1996) is a product of **Enlight Software Limited**
 (Hong Kong), founded by Trevor Chan. Enlight is still actively developing
@@ -30,92 +29,62 @@ evidence behind each mechanic. No game code, script text, or executable is
 reproduced. Scenario descriptions on the site are original paraphrases, not
 reproductions of the game's narrative text.
 
-## The open question: product icons
+## Product icons: permission granted
 
-`site/images/` (git-ignored, not committed — see `.gitignore`) holds 245
-small (120x120) product icons extracted from the game's own compiled raster
-asset files, one per product, used purely to help players visually identify
-items while playing.
+`site/images/` holds 251 icons extracted from the game's own compiled raster
+files — 245 products at 120×120, plus the six growing plants the game shows
+beside their crops. They are displayed on the site and committed here under
+written permission from Enlight Software.
 
-Whether displaying these on a public reference site qualifies as fair use
-(identificatory use of small game-asset icons in a non-commercial fan
-reference, similar to how many game wikis display sprite art) is a real
-question we have not resolved, not a settled conclusion.
-Until it is, the icons stay out of version control and out of any public
-deployment of this site; only the local working copy (populated from your
-own legitimately-owned copy of the game) has them. Resolving this — either
-via a fair-use determination, replacement placeholder art, or direct contact
-with Enlight — is a precondition for making this site public, not an
-afterthought.
+**Granted by:** David Lee, Marketing and Community Manager, Enlight Software
+(`info@enlight.com`)
 
-The hold is enforced mechanically, not just in prose: `.gitignore` keeps the
-icons untracked, `tests/test_data.py` asserts nothing but `.gitkeep` is tracked
-under `site/images/`, and the `pages` deploy workflow refuses to publish if any
-icon file is present in the tree it would upload. Removing any of those should
-be a deliberate act recorded alongside a resolution of this section, not a
-side effect.
+**When:** 1 August 2026, extended 2 August 2026 on the question of the repository.
 
-**If permission is obtained.** Should Enlight grant permission to display the
-product icons, they would be added under the terms of that grant and recorded
-here — who granted it, when, its exact scope, and the granted terms quoted. They
-would *not* fall under this project's own `LICENSE`, which covers only material
-we are in a position to license; `REUSE.toml` marks `site/images/**` as
-third-party precisely so that adding files there can never be mistaken for
-placing them under our terms. Until such a grant exists, `site/images/` stays
-empty in every published form of this site.
+**The grant, quoted:**
 
-### Findings to date (research, not legal advice)
+> We are happy to grant permission for you to display the Capitalism Plus product
+> icons on your fan reference site.
 
-Recorded so the next person doesn't restart from zero. None of this is legal
-advice and none of it resolves the question.
+> Yes — the permission also extends to including the icon files in the source
+> repository, even if it becomes public in the future. Your plan to provide
+> attribution and to remove the files immediately upon request is appreciated and
+> fully acceptable.
 
-1. **"Nominative fair use" was the wrong frame, and has been removed above.**
-   Nominative fair use is a **trademark** doctrine (*New Kids on the Block v.
-   News America Publishing*, 9th Cir. 1992; *Toyota v. Tabari*, 9th Cir. 2010).
-   It governs when you may use someone's *mark* to refer to their product —
-   which is the right analysis for using the words "Capitalism Plus" on this
-   site, and that use is on comparatively solid ground. It says nothing about
-   copying the *icons*. Those are pictorial works, and reproducing them raises a
-   **copyright** claim analysed under 17 U.S.C. §107's four factors. Conflating
-   the two made the icon position look better supported than it is: the
-   trademark half was never really the exposure.
+**What we undertook in return, and are bound by:**
 
-2. **Enlight has no published fan-content or asset-use policy that we could
-   find.** Their support FAQ carries only "© Copyright Enlight Software Limited.
-   All rights reserved." and no fan-site, screenshot, or asset terms
-   (<https://www.capitalismlab.com/support-faq/>). Absence of a policy is not
-   permission, but it also means there is no published prohibition to point to —
-   the position is simply undetermined rather than adverse.
+- Non-commercial use, on this reference only.
+- Icons at their original size, for identification, one per product entry.
+- Attribution to Enlight Software Limited and a link to Capitalism Lab — in the
+  rendered page, not only in this file.
+- Immediate removal on request, without question.
 
-3. **Enlight actively supports modding** ("How to Make a MOD", "Advanced
-   Modding" documentation for Capitalism Lab), which is a materially different
-   posture from a publisher that forbids touching its assets. It is not a
-   licence and does not extend to a 1996 title by its own terms.
+The icons are **not** covered by this project's `LICENSE`, which covers only
+material we are in a position to license. `REUSE.toml` marks `site/images/**`
+with Enlight's copyright and `LicenseRef-Enlight-FanReference-2026`, so a file
+appearing there can never be mistaken for one of ours.
 
-4. **The icons' own provenance is uncertain, and this may matter more than the
-   fair-use question.** On Enlight's own forum, in a thread requesting that
-   product images be exposed in standard formats
-   (<https://www.capitalism2.com/forum/viewtopic.php?t=922>), a user raised that
-   "it is possible that enlight could run into copyright issues for those
-   images, particularly if they were originally sourced from a third party who
-   still holds copyright," and the requester acknowledged not knowing "what the
-   license is that Enlight has with the images it used, whether they were in the
-   public domain (quite possibly) or if they actually licensed them from
-   somebody." No Enlight staff member answered. For a 1996 product catalogue,
-   licensed stock/clip art is entirely plausible. Two consequences: Enlight may
-   not be able to grant permission even if willing, and some individual icons
-   might carry thin or no protectable originality. Both are unverified.
+The guards that used to keep the icons out are now inverted rather than deleted:
+the `pages` workflow refuses to deploy artwork unless this grant is recorded in
+this file, and `tests/test_data.py` asserts the tracked icons match the dataset
+exactly. Removing the grant from this file breaks the deploy, which is the
+intended way round — the permission and the artwork travel together.
 
-5. **Community practice is tolerance, not entitlement.** A Capitalism Lab wiki
-   on Fandom hosts product images (<https://capitalismlab.fandom.com/>). That
-   such sites persist reflects publishers not objecting, which is not a legal
-   safe harbour and can change without notice.
+### The one residual risk
 
-6. **Permission path:** `info@enlight.com` is the published support address. A
-   narrow written request — non-commercial fan reference, 120x120 icons,
-   identification only, attribution and a link to Capitalism Lab, takedown on
-   request — is cheap to send and is the only step that actually converts this
-   from an open question into an answer.
+Permission from Enlight settles Enlight's rights, not necessarily every right in
+the images. On Enlight's own forum a user raised that "it is possible that enlight
+could run into copyright issues for those images, particularly if they were
+originally sourced from a third party who still holds copyright"
+(<https://www.capitalism2.com/forum/viewtopic.php?t=922>), and the requester did
+not know "what the license is that Enlight has with the images it used, whether
+they were in the public domain (quite possibly) or if they actually licensed them
+from somebody". For a 1996 product catalogue, licensed stock art is plausible.
+
+Enlight has now twice asserted the authority to grant, including once in direct
+answer to a question that offered "we cannot" as an acceptable reply. That is as
+far as this can reasonably be taken by asking. The removal-on-request undertaking
+is the mitigation if it ever proves mistaken.
 
 ## Engine / libraries
 

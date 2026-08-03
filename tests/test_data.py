@@ -773,11 +773,19 @@ class TestIconLicensingHold(unittest.TestCase):
             text=True,
             check=True,
         ).stdout.split()
+        # Inverted when Enlight granted permission: the question is no longer
+        # "is anything here?" but "is exactly the granted set here?". The grant
+        # covers the game's product icons, so a file that does not correspond to
+        # a dataset entry is artwork nobody permitted anything about.
+        expected = {"site/images/.gitkeep"}
+        for card in CARDS_DATA:
+            expected.add("site/images/" + card["icon_file"])
+            if card.get("plant"):
+                expected.add("site/images/" + card["plant"]["icon_file"])
         self.assertEqual(
-            ["site/images/.gitkeep"],
-            tracked,
-            "only .gitkeep may be tracked under site/images until the icon "
-            "licensing question in ATTRIBUTION.md is resolved",
+            expected,
+            set(tracked),
+            "tracked artwork must match the dataset exactly -- see ATTRIBUTION.md",
         )
 
 

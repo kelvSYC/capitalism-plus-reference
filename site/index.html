@@ -121,8 +121,9 @@
     cursor: pointer; text-align: center; transition: border-color .1s;
   }
   .card:hover { border-color: var(--retail); }
-  /* Product artwork is NOT distributed with this site (see ATTRIBUTION.md), so
-     every icon has to degrade to something deliberate. .picon is the sized tile;
+  /* Artwork ships under a permission that can be withdrawn (see ATTRIBUTION.md),
+     and a clone may simply not have it, so every icon degrades to something
+     deliberate rather than a broken-image glyph. .picon is the sized tile;
      the <img> merely fills it, and when the file is absent the tile shows a
      monogram tinted by the product's classification -- the same colour coding
      the badges use. See productIcon() and the capture listener that sets
@@ -444,11 +445,13 @@
   <a href="https://www.capitalismlab.com/" rel="noopener">Capitalism Lab</a>,
   direct from them.</p>
   <p>Gameplay facts here are independently decoded from the game's own
-  <code>.SET</code> and <code>.SCN</code> data files; no game code, artwork, or
-  narrative text is reproduced. Scenario descriptions are original paraphrases.
-  Product icons are not distributed with this site — see <code>ATTRIBUTION.md</code>
-  in the source repository for the methodology and the outstanding
-  asset-licensing question.</p>
+  <code>.SET</code> and <code>.SCN</code> data files; no game code or narrative
+  text is reproduced, and scenario descriptions are original paraphrases.</p>
+  <p><strong>Product icons are &copy; Enlight Software Limited</strong> and appear
+  here by their kind permission, granted 2 August 2026 for this non-commercial
+  reference. They are not covered by this project's licence, and are removed on
+  request. See <code>ATTRIBUTION.md</code> in the source repository for the grant
+  and for the decoding methodology.</p>
 </footer>
 
 <script>
@@ -1037,9 +1040,10 @@ function chainBlockedNote(p) {
     through.
   </div>`;
 }
-// The one place product artwork is emitted. Every icon on the site is optional:
-// the files are not distributed here (see ATTRIBUTION.md), so a missing image
-// must read as a designed placeholder rather than a broken-image glyph.
+// The one place product artwork is emitted. Every icon is optional by design:
+// the files are Enlight's, shown under a permission that can be withdrawn (see
+// ATTRIBUTION.md), so a missing image must read as a designed placeholder. The
+// monogram path is the one the tests exercise, so it cannot rot unnoticed.
 //
 // alt="" is correct rather than lazy -- the product name is always adjacent text,
 // so announcing the filename too would just be noise to a screen reader.

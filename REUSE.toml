@@ -27,15 +27,14 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Kelvin Chung"
 SPDX-License-Identifier = "CC-BY-4.0"
 
-# Product artwork extracted from the commercial game. NOT distributed by this
-# repository and NOT covered by its license -- see ATTRIBUTION.md. Populated
-# locally, if at all, by each user from their own copy of the game.
-#
-# If permission is ever obtained from Enlight, this entry is the hook to edit:
-# replace LicenseRef-NotDistributed with the granted terms, and record the grant
-# itself in ATTRIBUTION.md.
+# Product artwork from the commercial game, shown and distributed under written
+# permission from Enlight Software (David Lee, 2026-08-02). Enlight's copyright,
+# NOT this project's license -- the grant is quoted in ATTRIBUTION.md, and the
+# permission is specific to this reference. Anyone reusing these files needs
+# their own permission; this entry exists so tooling says so rather than
+# inferring MIT from the repository around them.
 [[annotations]]
 path = ["site/images/**"]
 precedence = "override"
 SPDX-FileCopyrightText = "Enlight Software Limited"
-SPDX-License-Identifier = "LicenseRef-NotDistributed"
+SPDX-License-Identifier = "LicenseRef-Enlight-FanReference-2026"
