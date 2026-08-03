@@ -58,18 +58,10 @@ jobs:
       # dependency. tests/test_against_game.py reports the skip explicitly, and
       # asserts that the verifier refuses to exit 0 when it has nothing to check.
 
-      # Belt-and-braces alongside the equivalent assertion in tests/test_data.py:
-      # a named step makes the licensing hold legible in the Actions UI rather
-      # than buried in unittest output.
-      - name: No game-extracted assets are committed
-        run: |
-          tracked="$(git ls-files site/images)"
-          if [ "$tracked" != "site/images/.gitkeep" ]; then
-            echo "::error::Unexpected tracked files under site/images/:"
-            echo "$tracked"
-            echo "The 245 product icons are extracted from the commercial game and are"
-            echo "withheld from version control pending the licensing determination in"
-            echo "ATTRIBUTION.md. Do not commit them."
-            exit 1
-          fi
-          echo "ok: only .gitkeep is tracked under site/images/"
+      # There was a shell copy of the artwork check here, described in its own
+      # comment as "belt-and-braces alongside the equivalent assertion in
+      # tests/test_data.py". When Enlight granted permission, the assertion was
+      # inverted and this copy was not -- so CI failed on the commit that added
+      # the icons, insisting they must not be committed. The duplicate is gone:
+      # test_tracked_icons_match_the_dataset states the stronger invariant (the
+      # tracked set matches the dataset exactly) and already runs above.

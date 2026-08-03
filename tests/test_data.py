@@ -121,9 +121,10 @@ class TestReferentialIntegrity(unittest.TestCase):
 
 
 class TestIcons(unittest.TestCase):
-    """Icons are populated by hand from the user's own copy of the game (see
-    ATTRIBUTION.md), so the filenames are a contract with a human, not with a
-    generator -- which makes them easy to get wrong and worth pinning."""
+    """icon_file is the link between a dataset record and a file on disk, and
+    nothing at runtime checks it: the site interpolates the name straight into
+    src="images/..." and a wrong one renders a monogram instead. These pin the
+    naming rules that keep that link sound."""
 
     def test_icon_filenames_are_unique(self):
         names = Counter(c["icon_file"] for c in CARDS_DATA)
@@ -751,17 +752,16 @@ class TestGrammars(unittest.TestCase):
             self.assertEqual(want, seen.get(field), f"{field} is at the wrong offset")
 
 
-class TestIconLicensingHold(unittest.TestCase):
-    """The icons are withheld from version control pending a licensing
-    determination (ATTRIBUTION.md), enforced today only by .gitignore. This
-    asserts the TRACKED tree is clean, so the decision stays a decision rather
-    than eroding by accident.
+class TestTrackedArtwork(unittest.TestCase):
+    """The icons ship under written permission from Enlight covering the game's
+    product icons (ATTRIBUTION.md). That makes the tracked set meaningful: it
+    should be exactly what the dataset references, because a file beyond that is
+    artwork nobody granted anything about.
 
-    Deliberately checks git, not the filesystem: the README tells you to
-    populate site/images/ locally from your own copy of the game, so a working
-    copy full of PNGs is correct and must not fail the suite."""
+    Deliberately checks git, not the filesystem: extract_icons.py can leave
+    extra files in a working copy, and that is the user's business."""
 
-    def test_no_icon_assets_are_tracked_by_git(self):
+    def test_tracked_artwork_matches_the_dataset(self):
         import shutil
         import subprocess
 
