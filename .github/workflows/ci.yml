@@ -63,5 +63,6 @@ jobs:
       # tests/test_data.py". When Enlight granted permission, the assertion was
       # inverted and this copy was not -- so CI failed on the commit that added
       # the icons, insisting they must not be committed. The duplicate is gone:
-      # test_tracked_icons_match_the_dataset states the stronger invariant (the
-      # tracked set matches the dataset exactly) and already runs above.
+      # test_tracked_artwork_matches_the_dataset states the stronger invariant
+      # (the tracked set equals what the dataset references) and already runs
+      # above, in the Data invariants step.
