@@ -11,6 +11,7 @@ that checks the data against its actual source rather than against itself.
 
 The directory is the one containing GAMESET/ and CapPlus.gog.
 """
+import hashlib
 import json
 import os
 import re
@@ -80,6 +81,33 @@ class TestDatasetIsComplete(unittest.TestCase):
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         self.assertIn("0 fields added, 0 updated, 0 removed", result.stdout)
+
+
+class TestDocumentedProvenance(unittest.TestCase):
+    """docs/DECODING.md names the exact copy everything was read from, with
+    SHA-256 prefixes, so somebody with a different release can compare rather
+    than assume. That only works while the recorded prefixes are the ones on
+    disk -- and a checksum in prose is precisely the kind of claim that goes
+    stale the first time anyone points the tools at another copy."""
+
+    FILES = ("GAMESET/1STD.SET", "GAMESET/2ALTER.SET", "GAMESET/3FOOD.SET", "CapPlus.gog")
+
+    def test_recorded_checksums_match_the_game_being_verified(self):
+        directory = game_dir()
+        if directory is None:
+            self.skipTest("set CAPITALISM_GAME_DIR to a game directory to run this")
+        doc = (ROOT / "docs" / "DECODING.md").read_text(encoding="utf-8")
+        for rel in self.FILES:
+            path = Path(directory) / rel
+            if not path.exists():
+                self.skipTest(f"{rel} absent -- a layout the docs already say is untested")
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()[:16]
+            self.assertIn(
+                digest, doc,
+                f"{rel} hashes to {digest}, which docs/DECODING.md does not record. "
+                "Either this is a different copy of the game, in which case update "
+                "the provenance table, or the file has changed underneath us.",
+            )
 
 
 class TestPaletteFormat(unittest.TestCase):

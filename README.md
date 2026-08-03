@@ -10,8 +10,9 @@ Meant to be kept open in a browser tab alongside the game itself.
 Every gameplay fact on the site (sale restrictions, scenario domination
 goals, production chains) is decoded directly from the game's own `.SET` /
 `.SCN` formats, not guessed from memory or secondary sources — and checked
-against a retail copy of the game by `tools/verify_against_game.py`
-(2,020 checks, 0 failures). See
+against a real copy of the game by `tools/verify_against_game.py`
+(2,020 checks, 0 failures — the GOG release specifically; `docs/DECODING.md`
+records which copy, with checksums). See
 `docs/DECODING.md` for the byte-level methodology and the evidence behind each
 mechanic.
 

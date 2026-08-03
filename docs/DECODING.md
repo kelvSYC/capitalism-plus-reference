@@ -45,6 +45,47 @@ game code, artwork, or narrative text is reproduced. See `ATTRIBUTION.md`.
 > `CAPITALISM_GAME_DIR` and the test suite picks it up, skipping cleanly without
 > it.
 
+## Which copy of the game
+
+"A retail copy", everywhere else in this document, means one specific copy:
+
+| | |
+|---|---|
+| Release | GOG, game ID `1207658721`, version 1, build `52095386300423852`, English |
+| Packaging | the contents of GOG's **Windows** installer, unpacked |
+| Run under | DOSBox Staging 0.82.2, in a hand-built macOS `.app` |
+
+GOG does not ship a macOS build of Capitalism Plus, so this is not a stock GOG
+install: the game files are GOG's, the launcher and emulator are not. GOG's own
+bundled DOSBox 0.74-2 sits unused in `DOSBOX/`. That distinction matters for one
+part of the work — the saves used to establish the `.SCN` goal offsets were
+produced by DOSBox Staging, not by the emulator GOG ships.
+
+The four files everything was read from, by SHA-256 prefix, so another copy can be
+compared rather than assumed identical:
+
+| File | SHA-256 (first 16) | Bytes |
+|---|---|---|
+| `GAMESET/1STD.SET` | `01e238d2777c664d` | 59,810 |
+| `GAMESET/2ALTER.SET` | `8194e1ef0296cbbe` | 59,984 |
+| `GAMESET/3FOOD.SET` | `d790eebdfdb42226` | 58,985 |
+| `CapPlus.gog` | `93f0e53c7cf62abe` | 279,402,496 |
+
+### What that does not establish
+
+**That other releases carry the same data.** The original 1996 CD release and the
+Classic Mac port are untested here. A 1996 title with no patch path almost
+certainly ships identical gamesets everywhere — but "almost certainly" is not what
+the rest of this document means by verified, and the checksums above are offered
+precisely so somebody with another release can settle it rather than trust it.
+
+**That the tools run against any layout.** `extract_icons.py` needs `GAMESET/` and
+`RESOURCE/`, which any install has. `verify_against_game.py` additionally needs
+`CapPlus.gog` — GOG's disc image — because the `.SCN` scenario files live inside
+it. On an original CD release those files are on the disc itself, so the scenario
+half of the verification (100 of the 2,020 checks) would need a different path.
+The product half would run unchanged.
+
 ## Method
 
 Nothing here was decoded by running a parser over the files. The work was done by

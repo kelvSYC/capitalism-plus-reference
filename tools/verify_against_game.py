@@ -10,7 +10,10 @@ so a disagreement means our data is wrong, not that the game moved.
     python3 tools/verify_against_game.py --game-dir "/path/to/Capitalism Plus"
     CAPITALISM_GAME_DIR="/path/to/game" python3 tools/verify_against_game.py
 
-The game directory is the one containing GAMESET/ and CapPlus.gog. Nothing from
+The game directory is the one containing GAMESET/ and CapPlus.gog -- that is the
+GOG release's layout, which is what this was developed against; see "Which copy of
+the game" in docs/DECODING.md, including what that does not establish about other
+releases. Nothing from
 the game is copied anywhere; the files are read and discarded.
 
 What is checked
