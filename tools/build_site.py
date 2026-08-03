@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-build_site.py — regenerate site/index.html from the template + product data.
+build_site.py — regenerate site/index.html and data/index_cards.csv from the
+template + product data.
 
 The template (data/site_template.html) contains a single placeholder,
 __PRODUCTS_JSON__, which gets replaced with the full contents of
@@ -11,6 +12,12 @@ site/index.html is a GENERATED file that is nevertheless committed, so the
 site stays usable by cloning and opening it directly -- no server, no build
 step -- as the README describes. That only works if the committed artifact
 never falls behind its inputs, hence --check.
+
+data/index_cards.csv is the same deal: a flat, lossy projection of the dataset
+for anyone who would rather open it in a spreadsheet. It used to be maintained by
+hand, and it drifted -- 85 output_unit cells stayed empty after the JSON filled
+them, and the test guarding it compared only five of its twelve columns. Deriving
+it here makes that impossible rather than merely tested.
 
 Usage:
     python3 tools/build_site.py            # regenerate site/index.html
@@ -23,6 +30,8 @@ artifact matches its source; run it in CI and before committing.
 Requires Python 3.6+, standard library only.
 """
 import argparse
+import csv
+import io
 import json
 import sys
 from pathlib import Path
@@ -31,6 +40,16 @@ ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "data" / "site_template.html"
 CARDS = ROOT / "data" / "index_cards.json"
 OUT = ROOT / "site" / "index.html"
+CSV_OUT = ROOT / "data" / "index_cards.csv"
+
+# The scalar columns only. inputs/used_in/growing_conditions and the production
+# blocks are nested and do not flatten without inventing a convention, so the CSV
+# is deliberately lossy and the JSON stays the source anyone serious should use.
+CSV_COLUMNS = (
+    "id", "gameset", "name", "raw_class", "category", "classification",
+    "industry", "sellable", "sale_index", "output_quantity", "output_unit",
+    "production_technology_pct",
+)
 
 PLACEHOLDER = "__PRODUCTS_JSON__"
 
@@ -50,7 +69,35 @@ REQUIRED_KEYS = frozenset({
 FORBIDDEN_KEYS = frozenset({"icon_image_id", "graphic_count", "classification_source"})
 
 
-def render() -> str:
+def load_cards() -> list:
+    """Read and validate the dataset. Exits with a message on bad inputs.
+
+    Shared by both artifacts so they can never be built from differently
+    validated reads -- and so a rejected key fails once, loudly, rather than
+    once per output.
+    """
+    cards = json.loads(CARDS.read_text(encoding="utf-8"))
+    if not isinstance(cards, list) or not cards:
+        sys.exit(f"error: {CARDS.name} must be a non-empty JSON array")
+    for i, card in enumerate(cards):
+        if not isinstance(card, dict):
+            sys.exit(f"error: {CARDS.name}[{i}] is {type(card).__name__}, expected object")
+        missing = REQUIRED_KEYS - card.keys()
+        if missing:
+            sys.exit(
+                f"error: {CARDS.name}[{i}] ({card.get('id')!r}) missing "
+                f"required key(s): {', '.join(sorted(missing))}"
+            )
+        forbidden = FORBIDDEN_KEYS & card.keys()
+        if forbidden:
+            sys.exit(
+                f"error: {CARDS.name}[{i}] ({card.get('id')!r}) carries "
+                f"unverifiable key(s): {', '.join(sorted(forbidden))}"
+            )
+    return cards
+
+
+def render(cards) -> str:
     """Build the site HTML in memory. Exits with a message on bad inputs."""
     # encoding="utf-8" is not optional here. The template contains 57
     # non-ASCII characters (em dashes, U+0336 combining strikethrough, arrows,
@@ -72,25 +119,6 @@ def render() -> str:
             f"error: expected exactly one {PLACEHOLDER} in {TEMPLATE.name}, found {found}"
         )
 
-    cards = json.loads(CARDS.read_text(encoding="utf-8"))
-    if not isinstance(cards, list) or not cards:
-        sys.exit(f"error: {CARDS.name} must be a non-empty JSON array")
-    for i, card in enumerate(cards):
-        if not isinstance(card, dict):
-            sys.exit(f"error: {CARDS.name}[{i}] is {type(card).__name__}, expected object")
-        missing = REQUIRED_KEYS - card.keys()
-        if missing:
-            sys.exit(
-                f"error: {CARDS.name}[{i}] ({card.get('id')!r}) missing "
-                f"required key(s): {', '.join(sorted(missing))}"
-            )
-        forbidden = FORBIDDEN_KEYS & card.keys()
-        if forbidden:
-            sys.exit(
-                f"error: {CARDS.name}[{i}] ({card.get('id')!r}) carries "
-                f"unverifiable key(s): {', '.join(sorted(forbidden))}"
-            )
-
     # The payload lands inside an inline <script>, which is an HTML *raw-text*
     # element: the parser ends the script at the first "</script" it sees, even
     # inside a JavaScript string literal. json.dumps does not escape "<", so a
@@ -103,37 +131,63 @@ def render() -> str:
     return tpl.replace(PLACEHOLDER, payload)
 
 
+def render_csv(cards) -> bytes:
+    """The flat projection, as bytes, in dataset order.
+
+    csv.writer's default CRLF is kept rather than normalised: it is what the
+    format specifies, what spreadsheets expect, and what the previous file used,
+    so switching would be a whole-file diff for no gain. Written through
+    io.StringIO and encoded here so --check compares bytes without a temp file.
+    """
+    buf = io.StringIO(newline="")
+    writer = csv.writer(buf)
+    writer.writerow(CSV_COLUMNS)
+    for card in cards:
+        # None becomes an empty cell; everything else takes str(), which is what
+        # produced the committed file and keeps floats as "100.0" rather than
+        # inventing a rounding rule.
+        writer.writerow(["" if card.get(c) is None else card.get(c) for c in CSV_COLUMNS])
+    return buf.getvalue().encode("utf-8")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Regenerate site/index.html from the template + product data."
+        description="Regenerate site/index.html and data/index_cards.csv from the "
+                    "template + product data."
     )
     parser.add_argument(
         "--check",
         action="store_true",
-        help="verify site/index.html is up to date; write nothing, exit 1 on drift",
+        help="verify both generated files are up to date; write nothing, exit 1 on drift",
     )
     args = parser.parse_args()
 
-    want = render().encode("utf-8")
-    rel = OUT.relative_to(ROOT)
+    cards = load_cards()
+    artifacts = [(OUT, render(cards).encode("utf-8")), (CSV_OUT, render_csv(cards))]
 
     if args.check:
-        have = OUT.read_bytes() if OUT.exists() else None
-        if have != want:
-            reason = "missing" if have is None else "stale"
-            print(
-                f"error: {rel} is {reason} -- run: python3 tools/build_site.py",
-                file=sys.stderr,
-            )
+        stale = []
+        for path, want in artifacts:
+            have = path.read_bytes() if path.exists() else None
+            if have != want:
+                stale.append((path.relative_to(ROOT), "missing" if have is None else "stale"))
+        if stale:
+            for rel, reason in stale:
+                print(f"error: {rel} is {reason}", file=sys.stderr)
+            print("run: python3 tools/build_site.py", file=sys.stderr)
             return 1
-        print(f"ok: {rel} is up to date ({len(want)} bytes)")
+        for path, want in artifacts:
+            print(f"ok: {path.relative_to(ROOT)} is up to date ({len(want)} bytes)")
         return 0
 
-    # Byte-level write with an implicit LF: Path.write_text() goes through text
-    # mode, which rewrites \n to \r\n on Windows and would turn every build on
-    # that platform into a whole-file diff against the committed artifact.
-    OUT.write_bytes(want)
-    print(f"built {rel} ({len(want)} bytes)")
+    # Byte-level writes with explicit content: Path.write_text() goes through
+    # text mode, which rewrites \n to \r\n on Windows and would turn every build
+    # on that platform into a whole-file diff against the committed artifact.
+    # The CSV carries its own CRLF deliberately, which is another reason not to
+    # let text mode near either file.
+    for path, want in artifacts:
+        path.write_bytes(want)
+        print(f"built {path.relative_to(ROOT)} ({len(want)} bytes)")
     return 0
 
 
